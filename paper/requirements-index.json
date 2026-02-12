@@ -1,0 +1,259 @@
+{
+  "paper": "AIΩN Foundations Paper VI",
+  "paper_number": "Paper VI",
+  "paper_date": "February 2026",
+  "source": "paper/main.tex Annex B, Annex D",
+  "schema_version": "1.0",
+  "requirements": [
+    {
+      "id": "REQ-THS-001",
+      "clause": "Systems MUST treat replay of mind-like worldlines as a governed action requiring explicit authority.",
+      "owner_roles": ["Operator", "Trustee"],
+      "control": "Governance policy gate for replay initiation",
+      "evidence_artefact": "Policy hash + signed authorisation decision",
+      "failure_mode": "Replay treated as default observability",
+      "profiles": {"baseline": true, "full": true},
+      "review_cadence": "Per release"
+    },
+    {
+      "id": "REQ-THS-002",
+      "clause": "Systems MUST default to protective handling when worldline status is uncertain.",
+      "owner_roles": ["Operator", "Reviewer/Arbiter"],
+      "control": "Precautionary classification policy",
+      "evidence_artefact": "Classification decision record with rationale",
+      "failure_mode": "Convenience-driven misclassification",
+      "profiles": {"baseline": true, "full": true},
+      "review_cadence": "Per request class change"
+    },
+    {
+      "id": "REQ-RAC-001",
+      "clause": "Replay governance MUST preserve role separation between Operator, Trustee, and Reviewer/Arbiter functions.",
+      "owner_roles": ["Operator"],
+      "control": "Role-bound access control matrix",
+      "evidence_artefact": "Role assignment snapshot and signed ACL digest",
+      "failure_mode": "Concentrated unilateral control",
+      "profiles": {"baseline": true, "full": true},
+      "review_cadence": "Monthly"
+    },
+    {
+      "id": "REQ-RAC-002",
+      "clause": "Operators MUST NOT unilaterally approve emergency override for their own replay request.",
+      "owner_roles": ["Trustee", "Reviewer/Arbiter"],
+      "control": "Independent co-approval requirement",
+      "evidence_artefact": "Dual-signature or quorum approval record",
+      "failure_mode": "Self-authorised emergency escalation",
+      "profiles": {"baseline": true, "full": true},
+      "review_cadence": "Per emergency case"
+    },
+    {
+      "id": "REQ-RAC-003",
+      "clause": "Fork-related duty transfers MUST declare delegated obligation owners before execution.",
+      "owner_roles": ["Operator", "Trustee"],
+      "control": "Delegation declaration gate",
+      "evidence_artefact": "Delegation statement linked to fork event",
+      "failure_mode": "Obligation abandonment through branching",
+      "profiles": {"baseline": false, "full": true},
+      "review_cadence": "Per fork event"
+    },
+    {
+      "id": "REQ-OVR-001",
+      "clause": "Emergency override MUST be reason-coded and time-bounded.",
+      "owner_roles": ["Trustee"],
+      "control": "Override warrant service",
+      "evidence_artefact": "Warrant record including reason code and expiry",
+      "failure_mode": "Open-ended emergency state",
+      "profiles": {"baseline": true, "full": true},
+      "review_cadence": "Per override case"
+    },
+    {
+      "id": "REQ-OVR-002",
+      "clause": "Emergency override MUST trigger independent review before closure.",
+      "owner_roles": ["Reviewer/Arbiter"],
+      "control": "Mandatory review workflow",
+      "evidence_artefact": "Review ticket with adjudication reference",
+      "failure_mode": "Unreviewed exceptional action",
+      "profiles": {"baseline": true, "full": true},
+      "review_cadence": "Per override case"
+    },
+    {
+      "id": "REQ-OVR-003",
+      "clause": "Override expiry MUST revoke all derived elevated capabilities automatically.",
+      "owner_roles": ["Operator"],
+      "control": "Automatic capability revocation on expiry",
+      "evidence_artefact": "Revocation event log with timestamp",
+      "failure_mode": "Lingering privileged access",
+      "profiles": {"baseline": true, "full": true},
+      "review_cadence": "Per override case"
+    },
+    {
+      "id": "REQ-OVR-004",
+      "clause": "On degraded substrates, override use MUST include explicit disclosure and a migration plan to compliant controls.",
+      "owner_roles": ["Operator", "Trustee"],
+      "control": "Degraded-mode governance declaration",
+      "evidence_artefact": "Disclosure notice + migration plan artefact",
+      "failure_mode": "Hidden operation below constitutional floor",
+      "profiles": {"baseline": false, "full": true},
+      "review_cadence": "Per degraded-mode case"
+    },
+    {
+      "id": "REQ-AUT-001",
+      "clause": "Replay requests MUST pass role-bound authorisation checks before execution.",
+      "owner_roles": ["Operator"],
+      "control": "Authorisation service",
+      "evidence_artefact": "Signed allow/deny decision log",
+      "failure_mode": "Privilege bypass",
+      "profiles": {"baseline": true, "full": true},
+      "review_cadence": "Continuous"
+    },
+    {
+      "id": "REQ-AUT-002",
+      "clause": "Replay requests MUST declare worldline scope, purpose, duration, and policy hash.",
+      "owner_roles": ["Operator"],
+      "control": "Request schema validation",
+      "evidence_artefact": "Request payload digest",
+      "failure_mode": "Ambiguous or overbroad authorisation",
+      "profiles": {"baseline": true, "full": true},
+      "review_cadence": "Continuous"
+    },
+    {
+      "id": "REQ-AUT-003",
+      "clause": "Replay MUST fail closed when explicit authority cannot be verified.",
+      "owner_roles": ["Operator"],
+      "control": "Deny-by-default guard",
+      "evidence_artefact": "Denial receipt with reason code",
+      "failure_mode": "Implicit replay execution",
+      "profiles": {"baseline": true, "full": true},
+      "review_cadence": "Continuous"
+    },
+    {
+      "id": "REQ-AUT-004",
+      "clause": "Contested mandates MUST require Trustee and Reviewer/Arbiter concurrence before replay proceeds.",
+      "owner_roles": ["Trustee", "Reviewer/Arbiter"],
+      "control": "Contested-mandate quorum gate",
+      "evidence_artefact": "Concurrence record with dual signatures",
+      "failure_mode": "Single-party mandate interpretation",
+      "profiles": {"baseline": false, "full": true},
+      "review_cadence": "Per contested mandate"
+    },
+    {
+      "id": "REQ-LOG-001",
+      "clause": "Replay, override, and dispute events MUST produce tamper-evident logs.",
+      "owner_roles": ["Operator"],
+      "control": "Append-only logging subsystem",
+      "evidence_artefact": "Chained log digest",
+      "failure_mode": "Unverifiable event history",
+      "profiles": {"baseline": true, "full": true},
+      "review_cadence": "Continuous"
+    },
+    {
+      "id": "REQ-LOG-002",
+      "clause": "Decision and execution logs MUST be linked to policy hash and requirement version set.",
+      "owner_roles": ["Operator"],
+      "control": "Policy-to-event linkage validator",
+      "evidence_artefact": "Policy hash linkage proof",
+      "failure_mode": "Decision/execution drift",
+      "profiles": {"baseline": true, "full": true},
+      "review_cadence": "Continuous"
+    },
+    {
+      "id": "REQ-LOG-003",
+      "clause": "Every formal review MUST verify log-chain integrity before adjudication.",
+      "owner_roles": ["Reviewer/Arbiter", "Auditor"],
+      "control": "Pre-adjudication integrity check",
+      "evidence_artefact": "Integrity verification report",
+      "failure_mode": "Adjudication over corrupted records",
+      "profiles": {"baseline": false, "full": true},
+      "review_cadence": "Per formal review"
+    },
+    {
+      "id": "REQ-DSP-001",
+      "clause": "Subjects MUST have access to an independent dispute pathway for replay decisions.",
+      "owner_roles": ["Trustee", "Reviewer/Arbiter"],
+      "control": "Dispute intake and escalation channel",
+      "evidence_artefact": "Case initiation record",
+      "failure_mode": "Non-contestable authority",
+      "profiles": {"baseline": true, "full": true},
+      "review_cadence": "Per dispute"
+    },
+    {
+      "id": "REQ-DSP-002",
+      "clause": "Dispute packets MUST include cited requirement IDs and supporting artefacts.",
+      "owner_roles": ["Reviewer/Arbiter"],
+      "control": "Structured case packet schema",
+      "evidence_artefact": "Complete case bundle manifest",
+      "failure_mode": "Opaque or non-reproducible adjudication",
+      "profiles": {"baseline": true, "full": true},
+      "review_cadence": "Per dispute"
+    },
+    {
+      "id": "REQ-DSP-003",
+      "clause": "Adjudication outcomes MUST define remediation, accountability owner, and closure condition.",
+      "owner_roles": ["Reviewer/Arbiter", "Operator"],
+      "control": "Remediation tracking workflow",
+      "evidence_artefact": "Signed outcome and closure record",
+      "failure_mode": "Findings without corrective effect",
+      "profiles": {"baseline": true, "full": true},
+      "review_cadence": "Per dispute"
+    },
+    {
+      "id": "REQ-CNF-001",
+      "clause": "Baseline conformance claims MUST satisfy the minimum requirement set defined in Annex D.",
+      "owner_roles": ["Operator", "Auditor"],
+      "control": "Baseline profile conformance check",
+      "evidence_artefact": "Baseline attestation report",
+      "failure_mode": "Aspirational compliance claims",
+      "profiles": {"baseline": true, "full": true},
+      "review_cadence": "Per release"
+    },
+    {
+      "id": "REQ-CNF-002",
+      "clause": "Full conformance claims MUST include continuous verification and review-latency commitments.",
+      "owner_roles": ["Operator", "Auditor"],
+      "control": "Full-profile continuous conformance monitor",
+      "evidence_artefact": "Full profile report + latency metrics",
+      "failure_mode": "Unbounded delay under critical disputes",
+      "profiles": {"baseline": false, "full": true},
+      "review_cadence": "Per release + monthly audit"
+    },
+    {
+      "id": "REQ-EVD-001",
+      "clause": "Each governed replay decision MUST produce a closure-ready evidence bundle.",
+      "owner_roles": ["Operator"],
+      "control": "Evidence bundling service",
+      "evidence_artefact": "Case bundle containing request, decision, execution, and review records",
+      "failure_mode": "Fragmented or missing evidence",
+      "profiles": {"baseline": true, "full": true},
+      "review_cadence": "Per governed decision"
+    },
+    {
+      "id": "REQ-EVD-002",
+      "clause": "Evidence artefacts MUST be signed, timestamped, and integrity-checkable.",
+      "owner_roles": ["Operator", "Auditor"],
+      "control": "Artefact signing and timestamping pipeline",
+      "evidence_artefact": "Signature chain and timestamp attestations",
+      "failure_mode": "Non-attributable records",
+      "profiles": {"baseline": true, "full": true},
+      "review_cadence": "Continuous"
+    },
+    {
+      "id": "REQ-TST-001",
+      "clause": "Release candidates MUST execute Annex E test vectors with recorded pass/fail outcomes.",
+      "owner_roles": ["Operator", "Auditor"],
+      "control": "Conformance test harness",
+      "evidence_artefact": "Test execution report with requirement coverage",
+      "failure_mode": "Untested governance surface",
+      "profiles": {"baseline": true, "full": true},
+      "review_cadence": "Per release candidate"
+    },
+    {
+      "id": "REQ-TST-002",
+      "clause": "Policy hash mismatch between decision and execution MUST fail closed and raise a dispute trigger.",
+      "owner_roles": ["Operator"],
+      "control": "Policy hash consistency guard",
+      "evidence_artefact": "Hash mismatch alert + denial receipt",
+      "failure_mode": "Stale-policy execution",
+      "profiles": {"baseline": true, "full": true},
+      "review_cadence": "Per mismatch event"
+    }
+  ]
+}

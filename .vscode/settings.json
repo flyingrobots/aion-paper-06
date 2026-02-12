@@ -1,0 +1,6 @@
+{
+  // Make LaTeX Workshop put build artifacts next to the Makefile output.
+  // When building a file in paper/, %DIR% expands to paper/.
+  "latex-workshop.latex.outDir": "%DIR%/../pdf"
+}
+

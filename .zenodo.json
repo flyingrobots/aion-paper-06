@@ -1,0 +1,37 @@
+{
+  "title": "WARP Graphs: Ethics of Deterministic Replay & Provenance Sovereignty",
+  "upload_type": "publication",
+  "publication_type": "preprint",
+  "access_right": "open",
+  "language": "eng",
+  "creators": [
+    {
+      "name": "Ross, James",
+      "affiliation": "Independent Researcher",
+      "orcid": "0009-0006-0025-7801"
+    }
+  ],
+  "description": "Draft placeholder for Paper V of the AIΩN Foundations Series, focused on the ethics of deterministic replay and provenance sovereignty.",
+  "license": "cc-by-4.0",
+  "keywords": [
+    "AIΩN",
+    "AIΩN Foundations",
+    "WARP graphs",
+    "ethics",
+    "deterministic replay",
+    "provenance",
+    "provenance sovereignty",
+    "accountability",
+    "auditability",
+    "privacy",
+    "governance",
+    "transparency"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/flyingrobots/aion",
+      "relation": "isPartOf",
+      "resource_type": "software"
+    }
+  ]
+}

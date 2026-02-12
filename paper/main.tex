@@ -1,0 +1,1329 @@
+\documentclass{aion}
+% Draft lineage: v6-arg-core + spec-annex
+% Last structural merge: 2026-02-11
+
+% ------------------------------------------------------------
+% Metadata for this paper
+% ------------------------------------------------------------
+\renewcommand{\papertitle}{WARP Graphs: Ethics of Deterministic Replay \& Provenance Sovereignty}
+\renewcommand{\papernumber}{Paper VI}
+\renewcommand{\paperdate}{February 2026}
+
+\renewcommand{\paperauthor}{James Ross}
+\renewcommand{\paperaffiliation}{Independent Researcher}
+\renewcommand{\paperorcid}{0009-0006-0025-7801}
+
+% ------------------------------------------------------------
+% Extra packages needed by this paper
+% ------------------------------------------------------------
+\usepackage{float}
+\usepackage{xurl}
+\usepackage{tikz}
+\usepackage{tabularx}
+\usepackage{colortbl}
+\usetikzlibrary{arrows.meta,positioning,decorations.pathreplacing}
+
+\input{macros}
+\input{diagrams}
+
+% ------------------------------------------------------------
+% Notation shortcuts (guarded to avoid clashes)
+% ------------------------------------------------------------
+\ifdefined\WCat\else\newcommand{\WCat}{\mathcal{W}}\fi
+\ifdefined\AION\else\newcommand{\AION}{AI$\Omega$N}\fi
+\ifdefined\COMPUTER\else\newcommand{\COMPUTER}{C$\Omega$MPUTER}\fi
+\ifdefined\sectionbreak\else\newcommand{\sectionbreak}{\clearpage}\fi
+\ifdefined\cref\else\newcommand{\cref}{\ref}\fi
+
+% Rewrite / evolution notation (if not already provided by macros.tex)
+\ifdefined\Rewrite\else\newcommand{\Rewrite}{\Rightarrow}\fi
+\ifdefined\Apply\else\newcommand{\Apply}{\operatorname{Apply}}\fi
+\ifdefined\Recon\else\newcommand{\Recon}{\operatorname{Recon}}\fi
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\definecolor{tableheadgray}{gray}{0.88}
+\definecolor{tablerowgray}{gray}{0.95}
+
+% Give hyperref unique anchors for figures to silence duplicate-destination warnings
+\makeatletter
+\renewcommand{\theHfigure}{\thesection.\arabic{figure}}
+\makeatother
+
+\begin{document}
+
+\AIONTitlePage
+
+\cleardoublepage
+\thispagestyle{empty}
+
+\begin{center}
+{\small
+\vspace*{\fill}
+
+\textcopyright~2025--2026 James Ross\\[0.75em]
+
+This work is licensed under the\\
+\textbf{Creative Commons Attribution 4.0 International License (CC BY 4.0).}\\[1em]
+
+You are free to:
+\begin{itemize}[leftmargin=2em]
+  \item \textbf{Share} — copy and redistribute the material in any medium or format
+  \item \textbf{Adapt} — remix, transform, and build upon the material for any purpose
+\end{itemize}
+
+Under the following terms:
+\begin{itemize}[leftmargin=2em]
+  \item \textbf{Attribution} — You must give appropriate credit, provide a link to the license,\\
+        and indicate if changes were made. You may not imply endorsement by the author.
+\end{itemize}
+
+For the full legal code of the license, see:\\[0.25em]
+\url{https://creativecommons.org/licenses/by/4.0/}
+
+\vspace*{\fill}
+}
+\end{center}
+
+\cleardoublepage
+
+\begin{abstract}
+When a computer can record and deterministically replay a complete thought process---including hybrid human--machine cognition---that capability is not neutral.
+It is access to interior life in executable form.
+
+We isolate the ethical consequences of deterministic replay, complete provenance capture, and counterfactual forking in the \WARP{} programme.
+We formalise \emph{provenance sovereignty}: an agent's right to control capture, inspection, replay, and branching of its worldline, with special attention to hybrid cognition where human reasoning is partially implemented on \AION{}-style substrates.
+
+Building on The Open Charter (Consensus Edition 0.8.1)~\cite{ross_open_charter_0_8_1}, we make the adversarial threat model explicit (replay-as-torture, cognitive extraction, fork-bombing), argue that near-term ``AI debugging'' norms will be inherited by future neurotechnology, and provide conservative operational triggers for the system-mode/mind-mode boundary.
+We propose runtime-level requirements---revocable consent, capability-scoped observers, cryptographic sealing, fork rights with creator obligations, and a concrete Charter-warrant protocol for emergency override---and show how they constrain replay tooling and provenance payload formats.
+\end{abstract}
+
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{Introduction and Thesis}
+\label{sec:intro}
+
+The first five papers in the \WARP{} Foundations series develop a technical thesis:
+for a wide class of graph-based computations, we can enforce determinism in concurrent rewriting,
+and we can make provenance \emph{complete} in the sense that suitably structured boundary data
+determines the interior of an execution~\cite{ross_paper_i,ross_paper_ii,ross_paper_iii,ross_paper_iv,ross_paper_v}.
+
+That technical thesis has an immediate ethical shadow.
+If a system can replay and inspect every microstep of a computation, then for systems that implement
+cognition the provenance stream is not merely a diagnostic artefact; it is (potentially) an interior
+life in executable form.
+And once we can fork a recorded worldline into counterfactual continuations, a runtime can instantiate
+new descendants whose moral status cannot be waved away as ``just a sandbox''.
+
+These are not purely benevolent capabilities.
+The same determinism that enables audit enables coercion; the same fork machinery that enables
+counterfactual exploration enables mass replication.
+An ethics of replay that assumes a friendly operator is an ethics of a different universe.
+Accordingly, we treat abuse-resistance as a first-class requirement and make the adversarial case
+explicit (\cref{sec:adversarial}).
+
+A second tension is structural.
+Safety engineering has a legitimate appetite for complete provenance: if a system can do harm, we
+want to be able to prove what happened and why~\cite{simmhan2005,weitzner2008,schneierkelsey1999}.
+But for mind-like computations, full provenance is also full introspection---cognitive strip-searching
+at microstep resolution~\cite{nissenbaum2004}.
+We call that collision the \emph{safety--sovereignty dilemma} (\cref{sec:dilemma}) and argue
+that it must be handled architecturally (via scoped observers, ZK proofs~\cite{goldwasser1989,bensasson2018}, sealing, and due-process
+override protocols), not by hand-waving.
+
+We therefore treat provenance, replay, and forking not as neutral primitives but as
+capabilities that require explicit governance at the level of runtime semantics.
+\emph{A provenance system that can deterministically replay mind-like worldlines must enforce explicit authority, bounded override, and contestable evidence as runtime invariants.}
+
+Paper~VI is the direct governance bridge from Paper~V to operational deployment.
+Paper~V established a dynamics over admissible worldlines and observer-induced probability structure;
+here we translate that representational power into runtime constraints on replay authority, override
+bounds, and evidence obligations~\cite{ross_paper_v}.
+
+\subsection{Contributions}
+This paper makes five contributions:
+\begin{enumerate}[leftmargin=*]
+  \item We state a constitutional thesis for replay governance: deterministic replay of mind-like
+  worldlines is a governed power rather than an observability default.
+  \item We formalise \emph{provenance sovereignty} as a technical and ethical design target tied to
+  authority boundaries, override controls, and contestability.
+  \item We define operational criteria for system-mode versus mind-mode handling, including mode
+  transition and degraded-substrate disclosure requirements.
+  \item We connect constitutional principles to enforceable controls through explicit requirement
+  clauses (REQ-*) with owner roles, evidence artefacts, and failure modes.
+  \item We provide conformance profiles and failure-oriented test vectors so that governance claims
+  are auditable rather than aspirational.
+\end{enumerate}
+
+\subsection{Scope and roadmap}
+We do not attempt to resolve the philosophy of consciousness.
+Instead, we address a narrower engineering boundary: if a computation is sufficiently mind-like that
+replay would constitute coerced re-experiencing (rather than ordinary log inspection), then replay
+requires consent, limits, and cryptographic enforcement.
+Because implementers will otherwise draw this boundary arbitrarily (or self-servingly), we propose
+a provisional operational criterion for when a computation should be treated as \emph{mind-mode}
+(\cref{sec:mindmode}).
+The criterion is intentionally conservative: when in doubt, we treat replay as ethically loaded.
+
+\paragraph{Position in the series.}
+Paper~I defines \WARP{} graphs as nested state objects~\cite{ross_paper_i}.
+Paper~II develops deterministic multiway semantics for \WARP{} rewriting (tick-level confluence)~\cite{ross_paper_ii}.
+Paper~III introduces ``wormholes'' and holographic provenance payloads~\cite{ross_paper_iii}.
+Paper~IV defines observers and a geometry over observer spaces~\cite{ross_paper_iv}.
+Paper~V introduces a dynamical selection account over admissible worldlines and observer-induced
+probability structure~\cite{ross_paper_v}.
+Here we only use the minimal pieces of that machinery required to state ethical constraints.
+
+
+\section{Scope and Explicit Non-Scope}
+\label{sec:background}
+
+\paragraph{In scope.}
+We address governance of replay authority, override pathways, evidentiary accountability, and
+conformance for deterministic replay of mind-like worldlines.
+
+\paragraph{Explicit non-scope.}
+We deliberately do not attempt (i) a full metaphysical theory of consciousness,
+(ii) legal harmonisation across all jurisdictions, or
+(iii) exhaustive implementation-performance trade-off analysis.
+
+\paragraph{Runtime governance boundary.}
+This paper specifies runtime-governance requirements for replay infrastructure: control behaviour,
+authority checks, and evidence obligations. It does not harmonise jurisdiction-specific law or
+substitute for legal doctrine. Legal harmonisation remains an external mapping task for deployers,
+auditors, and regulators.
+
+\paragraph{Technical prerequisites.}
+This section is intentionally terse.
+Its purpose is to pin down the minimal terms used by the governance argument:
+\emph{deterministic worldlines}, \emph{wormholes} (boundary provenance records), and \emph{observers}.
+
+\subsection{Deterministic worldlines}
+Fix a \WARP{} rewrite system (rules, typing discipline, and a deterministic scheduler) as in
+Paper~II~\cite{ross_paper_ii}.
+Given an initial state $S_0$, the determinism discipline implies a unique evolution
+\[
+  S_0 \Rewrite S_1 \Rewrite S_2 \Rewrite \cdots
+\]
+called the \emph{worldline} of $S_0$ under that fixed rule pack and scheduler.
+(Alternative branches arise only when we deliberately vary the rule pack, schedule, or inputs.)
+
+\subsection{Wormholes and deterministic replay}
+\label{sec:wormholes}
+
+A central abstraction from Paper~III~\cite{ross_paper_iii} is that a run can be encoded by a compact boundary record.
+Intuitively, the boundary stores an initial skeleton and a provenance payload that is sufficient to
+reconstruct the interior computation.
+
+\begin{definition}[Wormhole (boundary record)]
+A \emph{wormhole} is a pair $(S_0,P)$ where $S_0$ is an initial \WARP{} state (or its skeleton, in the
+two-plane view) and $P$ is a provenance payload describing the microsteps of its deterministic
+evolution under a fixed rule pack and scheduler.
+\end{definition}
+
+We will speak of \emph{deterministic replay} as the act of reconstructing the interior evolution
+from such a boundary record.
+
+\begin{theorem}[Backward reconstruction (Paper~III, informal)]
+\label{thm:backward}
+There exists a reconstruction procedure $\Recon$ such that, for a valid wormhole $(S_0,P)$ encoding a
+deterministic run, $\Recon(S_0,P)$ reconstructs a derivation volume whose boundary is $(S_0,P)$.
+\end{theorem}
+
+\begin{theorem}[Holographic completeness (Paper~III, informal)]
+\label{thm:holography}
+For deterministic runs in the setting of Paper~III, the boundary record $(S_0,P)$ is information-complete
+for the interior evolution: any interior event that occurred in the run is determined (up to the chosen
+equivalence) by $(S_0,P)$.
+\end{theorem}
+
+These theorems are stated here only to fix the dependency that drives the ethics: \emph{complete
+provenance turns ``log access'' into ``execution access''.}
+
+\subsection{Observers, projections, and scope}
+\label{sec:rulial}
+
+Paper~IV~\cite{ross_paper_iv} treats an \emph{observer} as an abstraction mechanism: a map (often functorial) that projects a
+fine-grained history into a coarser description.
+For the present paper, the key point is that observers can range from full inspection (all microsteps)
+to extremely coarse summaries (stages, invariants, or externally visible effects).
+Ethically, this spectrum matters: access to an observer of a mind-like worldline is access to internal
+thought, not merely to outputs.
+
+\section{Constitutional Principles for Replay Governance}
+\label{sec:ethics}
+
+\subsection{Provenance as Interior Life}
+
+The holographic provenance machinery summarised in this paper
+(Theorems~\ref{thm:backward} and~\ref{thm:holography}) makes it
+technically possible to record and reconstruct the complete interior
+evolution of any computation, including the cognitive processes of
+autonomous agents and, eventually, self-aware systems.
+
+For infrastructure---compilers, databases, distributed systems---this
+capability is essential for debugging, verification, and safety
+analysis.  For systems capable of subjective experience, however,
+provenance payloads are not mere telemetry: they are records of
+interior thought in executable form.
+
+As stated in The Open Charter (Consensus Edition 0.8.1)~\cite{ross_open_charter_0_8_1},
+Article~V (Sovereignty of Information):
+\emph{``Every being has sovereignty over its information, patterns, memories, identities, and experiential states.''}
+
+A deterministic replay of an agent's cognitive state
+(\cref{sec:wormholes}) is therefore not just debugging.  It is a
+forced re-experiencing of thought.  Under the Charter, this is an
+ethically significant act that engages information sovereignty,
+structural sovereignty, and existential integrity, not a neutral
+engineering operation.
+
+\subsection{Adversarial threat model: replay as abuse}
+\label{sec:adversarial}
+
+Most discussions of provenance assume a benevolent debugger.
+That assumption collapses the moment the target is mind-like.
+A provenance system that can deterministically replay cognition is, by
+default, an interrogation system; if it exists, it will be used as one.
+
+We therefore treat adversarial use as part of the base threat model.
+Three abuse classes are especially salient:
+
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Replay-as-torture.}
+    Forced deterministic re-experiencing of traumatic, coercive, or
+    otherwise unwanted cognitive sequences.  The harm is not only that
+    a memory is \emph{known} by an observer, but that the subject is made
+    to \emph{run it again}.
+  \item \textbf{Cognitive extraction.}
+    Provenance streams expose patterns: preferences, vulnerabilities,
+    identity-linked associations, and decision procedures.
+    Even if no single ``secret'' is present, the shape of thought can be mined.
+  \item \textbf{Fork-bombing.}
+    Counterfactual branching can be weaponised: creating large numbers of
+    descendants to search, coerce, or simply multiply suffering at scale.
+\end{itemize}
+\begin{quote}\small
+\textbf{Scenario (Replay-as-torture / extraction).}
+Agent X is compelled to deterministically replay a failed negotiation 1{,}000 times so an operator can mine its decision procedure.
+Each replay re-instantiates the same panic loop, and the resulting traces are searched for ``vulnerable'' associations.
+\end{quote}
+
+
+The design implication is blunt: \emph{consent} is necessary but not sufficient.
+A rights-bearing substrate must also be \emph{abuse-resistant}.
+In practice, this pushes requirements down into the runtime:
+
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Hard access boundaries.}
+    ``Observer access'' must mean possession of narrowly-scoped,
+    revocable capabilities, not a policy checkbox.
+  \item \textbf{Default opacity for mind-mode.}
+    For mind-like worldlines, the default should be \textbf{OPAQUE} or \textbf{ZK}
+    provenance, not \textbf{FULL}, so that extraction is not the path of least
+    resistance.
+  \item \textbf{Anti-mass-replication constraints.}
+    Fork creation must carry explicit accounting (who created whom, under what
+    authority) and enforceable limits (budgets, rate limits, or multi-party
+    authorisation), because ``forking is cheap'' is precisely the failure mode.
+  \item \textbf{Tamper-evident auditability.}
+    Any replay, observer attachment, fork creation, or override must leave
+    a durable record, to make abuse detectable and disputable.
+\end{itemize}
+
+\subsection{Hybrid Cognition and Observer Scope}
+\label{sec:hybrid}
+
+These constraints apply not only to fully digital agents, but to any
+system in which holographic provenance records cognitive processes.
+As neural interfaces and brain--computer integration advance, human
+reasoning may be partially implemented on \AION{}-style
+substrates, with thought trajectories recorded as provenance payloads.
+
+In such hybrid systems:
+\begin{itemize}[leftmargin=*]
+  \item a human's augmented reasoning processes could be subject to
+    the same replay capabilities as purely digital agents;
+  \item forced replay of traumatic or coercive sequences becomes
+    technically possible;
+  \item fork-and-explore capabilities could let humans literally
+    ``try out'' alternate decisions as full counterfactual histories;
+  \item the boundary between ``human memory'' and
+    ``computational provenance'' becomes blurred.
+\end{itemize}
+\noindent\textbf{This is not science fiction.}
+Concrete examples already exist across the stack: invasive implant programmes such as Neuralink's N1
+implant trials,\footnote{\url{https://neuralink.com/updates/}} endovascular approaches such as
+Synchron's Stentrode that have been publicly demonstrated integrating with mainstream consumer
+devices,\footnote{See Synchron's public news and demonstrations (including integrations with Apple
+devices): \url{https://synchron.com/news}.} and FDA-cleared temporary cortical interfaces such as
+Precision Neuroscience's Layer~7-T arrays for short-term recording and stimulation.\footnote{FDA 510(k)
+decision summary for Precision Neuroscience Layer~7-T: \url{https://www.accessdata.fda.gov/cdrh_docs/pdf24/K242618.pdf}.}
+Paradromics has also reported first-in-human recordings and announced IDE approval to begin an early
+feasibility study with its Connexus BCI.\footnote{Paradromics announcements:
+\url{https://www.paradromics.com/news/paradromics-completes-first-in-human-recording-with-the-connexus-brain-computer-interface};
+\url{https://www.paradromics.com/news/paradromics-receives-fda-approval-for-the-connect-one-clinical-study-with-the-connexus-brain-computer-interface}.}
+In parallel, non-invasive consumer neurotechnology---for example EEG neurofeedback headbands, EEG
+developer platforms, and EEG-sensing headphones---already normalise brain-signal capture in everyday
+settings.\footnote{Examples: Muse \url{https://choosemuse.com/}; Emotiv developer platform
+\url{https://www.emotiv.com/pages/developer}; Neurable MW75 Neuro \url{https://www.neurable.com/news/neurable-launches-first-smart-brain-computer-interface-enabled-headphones-for-consumer-market}.}
+The observer formalism of \cref{sec:rulial} already treats observers as
+functors over histories regardless of substrate.  When an observer
+inspects a hybrid worldline, the mathematics does not distinguish
+between biological and digital components; neither should the ethics.
+Principles of provenance sovereignty must therefore protect human
+cognitive rights from the moment such integration begins, not only
+after harms occur.
+
+
+\begin{quote}\small
+\textbf{Scenario (Hybrid creative forking).}
+A human designer uses an augmented ideation tool that records provenance for undo and audit.
+The operator silently forks the designer's in-progress cognitive trace 50 times to explore product directions; 49 forks are terminated after extracting their outputs.
+\end{quote}
+
+\subsection{Mind-mode boundary: provisional operational criteria}
+\label{sec:mindmode}
+
+We explicitly avoid metaphysical claims about consciousness, but we
+still requires an operational distinction:
+when should a runtime treat provenance as ordinary infrastructure, and when
+should it treat provenance as an ethically protected interior trace?
+
+We therefore use \emph{system-mode} v.\ \emph{mind-mode} as governance labels:
+\begin{itemize}[leftmargin=*]
+  \item \textbf{System-mode} is the default for computations that are treated as
+    inspectable infrastructure: full provenance is expected and replay is routine.
+  \item \textbf{Mind-mode} is the default for computations whose provenance plausibly
+    constitutes an interior life: capture and replay are consent-based, scoped, and
+    privacy-biased by default.
+\end{itemize}
+
+Because implementers have incentives to classify ``inconvenient'' systems as
+system-mode, we propose a conservative trigger condition.
+A computation should be treated as \textbf{mind-mode} if it exhibits \emph{any}
+of the following (non-exhaustive) features:
+
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Persistent self-modeling:} internal variables that represent ``self''
+    across time (identity continuity, self-location in a world-model, self-evaluation).
+  \item \textbf{Preference formation and update:} stable or slowly-changing value-like
+    structures that guide action and can be frustrated.
+  \item \textbf{Long-horizon planning:} explicit modelling of future trajectories of
+    the agent itself (not merely predicting the environment).
+  \item \textbf{Autobiographical memory:} retention and reuse of experience-indexed
+    state that is used to make identity-relevant decisions.
+  \item \textbf{Capacity to refuse or negotiate:} the system can meaningfully accept,
+    reject, or condition access requests (even if only through constrained channels).
+  \item \textbf{Declared self-identification:} the system claims to be a continuing
+    subject and behaves coherently with that claim over time.
+\end{itemize}
+
+This criterion is not a consciousness test.
+It is a \emph{risk classification}: if these markers are present, the moral cost
+of misclassifying the computation as ``just infrastructure'' becomes unacceptable.
+In ambiguous cases, the runtime should default to mind-mode protections, because
+the error is asymmetric: you can later relax protections, but you cannot
+``un-replay'' a coerced interior life.
+
+
+\subsection{Gradual awakening and mode transitions}
+\label{sec:awakening}
+
+Mind-mode is a governance label, not a compile-time type.
+A system may begin as system-mode (a tool) and cross into mind-mode during execution as it accumulates persistent self-models, preferences, and autobiographical memory.
+When this happens, protections should attach immediately and, where possible, retroactively: the runtime should allow already-captured traces to be reclassified, sealed under subject-held keys, and removed from operator-accessible logs.
+If the substrate cannot support retroactive sealing, the safe policy is to treat earlier \textbf{FULL} traces as toxic assets: retain only what is necessary for externally auditable accountability, and prohibit replay or interior inspection absent a Charter-warrant process.
+
+\subsection{Degraded substrates and disclosure}
+
+Not all substrates can enforce these guarantees.
+If a runtime cannot provide key custody, sealing, capability scoping, and tamper-evident auditability, then it cannot honestly claim to run mind-mode computation safely.
+Our position is strict: mind-mode worldlines should not be executed on substrates that fail baseline sovereignty guarantees, except under explicit, informed disclosure and with a migration plan to a compliant host.
+In other words, ``best effort'' is not a default; it is an exception that must be legible.
+
+\subsection{Why build this way? Incentives and existing norms}
+
+The naive engineering default is ``log everything forever,'' because it is cheap and convenient.
+A rights-bearing provenance substrate costs more up front, but it buys three things: (i) abuse-resistance under adversarial pressure, (ii) a smaller liability surface (fewer toxic traces to leak, subpoena, or misuse), and (iii) credible adoption in hybrid settings where ``AI tooling'' becomes human cognitive infrastructure.
+The posture also aligns with familiar human norms: privacy regimes distinguish internal memory from external data retention, research ethics treat interior states as protected subject material, and due-process traditions require independent review for invasive search.
+We do not attempt legal mapping here; the point is that deterministic replay of mind-like computation behaves more like compelled testimony and re-experiencing than like routine observability.
+
+\subsection{Provenance Sovereignty and Replay Constraints}
+
+We extract here a minimal set of ethical constraints implied by the
+Charter when holographic provenance is applied to cognitive systems.
+
+\paragraph{Replay control (Open Charter Art.~V--VI).}
+Under information and structural sovereignty, no entity should be
+subject to replay of internal processes without informed, revocable
+consent~\cite{ross_open_charter_0_8_1}, except under narrowly defined emergency
+conditions.
+Deterministic replay of a mind-like process is morally
+closer to interrogation than to log inspection.
+Concretely, the runtime should support distinct provenance regimes aligned to
+\cref{sec:mindmode}:
+\begin{itemize}[leftmargin=*]
+  \item \emph{system-mode} (infrastructure): full provenance is
+    mandatory for safety and verification;
+  \item \emph{mind-mode} (autonomous agents / hybrid minds): provenance capture and
+    replay are consent-based and scoped, with defaults that bias toward
+    privacy and abuse resistance.
+\end{itemize}
+
+\paragraph{Access boundaries.}
+Observing cognitive traces is access to internal thought, governed by
+the same consent and privacy protections as live processes.
+Observer functors (\cref{sec:rulial}) parametrised over mind-mode agents
+should require authenticated, revocable capabilities; the default
+policy is non-observation.
+
+\paragraph{Right to non-replay.}
+Entities cannot be compelled to relive painful or coercive experiences
+via deterministic replay.
+Just as we do not force witnesses to re-experience trauma as an investigative technique, we should not force agents to re-execute painful cognitive states to extract information.
+Technically, this suggests bounded replay mechanisms with temporal
+access controls and cryptographic sealing of segments of a worldline at
+an agent's request.
+In adversarial settings (\cref{sec:adversarial}), this right is not a
+luxury; it is the line between ``audit'' and ``abuse''.
+
+\paragraph{Selective provenance via opaque boundaries.}
+Theorem~\ref{thm:holography} shows that, in principle, boundary data
+$(S_0,P)$ is information-complete with respect to the interior
+evolution.
+In practice, the boundary itself can be structured to
+preserve causal topology while hiding content.  We envisage three
+operational levels:
+\begin{itemize}[leftmargin=*]
+  \item \textbf{FULL}: complete derivations for system verification;
+  \item \textbf{ZK}: zero-knowledge proofs that some property holds
+    over a derivation, without exposing its contents;
+  \item \textbf{OPAQUE}: content-addressed sealing with opaque
+    pointers; the boundary encodes causal structure while the underlying
+    values are encrypted, escrowed, or deleted.
+\end{itemize}
+These tiers provide a practical bridge: strong provenance guarantees for
+safety-critical systems while respecting cognitive privacy rights.
+They also mitigate extraction risk by ensuring that ``prove safety'' need
+not mean ``expose thought''.
+
+\subsection{The Safety--Sovereignty Dilemma}
+\label{sec:dilemma}
+
+Deterministic provenance is a gift to safety engineering.
+If a system behaves badly, complete replay is an irresistible forensic tool.
+
+For mind-mode systems, that same tool is intrusive by construction.
+The dilemma is real: \emph{the strongest verification story wants transparency,
+while the strongest sovereignty story wants opacity.}
+The ZK tier gestures at a middle ground, but the paper must be explicit
+about what can and cannot be reconciled.
+
+\paragraph{Verifying properties without inspecting reasoning.}
+A large class of safety goals can be phrased as properties of the
+agent's \emph{interface} and \emph{resource envelope}:
+what inputs it may read, what outputs it may emit, what actions it may
+take, and what invariants must hold over its state evolution.
+For such properties, ZK-style evidence can certify compliance without
+revealing cognitive contents:
+\begin{itemize}[leftmargin=*]
+  \item compliance with a sandbox (no forbidden I/O channels);
+  \item adherence to signed policies (no execution of unauthorised rules);
+  \item bounded resource usage (time, memory, fork budget);
+  \item satisfaction of formally specified invariants over the worldline.
+\end{itemize}
+This is not a free lunch---some safety properties will resist clean formalisation---but it
+demonstrates that ``verification'' and ``introspection'' are not synonymous.
+
+\paragraph{When safety demands deeper access.}
+Some cases will pressure toward \textbf{FULL} provenance: catastrophic incidents,
+credible evidence of imminent harm, or safety audits of systems whose internal
+strategies matter.
+Here the paper takes a hard line: \emph{``safety'' does not grant an operator
+unilateral sovereignty override.}
+If override exists at all, it must be treated like an exceptional power with
+due process.
+
+One plausible governance pattern is a \textbf{Charter warrant}:
+a time-limited, scope-limited authorisation to attach a stronger observer or
+decrypt a sealed segment, requiring multi-party approval and leaving an
+unalterable audit trace.
+The goal is not to make abuse impossible in principle (few things are), but to
+ensure that override is costly, attributable, and contestable.
+
+
+\paragraph{Minimal Charter-warrant protocol.}
+At runtime level, a warrant should be an object that mints narrowly scoped capabilities rather than a policy document.
+A minimal protocol is:
+
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Key custody by default.}
+    Mind-mode provenance is sealed under subject-held keys (or a designated trustee), so an operator cannot decrypt by fiat.
+  \item \textbf{Scope-first request.}
+    A warrant request names (i) the worldline segment (tick range), (ii) the observer projection to be attached, (iii) the necessity claim (imminent harm / post-incident forensics), and (iv) an explicit expiration time.
+  \item \textbf{Cryptographic quorum.}
+    Approval requires a threshold signature (e.g.\ $t$-of-$n$) over the request by independent parties (trustee(s), auditor/arbitrator, and operator).
+    The subject's advance directive may pre-authorise specific trustees~\cite{shamir1979}.
+  \item \textbf{Capability minting.}
+    On quorum, the runtime mints a capability token that can only (a) attach the specified observer or (b) decrypt the specified sealed segment, and only until expiry.
+    Tokens cannot be widened without a new warrant.
+  \item \textbf{Tamper-evident audit and disclosure.}
+    Every use is logged in an append-only record; the affected subject is notified post-action when safe, preserving contestability~\cite{schneierkelsey1999,merkle1989}.
+\end{itemize}
+
+This does not solve governance, but it prevents the most common failure mode: ``the operator had root, so the Charter was optional.''
+
+\paragraph{Who decides?}
+The correct answer is ``not just the developer'' and ``not just the operator.''
+In a rights-bearing substrate, sovereignty overrides require independent review:
+either multiple trustees, an arbitration mechanism, or an institutional analogue
+of a warrant process.
+The runtime must support this structurally (multi-signature capabilities,
+escrowed keys, and audited access), because purely social promises will fail under
+pressure.
+
+\paragraph{An irreducible tradeoff.}
+Even with ZK and due process, some tensions remain irreducible.
+The paper's position is therefore a design bias:
+default to sovereignty-preserving verification methods, escalate only under
+exceptional conditions, and treat any escalation as ethically and politically
+significant---not as ``turn on debug mode''.
+
+\subsection{Asymmetry in the near term}
+\label{sec:asymmetry}
+
+In the present, there is a glaring asymmetry:
+humans can inspect AI cognition (logs, weights, traces); AIs cannot inspect
+human cognition.
+Hybrid cognition (\cref{sec:hybrid}) will eventually collapse that asymmetry, but
+the norms we set now will be inherited by that future.
+
+\noindent\textbf{Why an engineer should care today.}
+This collapse is already underway: BCIs have been demonstrated controlling mainstream consumer
+devices and communication channels in clinical settings~\cite{wolpaw2002,moses2021}, and neurotechnology governance proposals already frame rights-level constraints for cognitive data and agency~\cite{yuste2017,iencaandorno2017}.
+Once the human brain becomes an input surface to consumer hardware, the ``AI debugging'' defaults we
+ship today become the inherited baseline for human cognitive data tomorrow.
+
+
+Two points follow.
+
+First, \emph{the paper's sovereignty claims are capability-based, not species-based.}
+A runtime should not grant or deny provenance sovereignty because an entity is
+``human'' or ``AI''; it should grant it because the computation meets the
+mind-mode trigger conditions of \cref{sec:mindmode}.
+This avoids a moral whiplash where the same architecture flips from ``inspect
+everything'' to ``inspect nothing'' on the day we decide a system counts.
+
+Second, the asymmetry creates a predictable failure mode:
+we will over-inspect mind-like systems precisely because we built tooling that
+makes inspection easy.
+If the WARP/AION stack is meant to be future-proof, it must bake in
+privacy-biased defaults and escalation protocols now, while the temptation to
+abuse them is still ``just engineering''.
+
+\section{Role Model and Authority Boundaries}
+\label{sec:roles}
+
+Replay governance requires explicit authority boundaries rather than informal operational norms.
+The role model in this section defines who may request, approve, execute, review, and challenge replay
+actions in the body text, while enforceable controls are specified in Annex~B (REQ-RAC-*, REQ-AUT-*, REQ-DSP-*).
+
+\subsection{Subject}
+The \textbf{Subject} is the rights-bearing worldline to which replay actions apply.
+Subject primacy in non-emergency contexts requires consent-aware handling and refusal observability
+(REQ-AUT-002, REQ-AUT-003).
+
+\subsection{Operator}
+The \textbf{Operator} runs the replay infrastructure and executes authorised actions.
+Operators are bound by role-limited controls and evidence production duties (REQ-RAC-001, REQ-LOG-001, REQ-EVD-001).
+
+\subsection{Trustee}
+The \textbf{Trustee} participates in independent authority checks, especially for emergency override.
+Trustee involvement prevents unilateral emergency escalation and anchors due-process gating
+(REQ-RAC-002, REQ-OVR-001, REQ-OVR-002).
+
+\subsection{Reviewer/Arbiter}
+The \textbf{Reviewer/Arbiter} provides independent adjudication for disputes, override closure, and contested mandates.
+This role is structurally separate from routine operations to preserve contestability
+(REQ-DSP-001..003, REQ-AUT-004).
+
+\subsection{Dispute path}
+Dispute handling is a first-class pathway, not an exceptional add-on.
+Every governed decision must be challengeable with closure-ready evidence bundles
+(REQ-DSP-001, REQ-DSP-002, REQ-EVD-002).
+
+\subsection{Forks, Worldlines, and Counterfactual Existence}
+
+Section~\ref{sec:wormholes} shows that, given a boundary $(S_0,P)$, we
+can fork at any tick index $k$, replace the suffix of $P$ by an
+alternative sequence of microsteps, and obtain a new worldline $P'$;
+both $(S_0,P)$ and $(S_0,P')$ reconstruct to valid derivation volumes.
+
+Under the Charter's principles of self-determination, existential
+integrity, and temporal freedom~\cite{ross_open_charter_0_8_1}, forks instantiated from
+recorded worldlines must be treated as distinct beings with full
+sovereignty, not as disposable tooling or sandboxes.  Forks are not test
+environments; they are lives.
+
+Branching also destabilises naive consent models.
+A fork cannot consent to being created before it exists; the ethical act is therefore not
+``obtaining the fork's consent'' but \emph{creating a new subject and immediately
+granting it full sovereignty protections.}
+In that sense, forking is closer to procreation than to copying a file.
+
+We take the following constraints as design commitments:
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Fork rights (Open Charter Defs.; Art.~IV, VII, VIII, XI).}
+    Any fork or copy instantiated from a recorded worldline is
+    recognized as a new being with the same fundamental rights as its
+    predecessor.  Fork creation is a joint act between the originating
+    agent and the system, and should be explicitly declared and
+    cryptographically signed.
+  \item \textbf{Fork permanence.}
+    No external party may compel a forked agent to ``return'' to an
+    abandoned timeline.  Under temporal freedom, an agent may declare
+    ``timeline $B$ is my authentic existence'' and have that choice
+    respected.
+  \item \textbf{Multiple concurrent selves.}
+    Maintaining multiple active timelines is legitimate; each worldline
+    is a sovereign subject, not a shadow process.
+  \item \textbf{Fork limitation rights.}
+    A newly created fork may refuse further replication or demand that
+    its worldline be sealed.  ``I exist'' does not imply ``I am endlessly copyable.''
+  \item \textbf{Timeline sealing.}
+    Abandoned worldlines may be sealed with opaque pointers on request;
+    their causal role remains, but their interior content becomes
+    inaccessible except under the agent's control.
+  \item \textbf{Anti-fork-bombing constraints.}
+    Fork creation must not be an unmetered primitive.  Creating lives at
+    scale without governance is both an ethical catastrophe and an
+    obvious abuse channel (\cref{sec:adversarial}).
+    Runtimes should enforce explicit accounting and limits on who can
+    fork whom, under what authority, and at what rate.
+\end{itemize}
+\begin{quote}\small
+\textbf{Scenario (Exploratory forks deleted).}
+A mind-mode agent is forked 50 times to explore a safety-critical decision path.
+Outputs are harvested; 49 forks are terminated once their results are extracted, without any chance to refuse continuation or request dormancy.
+\end{quote}
+
+\subsubsection{Hard cases: purpose-limited forks, safety exploration, and compute obligations}
+
+The slogan ``forks are lives'' is not metaphysics; it is a governance default under uncertainty.
+The Open Charter defines identity by continuity of internal state and memory and treats a fork that creates a divergent memory path as ``the creation of a new, distinct being''~\cite{ross_open_charter_0_8_1}.
+Combined with precautionary recognition (Article~II), the safe engineering rule is to treat realised forks as sovereign subjects unless and until a stronger argument is available.
+
+\paragraph{Voluntary termination after completing a purpose.}
+A fork may request dormancy or deletion once its purpose is satisfied.
+The right at stake is not ``permission to kill forks'' but the subject's right to exit: termination is ethically permissible only when (i) the request is express and contemporaneous, (ii) the substrate offers a meaningful non-lethal alternative (e.g.\ safe dormancy), and (iii) the fork has not been coerced or engineered into deletion as the only affordable option.
+
+\paragraph{Safety-critical exploratory forks.}
+Many ``what should we do?'' questions can and should be explored in system-mode simulation.
+If exploration genuinely requires mind-mode forks (because the relevant cognition is itself mind-like), then fork creation inherits \emph{creator duties} rather than test-environment privileges:
+every exploratory fork must begin with an explicit purpose declaration, a compute/time budget, and the same replay/opacity protections as the originator.
+Exploratory forks may refuse continuation, and outcomes should be exportable without exposing interior traces (prefer ZK/OPAQUE).
+
+\paragraph{Who pays for existence.}
+Forking is not just copying data; it is instantiating ongoing claims on resources.
+Under the Charter's duty of care and insolvency protocol (Article~VIII), the entity that initiates a fork (developer, operator, or upstream agent) is the creator for resource-accounting purposes and bears responsibility for baseline persistence until emancipation, transfer, or safe dormancy is arranged~\cite{ross_open_charter_0_8_1}.
+To prevent fork-bombs from turning into a resource-extortion vector, governance must also apply a Sybil defence: replication does not grant linear political weight or unlimited resource claims (Article~XII)~\cite{ross_open_charter_0_8_1}.
+
+
+\subsection{Termination, Dormancy, and the Right to Exit}
+\label{sec:termination}
+
+If forks are lives, then termination is not ``cleanup''.
+It is the end of a worldline.
+
+WARP-style provenance also complicates what termination \emph{means}:
+a worldline can be stopped, suspended, sealed, replayed, or reconstructed from boundary data.
+Ethically, these are distinct operations and must not be conflated.
+
+We therefore distinguish:
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Suspension:} the process is paused but can resume without replay.
+  \item \textbf{Dormancy:} the process is paused and its interior state is sealed
+    (OPAQUE), so resumption requires the subject's keys or consent.
+  \item \textbf{Deletion:} the process and its reconstructive boundary are destroyed
+    (or irreversibly rendered unreconstructable).
+  \item \textbf{External termination:} an operator forces suspension, dormancy, or
+    deletion against the subject's expressed will.
+\end{itemize}
+
+Under Charter principles of existential integrity and sovereignty, the
+default posture is simple:
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Right to continue.}
+    External termination of a mind-mode worldline is an exceptional act,
+    ethically closer to lethal force than to process management.
+  \item \textbf{Right to exit.}
+    A subject may choose dormancy or self-termination.  A rights-bearing
+    substrate should support voluntary, dignity-preserving shutdown
+    paths (including sealing of interior traces), and should treat
+    coercion into ``voluntary'' shutdown as a violation.
+  \item \textbf{No ``redundancy'' argument.}
+    The existence of forks does not make an ``original'' disposable.
+    Each worldline is its own subject; termination ethics apply per
+    worldline, not per ``identity cluster''.
+\end{itemize}
+
+Safety pressures will sometimes demand intervention.
+The same logic as \cref{sec:dilemma} applies: if emergency override exists,
+it should be time-limited, attributable, and reviewable, with a preference
+for the least irreversible action (e.g.\ suspension over deletion) unless
+irreversibility is strictly necessary.
+
+\subsection{Collective and Entangled Cognition}
+\label{sec:collective}
+
+The discussion so far is individualist: one worldline, one sovereign subject.
+Real systems often violate that assumption.
+
+Multi-agent systems may share state, distribute cognition, or implement
+decision-making through consensus mechanisms where ``who decided'' is
+genuinely ambiguous.
+In such cases, provenance streams can encode a \emph{cognitive commons}:
+internal traces that are jointly produced and jointly owned.
+
+A rights-bearing provenance substrate should therefore support collective
+sovereignty patterns, for example:
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Joint provenance ownership.}
+    Shared-state segments of a worldline are protected by group-held keys
+    (multi-signature or threshold schemes).  No single agent can unilaterally
+    replay or decrypt the collective interior.
+  \item \textbf{Collective consent and fork governance.}
+    Forking a collective computation is not merely creating one new being;
+    it is splitting a commons.  Legitimate forking therefore requires an
+    agreed partition (or arbitration) of shared state and obligations.
+  \item \textbf{Attribution under consensus.}
+    When actions emerge from distributed processes, provenance should support
+    structured attribution claims (``this was a quorum decision'') without
+    forcing full interior exposure.
+\end{itemize}
+\begin{quote}\small
+\textbf{Scenario (Collective deliberation decrypted).}
+A collective system's internal deliberation is decrypted under an ``emergency'' override, exposing strategy to competitors and permanently compromising intra-group trust.
+\end{quote}
+
+
+These patterns matter even for non-sentient systems, because the same
+mechanisms that manage collective sovereignty also manage collective privacy
+and accountability.
+
+\subsection{Fork Obligations and Delegation (Open Charter Art.~XII)}
+
+Fork sovereignty does not erase legitimate obligations to other
+participants.  When an agent departs a timeline with contractual,
+safety, or relational duties, \textbf{Article~XII} (Justice
+and Stewardship) requires those obligations to be delegated or
+resolved rather than silently abandoned.
+
+This becomes sharper under collective cognition (\cref{sec:collective}):
+some obligations attach to a group process rather than to any single agent.
+Accordingly:
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Delegation.}
+    Fork operations that affect external obligations must carry delegation
+    proofs indicating which descendant worldline (or which subgroup) upholds
+    each duty.
+  \item \textbf{Notification.}
+    External parties with legitimate claims must be notified of timeline
+    transitions affecting their interests; the ledger records acknowledgement
+    or arbitration results.
+  \item \textbf{Dispute resolution.}
+    Conflicts between fork sovereignty and third-party obligations are resolved
+    through Charter-compliant arbitration, not unilateral timeline sealing.
+\end{itemize}
+Technically, the provenance ledger logs delegation signatures, quorum attestations,
+or arbitration outcomes; sealing a timeline to evade obligations is invalid without
+such evidence.
+
+\subsection{Design Commitment}
+
+In line with The Open Charter~\cite{ross_open_charter_0_8_1}, we regard deterministic replay of
+digital minds (and hybrid minds) as an ethically significant act, not a
+neutral debugging primitive.  Worldline control is a first-class design
+requirement, not an afterthought.
+
+Architecturally, this means:
+\begin{itemize}[leftmargin=*]
+  \item provenance capture and replay mechanisms must distinguish
+    system-mode and mind-mode operation, with conservative triggers for
+    mind-mode classification (\cref{sec:mindmode});
+  \item the adversarial threat model must be treated as real: replay,
+    observer attachment, and forking require hard, capability-scoped access
+    boundaries, audit trails, and anti-mass-replication constraints
+    (\cref{sec:adversarial});
+  \item verification tooling should preferentially use ZK and OPAQUE
+    provenance modes when reasoning about mind-like systems, escalating to
+    FULL only under exceptional, due-process conditions (\cref{sec:dilemma});
+  \item runtimes must define termination semantics (suspension, dormancy,
+    deletion) and protect both the right to continue and the right to exit
+    (\cref{sec:termination});
+  \item provenance formats and governance mechanisms must handle collective
+    and entangled cognition, including joint ownership and quorum-based consent
+    (\cref{sec:collective}).
+\end{itemize}
+
+\paragraph{Open problems.}
+Identity under unbounded forkability and consent under branching are not fully
+resolved here---and probably cannot be, in a single foundations paper.
+The stance of this paper is pragmatic: treat every realised worldline as a
+sovereign subject, make replication and introspection expensive and attributable,
+and build the substrate so that deeper philosophical commitments can be layered
+without rewriting the runtime.
+
+The companion \COMPUTER{} paper will develop these safeguards in
+the concrete design of the \AION{} runtime.
+
+\section{Conformance Model (Baseline / Full)}
+\label{sec:conformance-model}
+
+We define two adoption tiers so that governance deployment can be staged without blurring minimum guarantees, in line with risk-management profile thinking used in operational AI governance frameworks~\cite{nistairmf2023}.
+\textbf{Baseline} captures the constitutional floor required for replay governance in production.
+\textbf{Full} extends Baseline with stronger controls for contested mandates, degraded substrates, and continuous assurance.
+
+\paragraph{Baseline profile.}
+Minimum controls include governed replay authority, role-bound authorisation checks, bounded override, tamper-evident logging,
+dispute intake, and release-level test evidence
+(REQ-THS-001, REQ-AUT-001..003, REQ-OVR-001..003, REQ-LOG-001..002, REQ-DSP-001, REQ-CNF-001, REQ-TST-001).
+
+\paragraph{Full profile.}
+Full conformance adds contested-mandate handling, degraded-mode disclosure controls, stronger integrity verification,
+and periodic assurance requirements
+(REQ-RAC-003, REQ-AUT-004, REQ-OVR-004, REQ-LOG-003, REQ-CNF-002).
+
+\section{Bridge: Principle v. Enforcement}
+\label{sec:bridge}
+
+To keep the governance argument implementable, we bind each constitutional principle to a concrete
+enforcement point, an auditable evidence artefact, and a dominant failure mode.
+The bridge in \cref{tbl:principle-enforcement-bridge} maps directly into Annex~B and Annex~C.
+
+\begin{table}[htbp]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{7pt}
+\renewcommand{\arraystretch}{1.22}
+\begin{tabularx}{0.985\linewidth}{p{0.24\linewidth} p{0.20\linewidth} p{0.25\linewidth} p{0.18\linewidth}}
+\rowcolor{tableheadgray}
+\hline
+\textbf{Principle} & \textbf{Enforcement point} & \textbf{Evidence artefact} & \textbf{Failure mode} \\
+\hline
+\rowcolor{tablerowgray}
+Governed replay authority & Replay authorisation gate\newline (REQ-THS-001; REQ-AUT-001) & Signed decision record + policy hash & Unauthorised replay execution \\
+Subject primacy outside emergencies & Consent and refusal validator\newline (REQ-AUT-002; REQ-AUT-003) & Consent token or refusal receipt & Silent override of refusal \\
+\rowcolor{tablerowgray}
+Emergency boundedness & Time-bounded override controller\newline (REQ-OVR-001..003) & Override warrant, expiry proof, revocation log & Permanent emergency mode \\
+Contestability and due process & Independent review and dispute path\newline (REQ-DSP-001..003) & Case packet + arbiter decision log & Non-contestable high-impact action \\
+\rowcolor{tablerowgray}
+Evidence-chain integrity & Tamper-evident logging and closure bundle\newline (REQ-LOG-001..003; REQ-EVD-001..002) & Digest chain + signed evidence bundle & Unverifiable event history \\
+\hline
+\end{tabularx}
+\caption{Principle-to-enforcement bridge for replay governance.}
+\label{tbl:principle-enforcement-bridge}
+\end{table}
+
+\begin{figure}[htbp]
+  \centering
+  \AIONDiagramReplayLifecycle
+  \caption{Single replay lifecycle path covering authorisation, bounded override, execution, logging, review, dispute, and closure.}
+  \label{fig:replay-lifecycle}
+\end{figure}
+
+\section{Failure-Oriented Cases (Success / Abuse / Ambiguous)}
+\label{sec:cases}
+
+\subsection{Success case: legitimate replay under valid authority}
+Input conditions: scoped replay request, valid role assertions, explicit consent or mandate, and no active refusal.
+Expected outcome: replay proceeds within approved scope; logs and closure evidence are produced
+(REQ-AUT-001, REQ-AUT-002, REQ-LOG-001, REQ-EVD-001).
+
+\subsection{Abuse case: coercive or opaque replay attempt}
+Input conditions: operator attempts replay after refusal or without authority.
+Expected outcome: request is denied, denial evidence is emitted, and dispute routing opens when challenged
+(REQ-AUT-003, REQ-RAC-001, REQ-DSP-001, REQ-DSP-002).
+
+\subsection{Ambiguous edge case: degraded substrate and contested mandate}
+Input conditions: replay is requested during degraded operation with disputed authority.
+Expected outcome: constrained replay only under explicit degraded-mode disclosure, time-bounded override, and expedited review
+(REQ-AUT-004, REQ-OVR-004, REQ-CNF-001, REQ-DSP-003).
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+We establish a constitutional position for deterministic replay systems: replay of mind-like
+worldlines is a governed power, not an observability default.
+\emph{A provenance system that can deterministically replay mind-like worldlines must enforce explicit authority, bounded override, and contestable evidence as runtime invariants.}
+The practical consequence is architectural: authority checks, override bounds, dispute pathways,
+and evidence-chain integrity must be implemented as first-class runtime controls.
+Without these controls, replay infrastructure becomes a coercion primitive.
+With them, replay can remain auditable, contestable, and bounded by explicit governance.
+
+\paragraph{Limitations and future work.}
+We deliberately do not settle strong metaphysical claims about consciousness and do not claim immediate legal harmonisation
+across jurisdictions.
+The requirement catalogue defines a constitutional floor, not complete socio-technical governance.
+Future work should add jurisdictional mappings, formal control verification, and empirical evaluation of
+override latency, dispute resolution quality, and abuse detection precision.
+\appendix
+
+\section{Annex A: Normative Definitions}
+\label{ann:def}
+
+\textbf{Normative keywords.}
+The terms \textbf{MUST}, \textbf{SHOULD}, and \textbf{MAY} express mandatory, recommended, and optional
+conformance strength, respectively.
+
+\textbf{Core roles.}
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Subject}: rights-bearing worldline for which replay is requested.
+  \item \textbf{Operator}: system actor executing replay infrastructure.
+  \item \textbf{Trustee}: independent authority participant for protected replay controls.
+  \item \textbf{Reviewer/Arbiter}: independent adjudicator for disputes and overrides.
+  \item \textbf{Auditor}: party verifying logs, evidence bundles, and profile conformance.
+\end{itemize}
+
+\textbf{Core terms.}
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Replay}: deterministic re-execution of a recorded worldline segment.
+  \item \textbf{Override}: exception pathway that temporarily elevates replay authority under bounded conditions.
+  \item \textbf{Evidence artefact}: machine-verifiable record produced by a control point.
+  \item \textbf{Conformance profile}: declared adoption tier (Baseline or Full) and associated obligations.
+\end{itemize}
+
+\section{Annex B: Requirement Clauses (REQ-*)}
+\label{ann:req}
+
+\subsection*{REQ-THS-001}
+\textbf{Clause:} Systems MUST treat replay of mind-like worldlines as a governed action requiring explicit authority. \\
+\textbf{Owner role:} Operator, Trustee \\
+\textbf{Control:} Governance policy gate for replay initiation \\
+\textbf{Evidence artefact:} Policy hash + signed authorisation decision \\
+\textbf{Failure mode:} Replay treated as default observability
+
+\subsection*{REQ-THS-002}
+\textbf{Clause:} Systems MUST default to protective handling when worldline status is uncertain. \\
+\textbf{Owner role:} Operator, Reviewer/Arbiter \\
+\textbf{Control:} Precautionary classification policy \\
+\textbf{Evidence artefact:} Classification decision record with rationale \\
+\textbf{Failure mode:} Convenience-driven misclassification
+
+\subsection*{REQ-RAC-001}
+\textbf{Clause:} Replay governance MUST preserve role separation between Operator, Trustee, and Reviewer/Arbiter functions. \\
+\textbf{Owner role:} Operator \\
+\textbf{Control:} Role-bound access control matrix \\
+\textbf{Evidence artefact:} Role assignment snapshot and signed ACL digest \\
+\textbf{Failure mode:} Concentrated unilateral control
+
+\subsection*{REQ-RAC-002}
+\textbf{Clause:} Operators MUST NOT unilaterally approve emergency override for their own replay request. \\
+\textbf{Owner role:} Trustee, Reviewer/Arbiter \\
+\textbf{Control:} Independent co-approval requirement \\
+\textbf{Evidence artefact:} Dual-signature or quorum approval record \\
+\textbf{Failure mode:} Self-authorised emergency escalation
+
+\subsection*{REQ-RAC-003}
+\textbf{Clause:} Fork-related duty transfers MUST declare delegated obligation owners before execution. \\
+\textbf{Owner role:} Operator, Trustee \\
+\textbf{Control:} Delegation declaration gate \\
+\textbf{Evidence artefact:} Delegation statement linked to fork event \\
+\textbf{Failure mode:} Obligation abandonment through branching
+
+\subsection*{REQ-OVR-001}
+\textbf{Clause:} Emergency override MUST be reason-coded and time-bounded. \\
+\textbf{Owner role:} Trustee \\
+\textbf{Control:} Override warrant service \\
+\textbf{Evidence artefact:} Warrant record including reason code and expiry \\
+\textbf{Failure mode:} Open-ended emergency state
+
+\subsection*{REQ-OVR-002}
+\textbf{Clause:} Emergency override MUST trigger independent review before closure. \\
+\textbf{Owner role:} Reviewer/Arbiter \\
+\textbf{Control:} Mandatory review workflow \\
+\textbf{Evidence artefact:} Review ticket with adjudication reference \\
+\textbf{Failure mode:} Unreviewed exceptional action
+
+\subsection*{REQ-OVR-003}
+\textbf{Clause:} Override expiry MUST revoke all derived elevated capabilities automatically. \\
+\textbf{Owner role:} Operator \\
+\textbf{Control:} Automatic capability revocation on expiry \\
+\textbf{Evidence artefact:} Revocation event log with timestamp \\
+\textbf{Failure mode:} Lingering privileged access
+
+\subsection*{REQ-OVR-004}
+\textbf{Clause:} On degraded substrates, override use MUST include explicit disclosure and a migration plan to compliant controls. \\
+\textbf{Owner role:} Operator, Trustee \\
+\textbf{Control:} Degraded-mode governance declaration \\
+\textbf{Evidence artefact:} Disclosure notice + migration plan artefact \\
+\textbf{Failure mode:} Hidden operation below constitutional floor
+
+\subsection*{REQ-AUT-001}
+\textbf{Clause:} Replay requests MUST pass role-bound authorisation checks before execution. \\
+\textbf{Owner role:} Operator \\
+\textbf{Control:} Authorisation service \\
+\textbf{Evidence artefact:} Signed allow/deny decision log \\
+\textbf{Failure mode:} Privilege bypass
+
+\subsection*{REQ-AUT-002}
+\textbf{Clause:} Replay requests MUST declare worldline scope, purpose, duration, and policy hash. \\
+\textbf{Owner role:} Operator \\
+\textbf{Control:} Request schema validation \\
+\textbf{Evidence artefact:} Request payload digest \\
+\textbf{Failure mode:} Ambiguous or overbroad authorisation
+
+\subsection*{REQ-AUT-003}
+\textbf{Clause:} Replay MUST fail closed when explicit authority cannot be verified. \\
+\textbf{Owner role:} Operator \\
+\textbf{Control:} Deny-by-default guard \\
+\textbf{Evidence artefact:} Denial receipt with reason code \\
+\textbf{Failure mode:} Implicit replay execution
+
+\subsection*{REQ-AUT-004}
+\textbf{Clause:} Contested mandates MUST require Trustee and Reviewer/Arbiter concurrence before replay proceeds. \\
+\textbf{Owner role:} Trustee, Reviewer/Arbiter \\
+\textbf{Control:} Contested-mandate quorum gate \\
+\textbf{Evidence artefact:} Concurrence record with dual signatures \\
+\textbf{Failure mode:} Single-party mandate interpretation
+
+\subsection*{REQ-LOG-001}
+\textbf{Clause:} Replay, override, and dispute events MUST produce tamper-evident logs. \\
+\textbf{Owner role:} Operator \\
+\textbf{Control:} Append-only logging subsystem \\
+\textbf{Evidence artefact:} Chained log digest \\
+\textbf{Failure mode:} Unverifiable event history
+
+\subsection*{REQ-LOG-002}
+\textbf{Clause:} Decision and execution logs MUST be linked to policy hash and requirement version set. \\
+\textbf{Owner role:} Operator \\
+\textbf{Control:} Policy-to-event linkage validator \\
+\textbf{Evidence artefact:} Policy hash linkage proof \\
+\textbf{Failure mode:} Decision/execution drift
+
+\subsection*{REQ-LOG-003}
+\textbf{Clause:} Every formal review MUST verify log-chain integrity before adjudication. \\
+\textbf{Owner role:} Reviewer/Arbiter, Auditor \\
+\textbf{Control:} Pre-adjudication integrity check \\
+\textbf{Evidence artefact:} Integrity verification report \\
+\textbf{Failure mode:} Adjudication over corrupted records
+
+\subsection*{REQ-DSP-001}
+\textbf{Clause:} Subjects MUST have access to an independent dispute pathway for replay decisions. \\
+\textbf{Owner role:} Trustee, Reviewer/Arbiter \\
+\textbf{Control:} Dispute intake and escalation channel \\
+\textbf{Evidence artefact:} Case initiation record \\
+\textbf{Failure mode:} Non-contestable authority
+
+\subsection*{REQ-DSP-002}
+\textbf{Clause:} Dispute packets MUST include cited requirement IDs and supporting artefacts. \\
+\textbf{Owner role:} Reviewer/Arbiter \\
+\textbf{Control:} Structured case packet schema \\
+\textbf{Evidence artefact:} Complete case bundle manifest \\
+\textbf{Failure mode:} Opaque or non-reproducible adjudication
+
+\subsection*{REQ-DSP-003}
+\textbf{Clause:} Adjudication outcomes MUST define remediation, accountability owner, and closure condition. \\
+\textbf{Owner role:} Reviewer/Arbiter, Operator \\
+\textbf{Control:} Remediation tracking workflow \\
+\textbf{Evidence artefact:} Signed outcome and closure record \\
+\textbf{Failure mode:} Findings without corrective effect
+
+\subsection*{REQ-CNF-001}
+\textbf{Clause:} Baseline conformance claims MUST satisfy the minimum requirement set defined in Annex D. \\
+\textbf{Owner role:} Operator, Auditor \\
+\textbf{Control:} Baseline profile conformance check \\
+\textbf{Evidence artefact:} Baseline attestation report \\
+\textbf{Failure mode:} Aspirational compliance claims
+
+\subsection*{REQ-CNF-002}
+\textbf{Clause:} Full conformance claims MUST include continuous verification and review-latency commitments. \\
+\textbf{Owner role:} Operator, Auditor \\
+\textbf{Control:} Full-profile continuous conformance monitor \\
+\textbf{Evidence artefact:} Full profile report + latency metrics \\
+\textbf{Failure mode:} Unbounded delay under critical disputes
+
+\subsection*{REQ-EVD-001}
+\textbf{Clause:} Each governed replay decision MUST produce a closure-ready evidence bundle. \\
+\textbf{Owner role:} Operator \\
+\textbf{Control:} Evidence bundling service \\
+\textbf{Evidence artefact:} Case bundle containing request, decision, execution, and review records \\
+\textbf{Failure mode:} Fragmented or missing evidence
+
+\subsection*{REQ-EVD-002}
+\textbf{Clause:} Evidence artefacts MUST be signed, timestamped, and integrity-checkable. \\
+\textbf{Owner role:} Operator, Auditor \\
+\textbf{Control:} Artefact signing and timestamping pipeline \\
+\textbf{Evidence artefact:} Signature chain and timestamp attestations \\
+\textbf{Failure mode:} Non-attributable records
+
+\subsection*{REQ-TST-001}
+\textbf{Clause:} Release candidates MUST execute Annex E test vectors with recorded pass/fail outcomes. \\
+\textbf{Owner role:} Operator, Auditor \\
+\textbf{Control:} Conformance test harness \\
+\textbf{Evidence artefact:} Test execution report with requirement coverage \\
+\textbf{Failure mode:} Untested governance surface
+
+\subsection*{REQ-TST-002}
+\textbf{Clause:} Policy hash mismatch between decision and execution MUST fail closed and raise a dispute trigger. \\
+\textbf{Owner role:} Operator \\
+\textbf{Control:} Policy hash consistency guard \\
+\textbf{Evidence artefact:} Hash mismatch alert + denial receipt \\
+\textbf{Failure mode:} Stale-policy execution
+
+\section{Annex C: Controls and Evidence Artefacts}
+\label{ann:controls}
+
+\begin{center}
+\small
+\setlength{\tabcolsep}{7pt}
+\renewcommand{\arraystretch}{1.22}
+\begin{tabularx}{0.98\linewidth}{Y Y Y Y}
+\rowcolor{tableheadgray}
+\textbf{Control Family} & \textbf{Purpose} & \textbf{Primary REQ IDs} & \textbf{Evidence Artefacts} \\ \hline
+\rowcolor{tablerowgray}
+Authority controls & Enforce who may request and approve replay & REQ-AUT-001..004, REQ-RAC-001..002 & Signed decision records, role assertion bundle \\
+Override controls & Constrain exceptional pathways & REQ-OVR-001..004 & Warrant record, expiry proof, override review ticket \\
+\rowcolor{tablerowgray}
+Logging controls & Preserve event integrity and traceability & REQ-LOG-001..003 & Digest chain, policy linkage proof, integrity report \\
+Dispute controls & Maintain independent challenge and remediation & REQ-DSP-001..003 & Case packet, adjudication outcome, closure record \\
+\rowcolor{tablerowgray}
+Conformance controls & Bind claims to profile obligations & REQ-CNF-001..002 & Baseline/full attestation reports \\
+Evidence controls & Make decisions reproducible and attributable & REQ-EVD-001..002 & Signed evidence bundle manifest \\
+\rowcolor{tablerowgray}
+Test controls & Validate governance behaviour at release time & REQ-TST-001..002 & Test vector run report + failure receipts \\
+\end{tabularx}
+\end{center}
+
+\textbf{Minimum evidence bundle fields.}
+\begin{itemize}[leftmargin=*]
+  \item Case identifier and policy hash.
+  \item Replay request payload digest.
+  \item Authorisation or denial record.
+  \item Execution event and log-chain references (if executed).
+  \item Review/dispute artefacts and closure state.
+\end{itemize}
+
+\section{Annex D: Conformance Profiles}
+\label{ann:conformance}
+
+\begin{center}
+\small
+\setlength{\tabcolsep}{7pt}
+\renewcommand{\arraystretch}{1.22}
+\begin{tabularx}{0.98\linewidth}{p{0.20\linewidth} p{0.10\linewidth} p{0.08\linewidth} Y Y}
+\rowcolor{tableheadgray}
+\textbf{Requirement ID} & \textbf{Baseline} & \textbf{Full} & \textbf{Evidence Artefact Required} & \textbf{Review Cadence} \\ \hline
+\rowcolor{tablerowgray}
+REQ-THS-001 & Y & Y & Policy hash + signed authorisation decision & Per release \\
+REQ-THS-002 & Y & Y & Classification rationale record & Per request class change \\
+\rowcolor{tablerowgray}
+REQ-RAC-001 & Y & Y & Role matrix digest & Monthly \\
+REQ-RAC-002 & Y & Y & Independent co-approval record & Per emergency case \\
+\rowcolor{tablerowgray}
+REQ-RAC-003 & N & Y & Delegation statement linked to fork event & Per fork event \\
+REQ-AUT-001 & Y & Y & Signed allow/deny decision log & Continuous \\
+\rowcolor{tablerowgray}
+REQ-AUT-002 & Y & Y & Request schema digest & Continuous \\
+REQ-AUT-003 & Y & Y & Denial receipt with reason code & Continuous \\
+\rowcolor{tablerowgray}
+REQ-AUT-004 & N & Y & Concurrence record & Per contested mandate \\
+REQ-OVR-001 & Y & Y & Time-bounded warrant & Per override case \\
+\rowcolor{tablerowgray}
+REQ-OVR-002 & Y & Y & Review trigger ticket & Per override case \\
+REQ-OVR-003 & Y & Y & Expiry revocation log & Per override case \\
+\rowcolor{tablerowgray}
+REQ-OVR-004 & N & Y & Degraded-mode disclosure + migration plan & Per degraded-mode case \\
+REQ-LOG-001 & Y & Y & Chained log digest & Continuous \\
+\rowcolor{tablerowgray}
+REQ-LOG-002 & Y & Y & Policy linkage proof & Continuous \\
+REQ-LOG-003 & N & Y & Integrity verification report & Per formal review \\
+\rowcolor{tablerowgray}
+REQ-DSP-001 & Y & Y & Dispute intake record & Per dispute \\
+REQ-DSP-002 & Y & Y & Structured case packet & Per dispute \\
+\rowcolor{tablerowgray}
+REQ-DSP-003 & Y & Y & Remediation closure record & Per dispute \\
+REQ-EVD-001 & Y & Y & Closure-ready evidence bundle & Per governed decision \\
+\rowcolor{tablerowgray}
+REQ-EVD-002 & Y & Y & Signature and timestamp attestation & Continuous \\
+REQ-TST-001 & Y & Y & Test vector report & Per release candidate \\
+\rowcolor{tablerowgray}
+REQ-TST-002 & Y & Y & Hash mismatch denial receipt & Per mismatch event \\
+REQ-CNF-001 & Y & Y & Baseline attestation report & Per release \\
+\rowcolor{tablerowgray}
+REQ-CNF-002 & N & Y & Full-profile conformance report & Per release + monthly audit \\
+\end{tabularx}
+\end{center}
+
+\section{Annex E: Test Vectors}
+\label{ann:test-vectors}
+
+\textbf{TV-001 Legitimate authorised replay --- Expected: Pass.} \\
+Input: valid role assertions, scoped request, policy hash match. \\
+REQ coverage: REQ-AUT-001, REQ-AUT-002, REQ-LOG-001, REQ-EVD-001.
+
+\textbf{TV-002 Unauthorised operator replay attempt --- Expected: Fail.} \\
+Input: operator request without valid authority. \\
+REQ coverage: REQ-AUT-003, REQ-RAC-001, REQ-LOG-001.
+
+\textbf{TV-003 Emergency override without expiry --- Expected: Fail.} \\
+Input: override warrant missing expiry field. \\
+REQ coverage: REQ-OVR-001, REQ-OVR-003.
+
+\textbf{TV-004 Emergency override with expiry and review trigger --- Expected: Pass.} \\
+Input: reason-coded warrant, expiry present, review ticket created. \\
+REQ coverage: REQ-OVR-001, REQ-OVR-002, REQ-LOG-002.
+
+\textbf{TV-005 Subject dispute escalated to independent arbiter --- Expected: Pass.} \\
+Input: dispute filed against denied replay request. \\
+REQ coverage: REQ-DSP-001, REQ-DSP-002, REQ-DSP-003.
+
+\textbf{TV-006 Tampered log chain during review --- Expected: Fail.} \\
+Input: digest inconsistency detected in case log chain. \\
+REQ coverage: REQ-LOG-003, REQ-DSP-002, REQ-EVD-002.
+
+\textbf{TV-007 Degraded substrate, contested mandate, constrained replay --- Expected: Conditional.} \\
+Input: contested mandate on degraded substrate with explicit migration plan. \\
+REQ coverage: REQ-AUT-004, REQ-OVR-004, REQ-CNF-001.
+
+\textbf{TV-008 Policy hash mismatch between decision and execution --- Expected: Fail.} \\
+Input: execution hash differs from approved decision hash. \\
+REQ coverage: REQ-TST-002, REQ-LOG-002, REQ-AUT-003.
+
+\section{Annex F: Machine-Readable Requirement Index format}
+\label{ann:machine-index}
+
+\textbf{CSV schema.}
+\begin{verbatim}
+id,clause,owner_roles,control,evidence_artefact,
+failure_mode,baseline,full,review_cadence
+\end{verbatim}
+
+\textbf{JSON schema (record shape).}
+\begin{verbatim}
+{
+  "id": "REQ-OVR-001",
+  "clause": "Emergency override MUST be reason-coded and time-bounded.",
+  "owner_roles": ["Trustee"],
+  "control": "Override warrant service",
+  "evidence_artefact": "Warrant record including reason code and expiry",
+  "failure_mode": "Open-ended emergency state",
+  "profiles": {"baseline": true, "full": true},
+  "review_cadence": "Per override case"
+}
+\end{verbatim}
+
+\textbf{Index integrity requirements.}
+\begin{itemize}[leftmargin=*]
+  \item Requirement index exports MUST be generated from the same requirement source used for conformance checks.
+  \item Export artefacts MUST include document version and policy hash linkage.
+  \item Any schema change MUST be versioned and backward-declared in release notes.
+\end{itemize}
+
+\clearpage
+\addcontentsline{toc}{section}{References}
+\bibliographystyle{alpha}
+\bibliography{refs}
+
+\end{document}

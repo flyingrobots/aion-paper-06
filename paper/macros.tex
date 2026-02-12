@@ -1,0 +1,18 @@
+% Macros for the WARPs paper
+% Shared commands to keep notation consistent across the manuscript.
+\usepackage{tikz} % Needed for \AIONLogo in this macros file
+\usetikzlibrary{positioning,calc,shapes.geometric,fit}
+\newcommand{\AION}{\textrm{AI}\ensuremath{\Omega}\textrm{N}}
+\newcommand{\AIONProjectURL}{\url{https://github.com/flyingrobots/aion}}
+
+% WARP term: small caps in prose, italic in math.
+% Force upright small caps in text to avoid missing scit font shapes.
+\DeclareRobustCommand{\WARP}{\ifmmode\mathit{WARP}\else{\upshape\scshape warp}\fi}
+
+% Provenance interfaces
+\DeclareMathOperator{\In}{In}
+\DeclareMathOperator{\Out}{Out}
+% Replay / reconstruction
+\newcommand{\Replay}{\mathsf{Replay}}
+% Skeleton projection
+\newcommand{\skel}{\mathsf{skel}}
