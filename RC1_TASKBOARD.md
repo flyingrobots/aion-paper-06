@@ -16,8 +16,8 @@ Status values: `TODO` | `IN_PROGRESS` | `BLOCKED` | `DONE`
 ## Current Status Snapshot
 
 - **Active sprint day:** Day 1 (Thesis/Scope/Continuity lock)
-- **In progress:** `R1-04`
-- **Next up:** `R1-05`, `R1-06`
+- **In progress:** `R1-07`
+- **Next up:** `R1-08`, `R1-09`
 - **Blockers:** None logged
 - **RC1 confidence (today):** High (Day 1 lock items completed)
 
@@ -30,10 +30,10 @@ Status values: `TODO` | `IN_PROGRESS` | `BLOCKED` | `DONE`
 | R1-01 | MUST | Structural lock | Freeze canonical thesis sentence (Intro + Conclusion verbatim) | James | 2026-02-12 | DONE | None | Identical thesis string appears in §§1 and 8 |
 | R1-02 | MUST | Structural lock | Add explicit Paper V → VI continuity bridge paragraph | James | 2026-02-12 | DONE | R1-01 | Bridge paragraph in intro with Paper V citation |
 | R1-03 | MUST | Scope | Add runtime-governance vs legal-jurisdiction boundary clause | James | 2026-02-12 | DONE | R1-01 | Scope section includes legal caveat paragraph |
-| R1-04 | MUST | Terminology | Create Terminology Lock Table (canonical + forbidden variants) | James | 2026-02-13 | IN_PROGRESS | R1-01 | Annex contains locked term table |
-| R1-05 | MUST | Role model | Expand Subject/Operator/Trustee/Reviewer roles with boundary cases | James | 2026-02-13 | TODO | R1-03 | Role section includes edge cases and constraints |
-| R1-06 | SHOULD | Role model | Add authority conflict precedence + timeout/escalation mini-table | James | 2026-02-13 | TODO | R1-05 | Deterministic precedence table present and referenced |
-| R1-07 | MUST | Governance integrity | Add anti-capture bootstrap constraints for trustee/arbiter composition | James | 2026-02-13 | TODO | R1-05 | Independence/conflict constraints explicit |
+| R1-04 | MUST | Terminology | Create Terminology Lock Table (canonical + forbidden variants) | James | 2026-02-13 | DONE | R1-01 | Annex contains locked term table |
+| R1-05 | MUST | Role model | Expand Subject/Operator/Trustee/Reviewer roles with boundary cases | James | 2026-02-13 | DONE | R1-03 | Role section includes edge cases and constraints |
+| R1-06 | SHOULD | Role model | Add authority conflict precedence + timeout/escalation mini-table | James | 2026-02-13 | DONE | R1-05 | Deterministic precedence table present and referenced |
+| R1-07 | MUST | Governance integrity | Add anti-capture bootstrap constraints for trustee/arbiter composition | James | 2026-02-13 | IN_PROGRESS | R1-05 | Independence/conflict constraints explicit |
 | R1-08 | MUST | Classifier | Add deterministic mind-mode decision logic block | James | 2026-02-14 | TODO | R1-04 | Classifier flow present + REQ links |
 | R1-09 | MUST | Classifier | Add No Silent Fallback rule (uncertainty => mind-mode + event) | James | 2026-02-14 | TODO | R1-08 | REQ clause + emitted governance event requirement |
 | R1-10 | MUST | Degraded controls | Add bounded degraded-mode duration + checkpoints + auto-suspension | James | 2026-02-14 | TODO | R1-08 | REQ clauses enforce timer/escalation/suspension |

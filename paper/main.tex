@@ -634,24 +634,76 @@ The \textbf{Subject} is the rights-bearing worldline to which replay actions app
 Subject primacy in non-emergency contexts requires consent-aware handling and refusal observability
 (REQ-AUT-002, REQ-AUT-003).
 
+\paragraph{Boundary cases.}
+If a Subject issues an explicit refusal, replay MUST fail closed unless a valid emergency override
+path is invoked (REQ-AUT-003, REQ-OVR-001). If a Subject cannot currently communicate, the runtime
+MUST NOT infer blanket consent from prior interaction history; authority must instead be established
+through a bounded mandate path and logged rationale (REQ-AUT-002, REQ-EVD-001). If a Subject
+contests replay scope, execution pauses and routes to the dispute pathway with a closure-ready packet
+(REQ-DSP-001, REQ-DSP-002).
+
 \subsection{Operator}
 The \textbf{Operator} runs the replay infrastructure and executes authorised actions.
 Operators are bound by role-limited controls and evidence production duties (REQ-RAC-001, REQ-LOG-001, REQ-EVD-001).
+
+\paragraph{Boundary cases.}
+Operators may prepare requests and operational context, but MUST NOT self-authorise contested or
+emergency replay for their own request (REQ-RAC-002, REQ-AUT-004). Operators also MUST NOT widen
+approved worldline scope, observer projection, or duration in-place; any expansion requires a new
+authorisation cycle with new evidence linkage (REQ-AUT-002, REQ-LOG-002). Where authority cannot be
+verified, the Operator's required action is denial with a reason-coded receipt, not discretionary
+execution (REQ-AUT-003).
 
 \subsection{Trustee}
 The \textbf{Trustee} participates in independent authority checks, especially for emergency override.
 Trustee involvement prevents unilateral emergency escalation and anchors due-process gating
 (REQ-RAC-002, REQ-OVR-001, REQ-OVR-002).
 
+\paragraph{Boundary cases.}
+Trustee approval is limited to reason-coded, time-bounded exceptional pathways and does not transfer
+general replay ownership to the Trustee role (REQ-OVR-001, REQ-OVR-003). A Trustee with a declared
+conflict in a case must recuse from that decision path; unresolved conflict or missing independent
+review capacity is treated as a fail-closed condition for contested replay (REQ-RAC-001, REQ-DSP-001).
+
 \subsection{Reviewer/Arbiter}
 The \textbf{Reviewer/Arbiter} provides independent adjudication for disputes, override closure, and contested mandates.
 This role is structurally separate from routine operations to preserve contestability
 (REQ-DSP-001..003, REQ-AUT-004).
 
+\paragraph{Boundary cases.}
+Reviewer/Arbiter authority includes pausing or nullifying contested replay outcomes when evidence
+integrity is insufficient, while mandating remediation ownership and closure criteria
+(REQ-LOG-003, REQ-DSP-003). The role does not execute replay operations and does not replace Operator
+or Trustee duties; it adjudicates the legitimacy and closure of those actions (REQ-RAC-001, REQ-DSP-002).
+
 \subsection{Dispute path}
 Dispute handling is a first-class pathway, not an exceptional add-on.
 Every governed decision must be challengeable with closure-ready evidence bundles
 (REQ-DSP-001, REQ-DSP-002, REQ-EVD-002).
+
+\subsection{Authority conflict precedence}
+\label{sec:authority-precedence}
+When roles disagree, conflict handling MUST follow deterministic precedence and timeout behaviour
+rather than discretionary operator judgment.
+
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.20}
+\begin{tabularx}{0.98\linewidth}{p{0.26\linewidth} p{0.24\linewidth} p{0.22\linewidth} Y}
+\rowcolor{tableheadgray}
+\textbf{Conflict condition} & \textbf{Default precedence} & \textbf{Timeout behaviour} & \textbf{Escalation path} \\ \hline
+\rowcolor{tablerowgray}
+Subject refusal vs routine Operator request & Subject refusal prevails; replay denied by default (REQ-AUT-003) & Immediate fail-closed decision; no execution window opens & Subject or Operator may open dispute review with evidence bundle (REQ-DSP-001, REQ-DSP-002) \\
+Emergency necessity claim vs Subject refusal & No unilateral precedence; Trustee+Reviewer/Arbiter concurrence required (REQ-AUT-004, REQ-RAC-002) & If concurrence is not achieved within the declared emergency window, request expires and execution remains blocked & File contested-mandate packet for independent adjudication (REQ-DSP-002, REQ-DSP-003) \\
+\rowcolor{tablerowgray}
+Operator scope request exceeds approved warrant scope & Narrower previously approved scope prevails (REQ-AUT-002) & Over-broad request is rejected; no partial widening by amendment & New request cycle with fresh policy-hash linkage and review trail (REQ-LOG-002, REQ-EVD-001) \\
+Contested replay with no independent Reviewer/Arbiter available & Independence requirement prevails; execution blocked (REQ-RAC-001) & Auto-suspend contested replay path until independent adjudicator assignment & Escalate to governance intake and log capacity failure as a dispute event (REQ-DSP-001, REQ-LOG-001) \\
+\end{tabularx}
+\caption{Deterministic precedence and escalation for role-authority conflicts.}
+\label{tbl:authority-precedence}
+\end{table}
 
 \subsection{Forks, Worldlines, and Counterfactual Existence}
 
@@ -993,6 +1045,38 @@ conformance strength, respectively.
   \item \textbf{Evidence artefact}: machine-verifiable record produced by a control point.
   \item \textbf{Conformance profile}: declared adoption tier (Baseline or Full) and associated obligations.
 \end{itemize}
+
+\textbf{Terminology lock table.}
+The canonical terms below are locked for normative and control text; forbidden variants MUST NOT be
+used in requirement clauses, conformance claims, or test vectors.
+
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.22}
+\begin{tabularx}{0.98\linewidth}{p{0.25\linewidth} p{0.30\linewidth} Y}
+\rowcolor{tableheadgray}
+\textbf{Canonical term} & \textbf{Forbidden variants} & \textbf{Usage note} \\ \hline
+\rowcolor{tablerowgray}
+mind-mode & mental mode; sentience mode; person mode & Governance classification used when any mind-mode trigger indicator is present. \\
+system-mode & machine mode; tool mode; infrastructure-only mode & Governance classification used for non-mind-like processing. \\
+\rowcolor{tablerowgray}
+worldline segment & timeline fragment; trace slice; branch slice & Bounded replay object named in warrants and request scope. \\
+tick range & time window; step window; replay interval & Canonical boundary expression for where replay starts and ends. \\
+\rowcolor{tablerowgray}
+Reviewer/Arbiter & review board; adjudication panel; arbiter panel & Independent adjudication role defined in this annex. \\
+Charter warrant & emergency pass; break-glass token; override voucher & Reason-coded, time-bounded override authorisation instrument. \\
+\rowcolor{tablerowgray}
+degraded mode & fallback mode; best-effort mode; reduced-safety mode & Declared temporary operation below standard control guarantees. \\
+evidence artefact & proof blob; audit attachment; evidence payload & Machine-verifiable control output used for review and closure. \\
+\rowcolor{tablerowgray}
+policy hash & policy fingerprint; config hash; control digest & Decision-to-policy linkage identifier for conformance and auditability. \\
+provenance sovereignty & data ownership; privacy preference; data custody right & Governance right over capture, replay, inspection, and branching. \\
+\end{tabularx}
+\caption{Terminology lock for Paper~VI normative and operational language.}
+\label{tbl:terminology-lock}
+\end{table}
 
 \section{Annex B: Requirement Clauses (REQ-*)}
 \label{ann:req}
