@@ -15,11 +15,11 @@ Status values: `TODO` | `IN_PROGRESS` | `BLOCKED` | `DONE`
 
 ## Current Status Snapshot
 
-- **Active sprint day:** Day 2 (Role model + authority boundaries)
-- **In progress:** `R1-11`
-- **Next up:** `R1-12`, `R1-13`
+- **Active sprint day:** Day 5 (Conformance declaration + protocol clarity)
+- **In progress:** `R1-16`
+- **Next up:** `R1-17`, `R1-18`
 - **Blockers:** None logged
-- **RC1 confidence (today):** High (role-governance hardening on track)
+- **RC1 confidence (today):** High (traceability and classifier enforcement lock complete)
 
 ---
 
@@ -37,12 +37,12 @@ Status values: `TODO` | `IN_PROGRESS` | `BLOCKED` | `DONE`
 | R1-08 | MUST | Classifier | Add deterministic mind-mode decision logic block | James | 2026-02-14 | DONE | R1-04 | Classifier flow present + REQ links |
 | R1-09 | MUST | Classifier | Add No Silent Fallback rule (uncertainty => mind-mode + event) | James | 2026-02-14 | DONE | R1-08 | REQ clause + emitted governance event requirement |
 | R1-10 | MUST | Degraded controls | Add bounded degraded-mode duration + checkpoints + auto-suspension | James | 2026-02-14 | DONE | R1-08 | REQ clauses enforce timer/escalation/suspension |
-| R1-11 | MUST | Evidence model | Define minimum artefact classes per critical REQ | James | 2026-02-14 | IN_PROGRESS | R1-09 | Annex C table with artifact-class minimum set |
-| R1-12 | MUST | Traceability | Add Body→REQ coverage map table | James | 2026-02-15 | TODO | R1-08,R1-11 | Coverage map includes all operational body claims |
-| R1-13 | MUST | Cases | Expand 3 failure-oriented cases into worked scenarios + artefacts | James | 2026-02-15 | TODO | R1-12 | Each case has control chain + evidence + residual risk |
-| R1-14 | SHOULD | Cases | Insert one early abuse narrative in body (convenience misclassification) | James | 2026-02-15 | TODO | R1-09 | Body includes narrative with REQ prevention chain |
-| R1-15 | MUST | Testing | Add mind-mode classification test vector(s) + no-silent-fallback vector | James | 2026-02-16 | TODO | R1-08,R1-09 | Annex E includes explicit pass/fail REQ mappings |
-| R1-16 | MUST | Adoption | Add one-page conformance declaration template | James | 2026-02-16 | TODO | R1-11 | Template present and cross-referenced in Conformance section |
+| R1-11 | MUST | Evidence model | Define minimum artefact classes per critical REQ | James | 2026-02-14 | DONE | R1-09 | Annex C table with artifact-class minimum set |
+| R1-12 | MUST | Traceability | Add Body→REQ coverage map table | James | 2026-02-15 | DONE | R1-08,R1-11 | Coverage map includes all operational body claims |
+| R1-13 | MUST | Cases | Expand 3 failure-oriented cases into worked scenarios + artefacts | James | 2026-02-15 | DONE | R1-12 | Each case has control chain + evidence + residual risk |
+| R1-14 | SHOULD | Cases | Insert one early abuse narrative in body (convenience misclassification) | James | 2026-02-15 | DONE | R1-09 | Body includes narrative with REQ prevention chain |
+| R1-15 | MUST | Testing | Add mind-mode classification test vector(s) + no-silent-fallback vector | James | 2026-02-16 | DONE | R1-08,R1-09 | Annex E includes explicit pass/fail REQ mappings |
+| R1-16 | MUST | Adoption | Add one-page conformance declaration template | James | 2026-02-16 | IN_PROGRESS | R1-11 | Template present and cross-referenced in Conformance section |
 | R1-17 | SHOULD | Protocol clarity | Add short worked quorum/warrant example (2-of-3 or 3-of-5) | James | 2026-02-16 | TODO | R1-07 | Example included with message flow and evidence outputs |
 | R1-18 | SHOULD | Positioning | Add control-plane architecture figure | James | 2026-02-16 | TODO | R1-12 | Figure inserted and referenced in bridge/operations text |
 | R1-19 | MUST | Scholarship | Expand related work and bibliography coverage (incl. Paper V continuity references) | James | 2026-02-17 | TODO | R1-02 | Related work section + meaningful bib growth |

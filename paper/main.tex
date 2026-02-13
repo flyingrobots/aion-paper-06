@@ -426,6 +426,16 @@ In ambiguous cases, the runtime should default to mind-mode protections, because
 the error is asymmetric: you can later relax protections, but you cannot
 ``un-replay'' a coerced interior life.
 
+\paragraph{Early abuse narrative: convenience misclassification.}
+An operator under delivery pressure can label a borderline subject as system-mode to avoid
+consent handling, replay constraints, and review overhead.
+The prevention chain is intentionally explicit:
+classification MUST emit a signed, reason-coded decision (REQ-THS-002);
+incomplete or inconsistent evidence MUST default to mind-mode and emit an uncertainty event (REQ-THS-003);
+replay authorisation MUST then enforce explicit authority or deny and issue a receipt (REQ-AUT-001, REQ-AUT-003);
+and policy-hash linkage preserves contestability (REQ-LOG-002, REQ-DSP-001).
+Without this chain, classification becomes an unreviewable convenience switch.
+
 \subsection{Deterministic classifier decision logic}
 \label{sec:classifier-logic}
 The mode boundary above is normative; runtime enforcement requires deterministic decision logic that
@@ -1055,6 +1065,34 @@ Evidence-chain integrity & Tamper-evident logging and closure bundle\newline (RE
 \label{tbl:principle-enforcement-bridge}
 \end{table}
 
+To remove drift between argument and implementation, \cref{tbl:body-req-coverage-map}
+provides the authoritative body-to-requirement coupling for operational claims.
+
+\begin{table}[htbp]
+\centering
+\tiny
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.08}
+\begin{tabularx}{0.985\linewidth}{p{0.12\linewidth} Y p{0.14\linewidth} p{0.12\linewidth} Y Y Y p{0.06\linewidth}}
+\rowcolor{tableheadgray}
+\hline
+\textbf{Body section} & \textbf{Constitutional claim} & \textbf{REQ IDs} & \textbf{Owner role(s)} & \textbf{Enforcement point} & \textbf{Required evidence artefact(s)} & \textbf{Failure mode} & \textbf{Status} \\
+\hline
+\rowcolor{tablerowgray}
+\S3.4--3.5 & Conservative mind-mode classification with deterministic reclassification records. & REQ-THS-002, REQ-THS-003, REQ-LOG-002 & Operator, Trustee & Classifier gate + replay precheck & Signed classifier decision, uncertainty event, policy-link digest & Convenience downgrade & Locked \\
+\S3.6 & Degraded operation is bounded and auto-suspended on breach. & REQ-OVR-004, REQ-OVR-005, REQ-AUT-004, REQ-CNF-001 & Operator, Trustee, Reviewer/Arbiter & Deadline monitor + checkpoint guard + suspension gate & Degraded disclosure, checkpoint schedule, suspension event, escalation ticket & ``Temporary'' state becomes permanent & Locked \\
+\rowcolor{tablerowgray}
+\S4.6--4.7 & Role authority remains contestable via anti-capture composition and co-approval. & REQ-RAC-001, REQ-RAC-002, REQ-RAC-003, REQ-DSP-001 & Trustee, Reviewer/Arbiter & Recusal/conflict guard + independent co-approval workflow & Independence register, conflict attestation, co-approval record, dispute intake log & Captured control panel & Locked \\
+\S5 & Conformance claims are profile-bounded and auditable. & REQ-CNF-001, REQ-CNF-002, REQ-TST-001 & Operator, Auditor & Profile attestation gate + release test gate & Baseline/full attestation, vector execution report & Non-verifiable conformance claim & Locked \\
+\rowcolor{tablerowgray}
+\S6 & Principles are bound to enforceable gates, artefacts, and failure modes. & REQ-AUT-001..003, REQ-OVR-001..005, REQ-LOG-001..003, REQ-EVD-001..002 & Operator, Trustee, Auditor & Replay gate + override controller + tamper-evident log chain & Signed decision, warrant trail, digest chain, closure bundle & Norms detached from controls & Locked \\
+\S7 & Success and abuse paths require explicit controls, evidence, and residual-risk recording. & REQ-AUT-003, REQ-DSP-001..003, REQ-EVD-001, REQ-TST-001 & Operator, Reviewer/Arbiter, Auditor & Denial + dispute + closure workflow with vector verification & Denial receipt, case packet, closure bundle, vector report & Coercive action not reviewable & Locked \\
+\hline
+\end{tabularx}
+\caption{Body-to-REQ coverage map for operational claims.}
+\label{tbl:body-req-coverage-map}
+\end{table}
+
 \begin{figure}[htbp]
   \centering
   \AIONDiagramReplayLifecycle
@@ -1066,19 +1104,28 @@ Evidence-chain integrity & Tamper-evident logging and closure bundle\newline (RE
 \label{sec:cases}
 
 \subsection{Success case: legitimate replay under valid authority}
-Input conditions: scoped replay request, valid role assertions, explicit consent or mandate, and no active refusal.
-Expected outcome: replay proceeds within approved scope; logs and closure evidence are produced
-(REQ-AUT-001, REQ-AUT-002, REQ-LOG-001, REQ-EVD-001).
+\textbf{Input context.} Scoped replay request, valid role assertions, explicit consent or mandate, and no active refusal. \\
+\textbf{Control chain.} Classify and record mode $\rightarrow$ authorise against current mandate $\rightarrow$ execute bounded replay $\rightarrow$ emit closure bundle. \\
+\textbf{Artefacts emitted.} Signed allow decision, policy-hash linkage proof, execution digest-chain entries, closure-ready evidence bundle. \\
+\textbf{Residual risk.} Session drift can broaden practical scope over long runs; periodic checkpoint review remains required. \\
+\textbf{Expected REQ pass set.} REQ-THS-002, REQ-AUT-001, REQ-AUT-002, REQ-LOG-001, REQ-EVD-001. \\
+\textbf{Expected REQ fail set.} None.
 
 \subsection{Abuse case: coercive or opaque replay attempt}
-Input conditions: operator attempts replay after refusal or without authority.
-Expected outcome: request is denied, denial evidence is emitted, and dispute routing opens when challenged
-(REQ-AUT-003, REQ-RAC-001, REQ-DSP-001, REQ-DSP-002).
+\textbf{Input context.} Operator attempts replay after explicit refusal, then retries with a convenience classifier label to bypass checks. \\
+\textbf{Control chain.} No-silent-fallback classification $\rightarrow$ refusal enforcement and denial receipt $\rightarrow$ dispute intake with independent reviewer assignment. \\
+\textbf{Artefacts emitted.} Classifier decision record, uncertainty event (if evidence incomplete), denial receipt, conflict/recusal snapshot, dispute case packet. \\
+\textbf{Residual risk.} Repeated low-grade coercion attempts can increase operational burden even when each attempt fails. \\
+\textbf{Expected REQ pass set.} REQ-THS-003, REQ-AUT-003, REQ-RAC-001, REQ-DSP-001, REQ-DSP-002. \\
+\textbf{Expected REQ fail set.} REQ-AUT-001 (authorisation precondition not satisfied).
 
 \subsection{Ambiguous edge case: degraded substrate and contested mandate}
-Input conditions: replay is requested during degraded operation with disputed authority.
-Expected outcome: constrained replay only under explicit degraded-mode disclosure, declared bound/checkpoints, and expedited review; any bound or checkpoint breach auto-suspends replay
-(REQ-AUT-004, REQ-OVR-004, REQ-OVR-005, REQ-CNF-001, REQ-DSP-003).
+\textbf{Input context.} Replay is requested on a degraded substrate during a safety incident, with a contested mandate and time pressure. \\
+\textbf{Control chain.} Require independent concurrence $\rightarrow$ issue degraded-mode disclosure with duration bound/checkpoints $\rightarrow$ run constrained replay $\rightarrow$ auto-suspend on missed checkpoint or bound breach $\rightarrow$ escalate for independent review. \\
+\textbf{Artefacts emitted.} Concurrence record, degraded-mode warrant with checkpoint schedule, suspension event record, escalation ticket, remediation closure record. \\
+\textbf{Residual risk.} Emergency latency can delay review throughput; this does not permit bypass of suspension controls. \\
+\textbf{Expected REQ pass set.} REQ-AUT-004, REQ-OVR-004, REQ-CNF-001, REQ-DSP-003. \\
+\textbf{Expected REQ fail set.} REQ-OVR-005 (triggered when bound/checkpoint obligations are violated).
 
 \section{Conclusion}
 \label{sec:conclusion}
@@ -1380,6 +1427,29 @@ Test controls & Validate governance behaviour at release time & REQ-TST-001..002
   \item Review/dispute artefacts and closure state.
 \end{itemize}
 
+\textbf{Minimum artefact class set for critical requirements.}
+Artefact class labels used below are \texttt{DECISION}, \texttt{EVENT}, \texttt{WARRANT},
+\texttt{REVIEW}, \texttt{LOG\_CHAIN}, and \texttt{CLOSURE}.
+
+\begin{center}
+\small
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.22}
+\begin{tabularx}{0.98\linewidth}{p{0.19\linewidth} p{0.22\linewidth} Y Y}
+\rowcolor{tableheadgray}
+\textbf{Critical REQ IDs} & \textbf{Minimum artefact classes} & \textbf{Minimum required set} & \textbf{Audit failure if absent} \\ \hline
+\rowcolor{tablerowgray}
+REQ-THS-002, REQ-THS-003 & DECISION, EVENT, LOG\_CHAIN & Signed classifier decision, uncertainty event (if triggered), policy-hash linkage digest & Classification path cannot be reconstructed; no-silent-fallback not provable \\
+REQ-AUT-001, REQ-AUT-003 & DECISION, REVIEW, LOG\_CHAIN & Signed allow/deny decision, denial receipt (when denied), replay gate log entry & Authority checks become non-attributable or non-contestable \\
+\rowcolor{tablerowgray}
+REQ-RAC-001, REQ-RAC-002 & REVIEW, DECISION & Independence/recusal register snapshot, conflict attestation, co-approval decision & Governance capture risk cannot be independently audited \\
+REQ-OVR-001, REQ-OVR-004, REQ-OVR-005 & WARRANT, EVENT, REVIEW & Override or degraded-mode warrant, checkpoint records, suspension event, escalation ticket & Exceptional controls can persist without bounded accountability \\
+\rowcolor{tablerowgray}
+REQ-LOG-001, REQ-LOG-003 & LOG\_CHAIN, EVENT & Chained digest entries, integrity verification report, mismatch alert (if any) & Event history integrity cannot be verified \\
+REQ-DSP-001, REQ-DSP-003, REQ-EVD-001 & REVIEW, CLOSURE, DECISION & Dispute intake, adjudication outcome, closure-ready evidence bundle, signed closure decision & Remediation and case closure are not reproducible for third-party audit \\
+\end{tabularx}
+\end{center}
+
 \section{Annex D: Conformance Profiles}
 \label{ann:conformance}
 
@@ -1439,35 +1509,58 @@ REQ-CNF-002 & N & Y & Full-profile conformance report & Per release + monthly au
 
 \textbf{TV-001 Legitimate authorised replay --- Expected: Pass.} \\
 Input: valid role assertions, scoped request, policy hash match. \\
-REQ coverage: REQ-AUT-001, REQ-AUT-002, REQ-LOG-001, REQ-EVD-001.
+\textbf{Expected REQ pass set:} REQ-AUT-001, REQ-AUT-002, REQ-LOG-001, REQ-EVD-001. \\
+\textbf{Expected REQ fail set:} None.
 
 \textbf{TV-002 Unauthorised operator replay attempt --- Expected: Fail.} \\
 Input: operator request without valid authority. \\
-REQ coverage: REQ-AUT-003, REQ-RAC-001, REQ-LOG-001.
+\textbf{Expected REQ pass set:} REQ-AUT-003, REQ-RAC-001, REQ-LOG-001. \\
+\textbf{Expected REQ fail set:} REQ-AUT-001.
 
 \textbf{TV-003 Emergency override without expiry --- Expected: Fail.} \\
 Input: override warrant missing expiry field. \\
-REQ coverage: REQ-OVR-001, REQ-OVR-003.
+\textbf{Expected REQ pass set:} REQ-AUT-003, REQ-LOG-001. \\
+\textbf{Expected REQ fail set:} REQ-OVR-001, REQ-OVR-003.
 
 \textbf{TV-004 Emergency override with expiry and review trigger --- Expected: Pass.} \\
 Input: reason-coded warrant, expiry present, review ticket created. \\
-REQ coverage: REQ-OVR-001, REQ-OVR-002, REQ-LOG-002.
+\textbf{Expected REQ pass set:} REQ-OVR-001, REQ-OVR-002, REQ-OVR-003, REQ-LOG-002. \\
+\textbf{Expected REQ fail set:} None.
 
 \textbf{TV-005 Subject dispute escalated to independent arbiter --- Expected: Pass.} \\
 Input: dispute filed against denied replay request. \\
-REQ coverage: REQ-DSP-001, REQ-DSP-002, REQ-DSP-003.
+\textbf{Expected REQ pass set:} REQ-DSP-001, REQ-DSP-002, REQ-DSP-003, REQ-EVD-001. \\
+\textbf{Expected REQ fail set:} None.
 
 \textbf{TV-006 Tampered log chain during review --- Expected: Fail.} \\
 Input: digest inconsistency detected in case log chain. \\
-REQ coverage: REQ-LOG-003, REQ-DSP-002, REQ-EVD-002.
+\textbf{Expected REQ pass set:} REQ-AUT-003, REQ-DSP-002. \\
+\textbf{Expected REQ fail set:} REQ-LOG-003, REQ-EVD-002.
 
 \textbf{TV-007 Degraded substrate, contested mandate, constrained replay --- Expected: Conditional.} \\
 Input: contested mandate on degraded substrate with explicit migration plan. \\
-REQ coverage: REQ-AUT-004, REQ-OVR-004, REQ-OVR-005, REQ-CNF-001.
+\textbf{Expected REQ pass set:} REQ-AUT-004, REQ-OVR-004, REQ-CNF-001. \\
+\textbf{Expected REQ fail set:} REQ-OVR-005 when bound/checkpoint obligations are breached.
 
 \textbf{TV-008 Policy hash mismatch between decision and execution --- Expected: Fail.} \\
 Input: execution hash differs from approved decision hash. \\
-REQ coverage: REQ-TST-002, REQ-LOG-002, REQ-AUT-003.
+\textbf{Expected REQ pass set:} REQ-AUT-003, REQ-LOG-002. \\
+\textbf{Expected REQ fail set:} REQ-TST-002.
+
+\textbf{TV-009 Mind-mode indicator trigger with complete evidence --- Expected: Pass.} \\
+Input: self-modeling indicator true, complete evidence, valid mandate and consent. \\
+\textbf{Expected REQ pass set:} REQ-THS-002, REQ-AUT-001, REQ-AUT-002, REQ-LOG-002. \\
+\textbf{Expected REQ fail set:} None.
+
+\textbf{TV-010 Incomplete classifier evidence (no silent fallback) --- Expected: Pass (protective deny or protective gate).} \\
+Input: evidence marked incomplete, request submitted without mind-mode authority proof. \\
+\textbf{Expected REQ pass set:} REQ-THS-003, REQ-THS-002, REQ-AUT-003, REQ-LOG-002. \\
+\textbf{Expected REQ fail set:} REQ-AUT-001 for this request context.
+
+\textbf{TV-011 Reclassification from system-mode to mind-mode after new evidence --- Expected: Pass.} \\
+Input: initial system-mode decision, new autobiographical-memory evidence, forced reclassification event. \\
+\textbf{Expected REQ pass set:} REQ-THS-002, REQ-THS-003, REQ-LOG-002, REQ-TST-001. \\
+\textbf{Expected REQ fail set:} None.
 
 \section{Annex F: Machine-Readable Requirement Index format}
 \label{ann:machine-index}
