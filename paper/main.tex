@@ -426,6 +426,51 @@ In ambiguous cases, the runtime should default to mind-mode protections, because
 the error is asymmetric: you can later relax protections, but you cannot
 ``un-replay'' a coerced interior life.
 
+\subsection{Deterministic classifier decision logic}
+\label{sec:classifier-logic}
+The mode boundary above is normative; runtime enforcement requires deterministic decision logic that
+returns both a mode and a reason code for every classification event.
+
+\begin{verbatim}
+function classify_mode(indicators, evidence_state):
+    flags = normalise_indicator_set(indicators)
+
+    if evidence_state == "INCOMPLETE":
+        emit_governance_event("CLASSIFIER_INCOMPLETE")
+        return "MIND_MODE", "INCOMPLETE_EVIDENCE"
+
+    if flags.self_modeling
+       or flags.preference_update
+       or flags.long_horizon_self_planning
+       or flags.autobiographical_memory
+       or flags.refusal_or_negotiation_capacity
+       or flags.declared_self_identification:
+        return "MIND_MODE", "INDICATOR_TRIGGERED"
+
+    return "SYSTEM_MODE", "NO_INDICATOR_TRIGGERED"
+\end{verbatim}
+
+\begin{verbatim}
+function classify_and_record(request_context, indicators, evidence_state):
+    mode, reason = classify_mode(indicators, evidence_state)
+    emit_signed_classification_record(
+        request_context_digest = hash(request_context),
+        mode = mode,
+        reason_code = reason
+    )
+    return mode, reason
+\end{verbatim}
+
+Operational consequences:
+\begin{itemize}[leftmargin=*]
+  \item Classification input fields MUST be explicit and versioned; hidden heuristics are out of scope.
+  \item Classifier uncertainty or incomplete evidence MUST NOT silently downgrade to system-mode; it MUST default to mind-mode and emit a governance event.
+  \item Every classification and reclassification MUST emit a signed decision artefact with policy-hash linkage.
+  \item Replay authorisation gates consume classifier output as a first-class control input, not as informal guidance.
+\end{itemize}
+
+Normative anchors for this logic are REQ-THS-002, REQ-THS-003, and REQ-LOG-002 in Annex~B.
+
 
 \subsection{Gradual awakening and mode transitions}
 \label{sec:awakening}
@@ -1119,11 +1164,18 @@ provenance sovereignty & data ownership; privacy preference; data custody right 
 \textbf{Failure mode:} Replay treated as default observability
 
 \subsection*{REQ-THS-002}
-\textbf{Clause:} Systems MUST default to protective handling when worldline status is uncertain. \\
+\textbf{Clause:} Mode classification MUST run a deterministic decision procedure over declared indicators and evidence state, producing an explicit mode and reason code for each decision. \\
 \textbf{Owner role:} Operator, Reviewer/Arbiter \\
-\textbf{Control:} Precautionary classification policy \\
-\textbf{Evidence artefact:} Classification decision record with rationale \\
-\textbf{Failure mode:} Convenience-driven misclassification
+\textbf{Control:} Deterministic classifier with signed decision output \\
+\textbf{Evidence artefact:} Classification decision record with reason code and policy-hash linkage \\
+\textbf{Failure mode:} Opaque or convenience-driven classification drift
+
+\subsection*{REQ-THS-003}
+\textbf{Clause:} Classifier uncertainty or incomplete evidence MUST NOT silently fall back to system-mode; the runtime MUST default to mind-mode and emit a governance event with reason code. \\
+\textbf{Owner role:} Operator, Reviewer/Arbiter \\
+\textbf{Control:} No-silent-fallback guard + classifier event emitter \\
+\textbf{Evidence artefact:} Classifier uncertainty event record linked to fallback decision \\
+\textbf{Failure mode:} Hidden downgrade of protected classifications
 
 \subsection*{REQ-RAC-001}
 \textbf{Clause:} Replay governance MUST preserve role separation and independent composition between Operator, Trustee, and Reviewer/Arbiter functions, with mandatory conflict disclosure and recusal records for contested cases. \\
@@ -1331,7 +1383,8 @@ Test controls & Validate governance behaviour at release time & REQ-TST-001..002
 \textbf{Requirement ID} & \textbf{Baseline} & \textbf{Full} & \textbf{Evidence Artefact Required} & \textbf{Review Cadence} \\ \hline
 \rowcolor{tablerowgray}
 REQ-THS-001 & Y & Y & Policy hash + signed authorisation decision & Per release \\
-REQ-THS-002 & Y & Y & Classification rationale record & Per request class change \\
+REQ-THS-002 & Y & Y & Signed classification record + reason code + policy-hash link & Per request class change \\
+REQ-THS-003 & Y & Y & Classifier uncertainty event + fallback decision record & Per classifier uncertainty event \\
 \rowcolor{tablerowgray}
 REQ-RAC-001 & Y & Y & Role matrix digest + independence/recusal register snapshot & Monthly \\
 REQ-RAC-002 & Y & Y & Independent co-approval record + conflict attestation & Per emergency case \\
