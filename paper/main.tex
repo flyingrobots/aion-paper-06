@@ -705,6 +705,36 @@ Contested replay with no independent Reviewer/Arbiter available & Independence r
 \label{tbl:authority-precedence}
 \end{table}
 
+\subsection{Bootstrap independence and anti-capture constraints}
+To prevent governance capture, Trustee and Reviewer/Arbiter composition must remain independent from
+single-operator control from bootstrap onward.
+
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Dual-source appointment.}
+  Trustee and Reviewer/Arbiter pools MUST be constituted from at least two independent appointment
+  sources so that one operational organisation cannot unilaterally stack both roles
+  (REQ-RAC-001, REQ-DSP-001).
+  \item \textbf{Role incompatibility.}
+  A principal with active Operator authority in a deployment MUST NOT simultaneously serve as Trustee
+  or Reviewer/Arbiter for that same deployment's contested replay pathway
+  (REQ-RAC-001, REQ-RAC-002).
+  \item \textbf{Conflict disclosure and recusal.}
+  Case-level conflict declarations are mandatory before warrant approval or dispute adjudication.
+  Any undeclared material conflict invalidates the decision path and triggers fresh independent review
+  with new evidence linkage (REQ-RAC-001, REQ-DSP-002, REQ-LOG-002).
+  \item \textbf{Independence-liveness fail-closed rule.}
+  If independent quorum cannot be assembled, contested replay remains suspended; the runtime records a
+  governance-capacity failure event and escalates through the dispute intake channel
+  (REQ-RAC-001, REQ-DSP-001, REQ-LOG-001).
+  \item \textbf{Bootstrap auditability.}
+  Initial role composition, replacement events, conflict disclosures, and recusals MUST be present in
+  tamper-evident governance records suitable for external audit
+  (REQ-EVD-001, REQ-EVD-002, REQ-LOG-001).
+\end{itemize}
+
+These constraints make anti-capture behaviour testable rather than aspirational and keep dispute
+adjudication structurally independent under operational pressure.
+
 \subsection{Forks, Worldlines, and Counterfactual Existence}
 
 Section~\ref{sec:wormholes} shows that, given a boundary $(S_0,P)$, we
@@ -1096,18 +1126,18 @@ provenance sovereignty & data ownership; privacy preference; data custody right 
 \textbf{Failure mode:} Convenience-driven misclassification
 
 \subsection*{REQ-RAC-001}
-\textbf{Clause:} Replay governance MUST preserve role separation between Operator, Trustee, and Reviewer/Arbiter functions. \\
-\textbf{Owner role:} Operator \\
-\textbf{Control:} Role-bound access control matrix \\
-\textbf{Evidence artefact:} Role assignment snapshot and signed ACL digest \\
-\textbf{Failure mode:} Concentrated unilateral control
+\textbf{Clause:} Replay governance MUST preserve role separation and independent composition between Operator, Trustee, and Reviewer/Arbiter functions, with mandatory conflict disclosure and recusal records for contested cases. \\
+\textbf{Owner role:} Operator, Trustee, Reviewer/Arbiter \\
+\textbf{Control:} Role-bound access control matrix + independence roster + conflict-disclosure register \\
+\textbf{Evidence artefact:} Role assignment snapshot, signed ACL digest, appointment-source attestation, and case-level recusal records \\
+\textbf{Failure mode:} Concentrated unilateral control or concealed conflict capture
 
 \subsection*{REQ-RAC-002}
-\textbf{Clause:} Operators MUST NOT unilaterally approve emergency override for their own replay request. \\
+\textbf{Clause:} Operators MUST NOT unilaterally approve emergency override for their own replay request, and emergency concurrence MUST come from independent, non-conflicted Trustee/Reviewer-Arbiter participants. \\
 \textbf{Owner role:} Trustee, Reviewer/Arbiter \\
-\textbf{Control:} Independent co-approval requirement \\
-\textbf{Evidence artefact:} Dual-signature or quorum approval record \\
-\textbf{Failure mode:} Self-authorised emergency escalation
+\textbf{Control:} Independent co-approval requirement + conflict-attestation gate \\
+\textbf{Evidence artefact:} Dual-signature or quorum approval record + per-case conflict attestations \\
+\textbf{Failure mode:} Self-authorised or conflicted emergency escalation
 
 \subsection*{REQ-RAC-003}
 \textbf{Clause:} Fork-related duty transfers MUST declare delegated obligation owners before execution. \\
@@ -1267,7 +1297,7 @@ provenance sovereignty & data ownership; privacy preference; data custody right 
 \rowcolor{tableheadgray}
 \textbf{Control Family} & \textbf{Purpose} & \textbf{Primary REQ IDs} & \textbf{Evidence Artefacts} \\ \hline
 \rowcolor{tablerowgray}
-Authority controls & Enforce who may request and approve replay & REQ-AUT-001..004, REQ-RAC-001..002 & Signed decision records, role assertion bundle \\
+Authority controls & Enforce who may request and approve replay & REQ-AUT-001..004, REQ-RAC-001..002 & Signed decision records, role assertion bundle, conflict/recusal register \\
 Override controls & Constrain exceptional pathways & REQ-OVR-001..004 & Warrant record, expiry proof, override review ticket \\
 \rowcolor{tablerowgray}
 Logging controls & Preserve event integrity and traceability & REQ-LOG-001..003 & Digest chain, policy linkage proof, integrity report \\
@@ -1303,8 +1333,8 @@ Test controls & Validate governance behaviour at release time & REQ-TST-001..002
 REQ-THS-001 & Y & Y & Policy hash + signed authorisation decision & Per release \\
 REQ-THS-002 & Y & Y & Classification rationale record & Per request class change \\
 \rowcolor{tablerowgray}
-REQ-RAC-001 & Y & Y & Role matrix digest & Monthly \\
-REQ-RAC-002 & Y & Y & Independent co-approval record & Per emergency case \\
+REQ-RAC-001 & Y & Y & Role matrix digest + independence/recusal register snapshot & Monthly \\
+REQ-RAC-002 & Y & Y & Independent co-approval record + conflict attestation & Per emergency case \\
 \rowcolor{tablerowgray}
 REQ-RAC-003 & N & Y & Delegation statement linked to fork event & Per fork event \\
 REQ-AUT-001 & Y & Y & Signed allow/deny decision log & Continuous \\
