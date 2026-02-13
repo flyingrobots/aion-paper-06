@@ -386,7 +386,7 @@ The operator silently forks the designer's in-progress cognitive trace 50 times 
 \label{sec:mindmode}
 
 We explicitly avoid metaphysical claims about consciousness, but we
-still requires an operational distinction:
+still require an operational distinction:
 when should a runtime treat provenance as ordinary infrastructure, and when
 should it treat provenance as an ethically protected interior trace?
 
@@ -405,7 +405,7 @@ A computation should be treated as \textbf{mind-mode} if it exhibits \emph{any}
 of the following (non-exhaustive) features:
 
 \begin{itemize}[leftmargin=*]
-  \item \textbf{Persistent self-modeling:} internal variables that represent ``self''
+  \item \textbf{Persistent self-modelling:} internal variables that represent ``self''
     across time (identity continuity, self-location in a world-model, self-evaluation).
   \item \textbf{Preference formation and update:} stable or slowly-changing value-like
     structures that guide action and can be frustrated.
@@ -630,6 +630,20 @@ A minimal protocol is:
 \end{itemize}
 
 This does not solve governance, but it prevents the most common failure mode: ``the operator had root, so the Charter was optional.''
+
+\paragraph{Worked quorum example (2-of-3).}
+Assume a sealed mind-mode segment requires emergency forensic access after a safety incident.
+The active roles are Operator (O), Trustee (T), and Reviewer/Arbiter (R), with a 2-of-3 threshold so
+no single role can mint access.
+\begin{enumerate}[leftmargin=*]
+  \item O submits a warrant request containing worldline segment ID, necessity claim, observer scope, and expiry.
+  \item T validates boundedness and conflict status; if valid, T signs the request.
+  \item R validates proportionality and dispute-path readiness; if valid, R signs the request.
+  \item On any two valid signatures, the runtime mints a non-transferable capability token scoped only to the approved segment and projection until expiry.
+  \item Every token use appends a signed event to the log chain and opens post-action disclosure when safe.
+\end{enumerate}
+\noindent\textbf{Evidence outputs:} warrant request record, threshold-signature bundle, capability token record, access-use log entries, and disclosure receipt. \\
+\textbf{Normative anchors:} REQ-RAC-002, REQ-OVR-001..003, REQ-LOG-001, REQ-EVD-001.
 
 \paragraph{Who decides?}
 The correct answer is ``not just the developer'' and ``not just the operator.''
@@ -1034,12 +1048,37 @@ Full conformance adds contested-mandate handling, degraded-mode disclosure contr
 and periodic assurance requirements
 (REQ-RAC-003, REQ-AUT-004, REQ-OVR-004, REQ-LOG-003, REQ-CNF-002).
 
+Implementations claiming either profile MUST publish a completed conformance declaration using the
+template in Annex~D (\cref{ann:conformance-declaration-template}), with artefact links that permit
+independent verification.
+
+The control-plane separation in \cref{fig:control-plane-architecture} makes this claim structure explicit:
+governance policy constrains runtime gates, and runtime gates emit evidence required for conformance.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[font=\footnotesize, node distance=7mm]
+  \node[draw, rounded corners, fill=tablerowgray, text width=0.88\textwidth, align=left, inner sep=6pt] (gov)
+  {\textbf{Governance plane} (policy intent): REQ catalogue, role and recusal constraints, consent/warrant rules, conformance profile declarations.};
+  \node[draw, rounded corners, fill=white, text width=0.88\textwidth, align=left, inner sep=6pt, below=of gov] (run)
+  {\textbf{Runtime enforcement plane} (execution gates): mode classifier, replay authorisation gate, override timer/checkpoint controller, suspension trigger, dispute intake routing.};
+  \node[draw, rounded corners, fill=tablerowgray, text width=0.88\textwidth, align=left, inner sep=6pt, below=of run] (evd)
+  {\textbf{Evidence and assurance plane} (audit outputs): signed decisions, warrants, digest-chain entries, case packets, closure bundles, release test reports.};
+  \draw[-{Latex[length=2.2mm,width=1.4mm]}, thick] (gov.south) -- (run.north);
+  \draw[-{Latex[length=2.2mm,width=1.4mm]}, thick] (run.south) -- (evd.north);
+  \draw[-{Latex[length=2.2mm,width=1.4mm]}, thick, bend left=12] (evd.east) to node[right, xshift=2mm] {audit feedback} (gov.east);
+\end{tikzpicture}
+\caption{Control-plane architecture linking governance intent, runtime enforcement, and auditable evidence.}
+\label{fig:control-plane-architecture}
+\end{figure}
+
 \section{Bridge: Principle v. Enforcement}
 \label{sec:bridge}
 
 To keep the governance argument implementable, we bind each constitutional principle to a concrete
 enforcement point, an auditable evidence artefact, and a dominant failure mode.
-The bridge in \cref{tbl:principle-enforcement-bridge} maps directly into Annex~B and Annex~C.
+The bridge in \cref{tbl:principle-enforcement-bridge} maps directly into Annex~B and Annex~C, while
+\cref{fig:control-plane-architecture} shows where these enforcement points sit in the operating stack.
 
 \begin{table}[htbp]
 \centering
@@ -1127,6 +1166,38 @@ provides the authoritative body-to-requirement coupling for operational claims.
 \textbf{Expected REQ pass set.} REQ-AUT-004, REQ-OVR-004, REQ-CNF-001, REQ-DSP-003. \\
 \textbf{Expected REQ fail set.} REQ-OVR-005 (triggered when bound/checkpoint obligations are violated).
 
+\section{Related Work and Positioning}
+\label{sec:related-work}
+
+Paper~VI sits immediately downstream of Paper~V's worldline dynamics: Paper~V establishes the
+representational and probabilistic substrate for admissible worldlines, while this paper binds replay
+power to enforceable runtime governance controls~\cite{ross_paper_v}.
+
+\subsection{AI governance and rights frameworks}
+Contemporary governance frameworks foreground accountability, risk controls, and human-rights-oriented
+deployment constraints, including NIST AI RMF 1.0, OECD principles, UNESCO's recommendation, and the EU AI
+Act's risk-tiered obligations~\cite{nistairmf2023,oecd_ai_2019,unesco_ai_2021,eu_ai_act_2024}.
+High-level ethics guidance has also argued for translating values into operational institutional
+mechanisms rather than abstract principles alone~\cite{floridi2018}.
+This paper's contribution is to turn that demand into runtime-level invariants for deterministic replay:
+authority gating, bounded override, dispute pathways, and mandatory evidence outputs.
+
+\subsection{Provenance and accountability systems}
+Prior provenance research establishes why/where semantics, accountability linkages, and interoperable
+provenance models~\cite{buneman2001,moreau2011,w3cprov2013,simmhan2005,weitzner2008}.
+These works are foundational for traceability but are largely substrate-neutral regarding interior-life
+exposure.
+Paper~VI extends the provenance conversation by treating replay of mind-like traces as a governed power
+and by coupling provenance mechanisms to explicit authority and contestability requirements.
+
+\subsection{Safety-security control models}
+Security engineering has long emphasised least privilege, confinement, and fail-safe defaults as design
+preconditions rather than operational afterthoughts~\cite{saltzer1975,lampson1973}.
+Tamper-evident logging and structured forensic artefacts similarly ground post-incident accountability
+claims~\cite{schneierkelsey1999,merkle1989}.
+Paper~VI adapts these principles to replay governance: precautionary classifier behaviour, no-silent-fallback
+controls, bounded emergency capability minting, and closure-ready evidence bundles.
+
 \section{Conclusion}
 \label{sec:conclusion}
 
@@ -1138,12 +1209,48 @@ and evidence-chain integrity must be implemented as first-class runtime controls
 Without these controls, replay infrastructure becomes a coercion primitive.
 With them, replay can remain auditable, contestable, and bounded by explicit governance.
 
+\paragraph{Strongest objection and response.}
+The strongest objection is practical: precautionary mind-mode treatment and independent authority checks
+may over-classify borderline systems, increase latency in urgent incidents, and reduce engineering
+throughput.
+Our response is architectural, not rhetorical.
+Baseline and Full profiles provide staged adoption;
+emergency pathways remain available but are bounded, attributable, and review-triggering;
+and the conformance template prevents unverifiable ``trust us'' claims.
+The core tradeoff is explicit: some convenience is intentionally sacrificed to prevent replay power from
+degrading into an unreviewable coercion channel.
+
+\paragraph{Operational backlog handoff to Paper VII (OP-*).}
+\begin{itemize}[leftmargin=*]
+  \item \textbf{OP-001}: Jurisdictional mapping from REQ catalogue to deployment-region legal controls.
+  \item \textbf{OP-002}: Machine-checkable conformance declaration exchange format and verifier profile.
+  \item \textbf{OP-003}: Independent-review latency targets and failure budgets under emergency load.
+  \item \textbf{OP-004}: Classifier calibration dataset and false-positive/false-negative governance analysis.
+  \item \textbf{OP-005}: Reference harness for Annex~E vectors with sample evidence bundle outputs.
+  \item \textbf{OP-006}: Control-plane cost envelope (performance, staffing, and audit overhead).
+\end{itemize}
+
 \paragraph{Limitations and future work.}
 We deliberately do not settle strong metaphysical claims about consciousness and do not claim immediate legal harmonisation
 across jurisdictions.
 The requirement catalogue defines a constitutional floor, not complete socio-technical governance.
 Future work should add jurisdictional mappings, formal control verification, and empirical evaluation of
 override latency, dispute resolution quality, and abuse detection precision.
+
+\section{RC1 Freeze Declaration}
+\label{sec:rc1-freeze}
+
+This release candidate locks RC1 scope.
+Included items are: canonical thesis and scope lock, role and anti-capture controls, deterministic classifier
+logic with no-silent-fallback, bounded degraded-mode controls, body-to-REQ traceability, worked failure cases,
+minimum artefact classes, conformance declaration template, expanded test vectors, related-work positioning,
+and conclusion objection handling with OP-ID handoff.
+
+Deferred items are explicitly parked to RC2 and are non-blocking for RC1 acceptance:
+observer class taxonomy (P2-01), Replay Impact Label (P2-02), sovereignty budget controls (P2-03),
+warrant transparency digest (P2-04), fork governance addendum (P2-05), policy DSL snippets (P2-06),
+reference vector harness (P2-07), and anti-pattern/red-team micro-appendix (P2-08).
+
 \appendix
 
 \section{Annex A: Normative Definitions}
@@ -1504,6 +1611,62 @@ REQ-CNF-002 & N & Y & Full-profile conformance report & Per release + monthly au
 \end{tabularx}
 \end{center}
 
+\subsection{One-page conformance declaration template}
+\label{ann:conformance-declaration-template}
+
+This declaration is mandatory for any public Baseline or Full conformance claim.
+All referenced artefacts MUST be independently retrievable.
+
+\textbf{System name:} \rule{0.62\linewidth}{0.4pt} \\
+\textbf{Version/build:} \rule{0.62\linewidth}{0.4pt} \\
+\textbf{Deployment environment:} \rule{0.52\linewidth}{0.4pt} \\
+\textbf{Declaration date:} \rule{0.40\linewidth}{0.4pt} \\
+\textbf{Declaring authority (name/role):} \rule{0.44\linewidth}{0.4pt}
+
+\vspace{0.5em}
+\textbf{Profile claim:} $\square$ Baseline \hspace{1.2em} $\square$ Full
+
+\begin{center}
+\small
+\setlength{\tabcolsep}{7pt}
+\renewcommand{\arraystretch}{1.18}
+\begin{tabularx}{0.98\linewidth}{Y p{0.10\linewidth} p{0.12\linewidth} p{0.10\linewidth} Y}
+\rowcolor{tableheadgray}
+\textbf{Requirement set} & \textbf{Claimed} & \textbf{Implemented} & \textbf{Evidenced} & \textbf{Evidence location} \\ \hline
+\rowcolor{tablerowgray}
+REQ-THS-* & $\square$ & $\square$ & $\square$ & \\
+REQ-RAC-* & $\square$ & $\square$ & $\square$ & \\
+\rowcolor{tablerowgray}
+REQ-AUT-* & $\square$ & $\square$ & $\square$ & \\
+REQ-OVR-* & $\square$ & $\square$ & $\square$ & \\
+\rowcolor{tablerowgray}
+REQ-LOG-* & $\square$ & $\square$ & $\square$ & \\
+REQ-DSP-* & $\square$ & $\square$ & $\square$ & \\
+\rowcolor{tablerowgray}
+REQ-EVD-* & $\square$ & $\square$ & $\square$ & \\
+REQ-CNF-* & $\square$ & $\square$ & $\square$ & \\
+\rowcolor{tablerowgray}
+REQ-TST-* & $\square$ & $\square$ & $\square$ & \\
+\end{tabularx}
+\end{center}
+
+\textbf{Mandatory assertions.}
+\begin{itemize}[leftmargin=*]
+  \item $\square$ No-silent-fallback classifier behaviour is enforced for incomplete or inconsistent evidence.
+  \item $\square$ Degraded-mode maximum duration, checkpoints, and auto-suspension controls are configured.
+  \item $\square$ Independent dispute and review pathways are available and testable.
+  \item $\square$ Minimum artefact class set is complete for all critical requirement groups.
+\end{itemize}
+
+\textbf{Exceptions / residual risks:} \\
+\rule{\linewidth}{0.4pt} \\
+\rule{\linewidth}{0.4pt}
+
+\vspace{0.5em}
+\textbf{Operator signatory:} \rule{0.48\linewidth}{0.4pt} \hfill \textbf{Date:} \rule{0.18\linewidth}{0.4pt} \\
+\textbf{Trustee signatory:} \rule{0.48\linewidth}{0.4pt} \hfill \textbf{Date:} \rule{0.18\linewidth}{0.4pt} \\
+\textbf{Auditor acknowledgement:} \rule{0.42\linewidth}{0.4pt} \hfill \textbf{Date:} \rule{0.18\linewidth}{0.4pt}
+
 \section{Annex E: Test Vectors}
 \label{ann:test-vectors}
 
@@ -1548,7 +1711,7 @@ Input: execution hash differs from approved decision hash. \\
 \textbf{Expected REQ fail set:} REQ-TST-002.
 
 \textbf{TV-009 Mind-mode indicator trigger with complete evidence --- Expected: Pass.} \\
-Input: self-modeling indicator true, complete evidence, valid mandate and consent. \\
+Input: self-modelling indicator true, complete evidence, valid mandate and consent. \\
 \textbf{Expected REQ pass set:} REQ-THS-002, REQ-AUT-001, REQ-AUT-002, REQ-LOG-002. \\
 \textbf{Expected REQ fail set:} None.
 

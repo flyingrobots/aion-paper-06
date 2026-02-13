@@ -15,11 +15,11 @@ Status values: `TODO` | `IN_PROGRESS` | `BLOCKED` | `DONE`
 
 ## Current Status Snapshot
 
-- **Active sprint day:** Day 5 (Conformance declaration + protocol clarity)
-- **In progress:** `R1-16`
-- **Next up:** `R1-17`, `R1-18`
+- **Active sprint day:** Day 7 (QA + RC1 freeze)
+- **In progress:** None
+- **Next up:** RC1 complete
 - **Blockers:** None logged
-- **RC1 confidence (today):** High (traceability and classifier enforcement lock complete)
+- **RC1 confidence (today):** Locked (all RC1 tasks complete)
 
 ---
 
@@ -42,14 +42,14 @@ Status values: `TODO` | `IN_PROGRESS` | `BLOCKED` | `DONE`
 | R1-13 | MUST | Cases | Expand 3 failure-oriented cases into worked scenarios + artefacts | James | 2026-02-15 | DONE | R1-12 | Each case has control chain + evidence + residual risk |
 | R1-14 | SHOULD | Cases | Insert one early abuse narrative in body (convenience misclassification) | James | 2026-02-15 | DONE | R1-09 | Body includes narrative with REQ prevention chain |
 | R1-15 | MUST | Testing | Add mind-mode classification test vector(s) + no-silent-fallback vector | James | 2026-02-16 | DONE | R1-08,R1-09 | Annex E includes explicit pass/fail REQ mappings |
-| R1-16 | MUST | Adoption | Add one-page conformance declaration template | James | 2026-02-16 | IN_PROGRESS | R1-11 | Template present and cross-referenced in Conformance section |
-| R1-17 | SHOULD | Protocol clarity | Add short worked quorum/warrant example (2-of-3 or 3-of-5) | James | 2026-02-16 | TODO | R1-07 | Example included with message flow and evidence outputs |
-| R1-18 | SHOULD | Positioning | Add control-plane architecture figure | James | 2026-02-16 | TODO | R1-12 | Figure inserted and referenced in bridge/operations text |
-| R1-19 | MUST | Scholarship | Expand related work and bibliography coverage (incl. Paper V continuity references) | James | 2026-02-17 | TODO | R1-02 | Related work section + meaningful bib growth |
-| R1-20 | SHOULD | Positioning hygiene | Structure related work into 3 buckets (governance / provenance / safety-security) | James | 2026-02-17 | TODO | R1-19 | 3-bucket structure visible in prose |
-| R1-21 | MUST | Conclusion | Expand conclusion with strongest objection + response + OP-ID backlog | James | 2026-02-17 | TODO | R1-13,R1-19 | Conclusion includes objection handling + OP-IDs |
-| R1-22 | MUST | QA | Full consistency pass: terminology, REQ refs, UK English, unresolved refs | James | 2026-02-18 | TODO | R1-04..R1-21 | Build clean enough for RC1 review; no structural ref breaks |
-| R1-23 | MUST | Release | RC1 freeze and declaration of included/deferred items | James | 2026-02-18 | TODO | R1-22 | RC1 scope locked with RC2 backlog explicitly parked |
+| R1-16 | MUST | Adoption | Add one-page conformance declaration template | James | 2026-02-16 | DONE | R1-11 | Template present and cross-referenced in Conformance section |
+| R1-17 | SHOULD | Protocol clarity | Add short worked quorum/warrant example (2-of-3 or 3-of-5) | James | 2026-02-16 | DONE | R1-07 | Example included with message flow and evidence outputs |
+| R1-18 | SHOULD | Positioning | Add control-plane architecture figure | James | 2026-02-16 | DONE | R1-12 | Figure inserted and referenced in bridge/operations text |
+| R1-19 | MUST | Scholarship | Expand related work and bibliography coverage (incl. Paper V continuity references) | James | 2026-02-17 | DONE | R1-02 | Related work section + meaningful bib growth |
+| R1-20 | SHOULD | Positioning hygiene | Structure related work into 3 buckets (governance / provenance / safety-security) | James | 2026-02-17 | DONE | R1-19 | 3-bucket structure visible in prose |
+| R1-21 | MUST | Conclusion | Expand conclusion with strongest objection + response + OP-ID backlog | James | 2026-02-17 | DONE | R1-13,R1-19 | Conclusion includes objection handling + OP-IDs |
+| R1-22 | MUST | QA | Full consistency pass: terminology, REQ refs, UK English, unresolved refs | James | 2026-02-18 | DONE | R1-04..R1-21 | Build clean enough for RC1 review; no structural ref breaks |
+| R1-23 | MUST | Release | RC1 freeze and declaration of included/deferred items | James | 2026-02-18 | DONE | R1-22 | RC1 scope locked with RC2 backlog explicitly parked |
 
 ---
 
