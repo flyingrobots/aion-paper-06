@@ -16,8 +16,8 @@ Status values: `TODO` | `IN_PROGRESS` | `BLOCKED` | `DONE`
 ## Current Status Snapshot
 
 - **Active sprint day:** Day 2 (Role model + authority boundaries)
-- **In progress:** `R1-10`
-- **Next up:** `R1-11`, `R1-12`
+- **In progress:** `R1-11`
+- **Next up:** `R1-12`, `R1-13`
 - **Blockers:** None logged
 - **RC1 confidence (today):** High (role-governance hardening on track)
 
@@ -36,8 +36,8 @@ Status values: `TODO` | `IN_PROGRESS` | `BLOCKED` | `DONE`
 | R1-07 | MUST | Governance integrity | Add anti-capture bootstrap constraints for trustee/arbiter composition | James | 2026-02-13 | DONE | R1-05 | Independence/conflict constraints explicit |
 | R1-08 | MUST | Classifier | Add deterministic mind-mode decision logic block | James | 2026-02-14 | DONE | R1-04 | Classifier flow present + REQ links |
 | R1-09 | MUST | Classifier | Add No Silent Fallback rule (uncertainty => mind-mode + event) | James | 2026-02-14 | DONE | R1-08 | REQ clause + emitted governance event requirement |
-| R1-10 | MUST | Degraded controls | Add bounded degraded-mode duration + checkpoints + auto-suspension | James | 2026-02-14 | IN_PROGRESS | R1-08 | REQ clauses enforce timer/escalation/suspension |
-| R1-11 | MUST | Evidence model | Define minimum artefact classes per critical REQ | James | 2026-02-14 | TODO | R1-09 | Annex C table with artifact-class minimum set |
+| R1-10 | MUST | Degraded controls | Add bounded degraded-mode duration + checkpoints + auto-suspension | James | 2026-02-14 | DONE | R1-08 | REQ clauses enforce timer/escalation/suspension |
+| R1-11 | MUST | Evidence model | Define minimum artefact classes per critical REQ | James | 2026-02-14 | IN_PROGRESS | R1-09 | Annex C table with artifact-class minimum set |
 | R1-12 | MUST | Traceability | Add Body→REQ coverage map table | James | 2026-02-15 | TODO | R1-08,R1-11 | Coverage map includes all operational body claims |
 | R1-13 | MUST | Cases | Expand 3 failure-oriented cases into worked scenarios + artefacts | James | 2026-02-15 | TODO | R1-12 | Each case has control chain + evidence + residual risk |
 | R1-14 | SHOULD | Cases | Insert one early abuse narrative in body (convenience misclassification) | James | 2026-02-15 | TODO | R1-09 | Body includes narrative with REQ prevention chain |

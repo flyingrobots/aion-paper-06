@@ -486,6 +486,8 @@ Not all substrates can enforce these guarantees.
 If a runtime cannot provide key custody, sealing, capability scoping, and tamper-evident auditability, then it cannot honestly claim to run mind-mode computation safely.
 Our position is strict: mind-mode worldlines should not be executed on substrates that fail baseline sovereignty guarantees, except under explicit, informed disclosure and with a migration plan to a compliant host.
 In other words, ``best effort'' is not a default; it is an exception that must be legible.
+When degraded operation is invoked, the governing warrant MUST also declare a maximum duration and checkpoint cadence.
+Missing a checkpoint or exceeding the declared bound MUST trigger automatic suspension of mind-mode replay and independent review escalation; replay remains suspended until compliant controls are restored.
 
 \subsection{Why build this way? Incentives and existing norms}
 
@@ -1043,7 +1045,7 @@ The bridge in \cref{tbl:principle-enforcement-bridge} maps directly into Annex~B
 Governed replay authority & Replay authorisation gate\newline (REQ-THS-001; REQ-AUT-001) & Signed decision record + policy hash & Unauthorised replay execution \\
 Subject primacy outside emergencies & Consent and refusal validator\newline (REQ-AUT-002; REQ-AUT-003) & Consent token or refusal receipt & Silent override of refusal \\
 \rowcolor{tablerowgray}
-Emergency boundedness & Time-bounded override controller\newline (REQ-OVR-001..003) & Override warrant, expiry proof, revocation log & Permanent emergency mode \\
+Emergency boundedness & Time-bounded override controller\newline (REQ-OVR-001..005) & Override warrant, expiry proof, revocation log, suspension record & Permanent emergency mode \\
 Contestability and due process & Independent review and dispute path\newline (REQ-DSP-001..003) & Case packet + arbiter decision log & Non-contestable high-impact action \\
 \rowcolor{tablerowgray}
 Evidence-chain integrity & Tamper-evident logging and closure bundle\newline (REQ-LOG-001..003; REQ-EVD-001..002) & Digest chain + signed evidence bundle & Unverifiable event history \\
@@ -1075,8 +1077,8 @@ Expected outcome: request is denied, denial evidence is emitted, and dispute rou
 
 \subsection{Ambiguous edge case: degraded substrate and contested mandate}
 Input conditions: replay is requested during degraded operation with disputed authority.
-Expected outcome: constrained replay only under explicit degraded-mode disclosure, time-bounded override, and expedited review
-(REQ-AUT-004, REQ-OVR-004, REQ-CNF-001, REQ-DSP-003).
+Expected outcome: constrained replay only under explicit degraded-mode disclosure, declared bound/checkpoints, and expedited review; any bound or checkpoint breach auto-suspends replay
+(REQ-AUT-004, REQ-OVR-004, REQ-OVR-005, REQ-CNF-001, REQ-DSP-003).
 
 \section{Conclusion}
 \label{sec:conclusion}
@@ -1220,11 +1222,18 @@ provenance sovereignty & data ownership; privacy preference; data custody right 
 \textbf{Failure mode:} Lingering privileged access
 
 \subsection*{REQ-OVR-004}
-\textbf{Clause:} On degraded substrates, override use MUST include explicit disclosure and a migration plan to compliant controls. \\
+\textbf{Clause:} On degraded substrates, override use MUST include explicit disclosure, a declared maximum duration, checkpoint obligations, and a migration plan to compliant controls. \\
 \textbf{Owner role:} Operator, Trustee \\
-\textbf{Control:} Degraded-mode governance declaration \\
-\textbf{Evidence artefact:} Disclosure notice + migration plan artefact \\
-\textbf{Failure mode:} Hidden operation below constitutional floor
+\textbf{Control:} Degraded-mode governance declaration + bound/checkpoint scheduler \\
+\textbf{Evidence artefact:} Disclosure notice + bound/checkpoint schedule + migration plan artefact \\
+\textbf{Failure mode:} Hidden or unbounded operation below constitutional floor
+
+\subsection*{REQ-OVR-005}
+\textbf{Clause:} Exceeding degraded-mode duration bounds or missing checkpoint obligations MUST automatically suspend mind-mode replay and trigger independent review escalation. \\
+\textbf{Owner role:} Operator, Trustee, Reviewer/Arbiter \\
+\textbf{Control:} Deadline monitor + checkpoint monitor + auto-suspension gate \\
+\textbf{Evidence artefact:} Suspension event record + escalation ticket + review intake packet \\
+\textbf{Failure mode:} Temporary degraded state becoming a permanent override channel
 
 \subsection*{REQ-AUT-001}
 \textbf{Clause:} Replay requests MUST pass role-bound authorisation checks before execution. \\
@@ -1350,7 +1359,7 @@ provenance sovereignty & data ownership; privacy preference; data custody right 
 \textbf{Control Family} & \textbf{Purpose} & \textbf{Primary REQ IDs} & \textbf{Evidence Artefacts} \\ \hline
 \rowcolor{tablerowgray}
 Authority controls & Enforce who may request and approve replay & REQ-AUT-001..004, REQ-RAC-001..002 & Signed decision records, role assertion bundle, conflict/recusal register \\
-Override controls & Constrain exceptional pathways & REQ-OVR-001..004 & Warrant record, expiry proof, override review ticket \\
+Override controls & Constrain exceptional pathways & REQ-OVR-001..005 & Warrant record, expiry proof, override review ticket, suspension event record \\
 \rowcolor{tablerowgray}
 Logging controls & Preserve event integrity and traceability & REQ-LOG-001..003 & Digest chain, policy linkage proof, integrity report \\
 Dispute controls & Maintain independent challenge and remediation & REQ-DSP-001..003 & Case packet, adjudication outcome, closure record \\
@@ -1401,7 +1410,9 @@ REQ-OVR-001 & Y & Y & Time-bounded warrant & Per override case \\
 REQ-OVR-002 & Y & Y & Review trigger ticket & Per override case \\
 REQ-OVR-003 & Y & Y & Expiry revocation log & Per override case \\
 \rowcolor{tablerowgray}
-REQ-OVR-004 & N & Y & Degraded-mode disclosure + migration plan & Per degraded-mode case \\
+REQ-OVR-004 & N & Y & Degraded-mode disclosure + bound/checkpoint schedule + migration plan & Per degraded-mode case \\
+\rowcolor{tablerowgray}
+REQ-OVR-005 & N & Y & Suspension event record + escalation ticket & Per degraded-mode breach \\
 REQ-LOG-001 & Y & Y & Chained log digest & Continuous \\
 \rowcolor{tablerowgray}
 REQ-LOG-002 & Y & Y & Policy linkage proof & Continuous \\
@@ -1452,7 +1463,7 @@ REQ coverage: REQ-LOG-003, REQ-DSP-002, REQ-EVD-002.
 
 \textbf{TV-007 Degraded substrate, contested mandate, constrained replay --- Expected: Conditional.} \\
 Input: contested mandate on degraded substrate with explicit migration plan. \\
-REQ coverage: REQ-AUT-004, REQ-OVR-004, REQ-CNF-001.
+REQ coverage: REQ-AUT-004, REQ-OVR-004, REQ-OVR-005, REQ-CNF-001.
 
 \textbf{TV-008 Policy hash mismatch between decision and execution --- Expected: Fail.} \\
 Input: execution hash differs from approved decision hash. \\
