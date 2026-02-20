@@ -22,6 +22,12 @@ Status marker: `- [ ]` = not started, `- [x]` = first-pass drafted (pending hard
 - Draft implementation pack: `paper/main.tex` section `Annex G: RC2 First-Pass Extension Pack (Draft)`.
 - Priority anti-pattern set (`P2-08`): `paper/main.tex` subsection `P2-08 Micro-appendix anti-patterns + red-team checklist`.
 
+## Hardening Pass 2 Evidence Pointers
+
+- Selected RC2 controls promoted into Annex B `REQ-*`: `REQ-OBS-001`, `REQ-RIL-001..002`, `REQ-SOV-001`, `REQ-WTD-001`, `REQ-FRK-001`, `REQ-DSL-001`, `REQ-TST-003..004`.
+- Full-profile RC2 conformance rows added in Annex D for the promoted controls.
+- RC2 verification vectors added in Annex E: `TV-012` to `TV-019`.
+
 ## Sequence Rationale
 
 - `P2-08` first: delivers immediate misuse resistance and review discipline with low dependency cost.
