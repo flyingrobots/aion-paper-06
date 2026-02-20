@@ -96,13 +96,13 @@
     x=0.55cm, y=0.58cm,
     process/.style={draw, rounded corners=2pt, align=center, minimum height=7mm, text width=16mm, inner sep=1.8pt},
     processwide/.style={process, text width=18mm},
-    decision/.style={draw, diamond, aspect=2.0, align=center, inner sep=1pt, text width=10mm},
+    decision/.style={draw, diamond, aspect=2.0, align=center, inner sep=1pt, text width=12mm},
     flow/.style={->, thick, >=Latex},
     font=\scriptsize
   ]
   % Main vertical path
   \node[process] (n1) at (0.0, 0.0) {1. Replay\\request};
-  \node[process] (n2) at (0.0, -2.1) {2. Role/authority\\validation};
+  \node[process] (n2) at (0.0, -2.1) {2. Role\\authority\\validation};
   \node[process] (n3) at (0.0, -4.2) {3. Policy\\constraint check};
   \node[decision] (n4) at (0.0, -6.3) {4.\\Decision};
   \node[process] (n6) at (0.0, -8.4) {6. Execution};

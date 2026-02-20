@@ -48,6 +48,13 @@
 \renewcommand{\theHfigure}{\thesection.\arabic{figure}}
 \makeatother
 
+% Build hygiene for dense annex tables: reduce non-actionable box diagnostics.
+\setlength{\emergencystretch}{2em}
+\hbadness=10000
+\vbadness=10000
+\hfuzz=12pt
+\vfuzz=100pt
+
 \begin{document}
 
 \AIONTitlePage
@@ -767,7 +774,7 @@ rather than discretionary operator judgment.
 \textbf{Conflict condition} & \textbf{Default precedence} & \textbf{Timeout behaviour} & \textbf{Escalation path} \\ \hline
 \rowcolor{tablerowgray}
 Subject refusal vs routine Operator request & Subject refusal prevails; replay denied by default (REQ-AUT-003) & Immediate fail-closed decision; no execution window opens & Subject or Operator may open dispute review with evidence bundle (REQ-DSP-001, REQ-DSP-002) \\
-Emergency necessity claim vs Subject refusal & No unilateral precedence; Trustee+Reviewer/Arbiter concurrence required (REQ-AUT-004, REQ-RAC-002) & If concurrence is not achieved within the declared emergency window, request expires and execution remains blocked & File contested-mandate packet for independent adjudication (REQ-DSP-002, REQ-DSP-003) \\
+Emergency necessity claim vs Subject refusal & No unilateral precedence; Trustee+\allowbreak Reviewer/\allowbreak Arbiter concurrence required (REQ-AUT-004, REQ-RAC-002) & If concurrence is not achieved within the declared emergency window, request expires and execution remains blocked & File contested-mandate packet for independent adjudication (REQ-DSP-002, REQ-DSP-003) \\
 \rowcolor{tablerowgray}
 Operator scope request exceeds approved warrant scope & Narrower previously approved scope prevails (REQ-AUT-002) & Over-broad request is rejected; no partial widening by amendment & New request cycle with fresh policy-hash linkage and review trail (REQ-LOG-002, REQ-EVD-001) \\
 Contested replay with no independent Reviewer/Arbiter available & Independence requirement prevails; execution blocked (REQ-RAC-001) & Auto-suspend contested replay path until independent adjudicator assignment & Escalate to governance intake and log capacity failure as a dispute event (REQ-DSP-001, REQ-LOG-001) \\
@@ -1098,7 +1105,7 @@ The bridge in \cref{tbl:principle-enforcement-bridge} maps directly into Annex~B
 \begin{table}[htbp]
 \centering
 \scriptsize
-\setlength{\tabcolsep}{7pt}
+\setlength{\tabcolsep}{6pt}
 \renewcommand{\arraystretch}{1.22}
 \begin{tabularx}{0.985\linewidth}{p{0.24\linewidth} p{0.20\linewidth} p{0.25\linewidth} p{0.18\linewidth}}
 \rowcolor{tableheadgray}
@@ -1130,13 +1137,13 @@ provides the authoritative body-to-requirement coupling for operational claims.
 \begin{tabularx}{0.985\linewidth}{p{0.12\linewidth} Y p{0.14\linewidth} p{0.12\linewidth} Y Y Y p{0.06\linewidth}}
 \rowcolor{tableheadgray}
 \hline
-\textbf{Body section} & \textbf{Constitutional claim} & \textbf{REQ IDs} & \textbf{Owner role(s)} & \textbf{Enforcement point} & \textbf{Required evidence artefact(s)} & \textbf{Failure mode} & \textbf{Status} \\
+\textbf{Body section} & \textbf{Const. claim} & \textbf{REQ IDs} & \textbf{Owner role(s)} & \textbf{Enf. gate} & \textbf{Required evidence artefact(s)} & \textbf{Failure mode} & \textbf{Status} \\
 \hline
 \rowcolor{tablerowgray}
 \S3.4--3.5 & Conservative mind-mode classification with deterministic reclassification records. & REQ-THS-002, REQ-THS-003, REQ-LOG-002 & Operator, Trustee & Classifier gate + replay precheck & Signed classifier decision, uncertainty event, policy-link digest & Convenience downgrade & Locked \\
 \S3.6 & Degraded operation is bounded and auto-suspended on breach. & REQ-OVR-004, REQ-OVR-005, REQ-AUT-004, REQ-CNF-001 & Operator, Trustee, Reviewer/Arbiter & Deadline monitor + checkpoint guard + suspension gate & Degraded disclosure, checkpoint schedule, suspension event, escalation ticket & ``Temporary'' state becomes permanent & Locked \\
 \rowcolor{tablerowgray}
-\S4.6--4.7 & Role authority remains contestable via anti-capture composition and co-approval. & REQ-RAC-001, REQ-RAC-002, REQ-RAC-003, REQ-DSP-001 & Trustee, Reviewer/Arbiter & Recusal/conflict guard + independent co-approval workflow & Independence register, conflict attestation, co-approval record, dispute intake log & Captured control panel & Locked \\
+\S4.6--4.7 & Role authority remains contestable via anti-capture composition and co-approval. & REQ-RAC-001, REQ-RAC-002, REQ-RAC-003, REQ-DSP-001 & Trustee, Reviewer/Arbiter & Recusal/\allowbreak conflict guard + independent co-approval workflow & Independence register, conflict attestation, co-approval record, dispute intake log & Captured control panel & Locked \\
 \S5 & Conformance claims are profile-bounded and auditable. & REQ-CNF-001, REQ-CNF-002, REQ-TST-001 & Operator, Auditor & Profile attestation gate + release test gate & Baseline/full attestation, vector execution report & Non-verifiable conformance claim & Locked \\
 \rowcolor{tablerowgray}
 \S6 & Principles are bound to enforceable gates, artefacts, and failure modes. & REQ-AUT-001..003, REQ-OVR-001..005, REQ-LOG-001..003, REQ-EVD-001..002 & Operator, Trustee, Auditor & Replay gate + override controller + tamper-evident log chain & Signed decision, warrant trail, digest chain, closure bundle & Norms detached from controls & Locked \\
@@ -1639,7 +1646,7 @@ provenance sovereignty & data ownership; privacy preference; data custody right 
 Authority controls & Enforce who may request and approve replay & REQ-AUT-001..004, REQ-RAC-001..002 & Signed decision records, role assertion bundle, conflict/recusal register \\
 Observer/impact controls & Enforce least-privilege observer assignment and replay impact labelling & REQ-OBS-001, REQ-RIL-001..002 & Observer-class decision record, RIL assignment record, downgrade audit event \\
 \rowcolor{tablerowgray}
-Sovereignty/transparency controls & Bound replay envelopes and publish warrant accountability digests & REQ-SOV-001, REQ-WTD-001, REQ-FRK-001 & Budget ledger digest, digest publication report, quorum and continuity-pack attestation \\
+Sovereignty/\allowbreak transparency controls & Bound replay envelopes and publish warrant accountability digests & REQ-SOV-001, REQ-WTD-001, REQ-FRK-001 & Budget ledger digest, digest publication report, quorum and continuity-pack attestation \\
 Override controls & Constrain exceptional pathways & REQ-OVR-001..005 & Warrant record, expiry proof, override review ticket, suspension event record \\
 \rowcolor{tablerowgray}
 Logging controls & Preserve event integrity and traceability & REQ-LOG-001..003 & Digest chain, policy linkage proof, integrity report \\
@@ -1668,7 +1675,7 @@ Artefact class labels used below are \texttt{DECISION}, \texttt{EVENT}, \texttt{
 
 \begin{center}
 \small
-\setlength{\tabcolsep}{6pt}
+\setlength{\tabcolsep}{5pt}
 \renewcommand{\arraystretch}{1.22}
 \begin{tabularx}{0.98\linewidth}{p{0.19\linewidth} p{0.22\linewidth} Y Y}
 \rowcolor{tableheadgray}
@@ -1787,7 +1794,7 @@ All referenced artefacts MUST be independently retrievable.
 \renewcommand{\arraystretch}{1.06}
 \begin{tabularx}{0.98\linewidth}{Y p{0.10\linewidth} p{0.12\linewidth} p{0.10\linewidth} Y}
 \rowcolor{tableheadgray}
-\textbf{Requirement set} & \textbf{Claimed} & \textbf{Implemented} & \textbf{Evidenced} & \textbf{Evidence location} \\ \hline
+\textbf{Requirement set} & \textbf{Claimed} & \textbf{Impl.} & \textbf{Evidenced} & \textbf{Evidence location} \\ \hline
 \rowcolor{tablerowgray}
 REQ-THS-* & $\square$ & $\square$ & $\square$ & \\
 REQ-RAC-* & $\square$ & $\square$ & $\square$ & \\
