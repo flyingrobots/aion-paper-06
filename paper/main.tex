@@ -100,7 +100,7 @@ We isolate the ethical consequences of deterministic replay, complete provenance
 We formalise \emph{provenance sovereignty}: an agent's right to control capture, inspection, replay, and branching of its worldline, with special attention to hybrid cognition where human reasoning is partially implemented on \AION{}-style substrates.
 
 Building on The Open Charter (Consensus Edition 0.8.1)~\cite{ross_open_charter_0_8_1}, we make the adversarial threat model explicit (replay-as-torture, cognitive extraction, fork-bombing), argue that near-term ``AI debugging'' norms will be inherited by future neurotechnology, and provide conservative operational triggers for the system-mode/mind-mode boundary.
-We propose runtime-level requirements---revocable consent, capability-scoped observers, cryptographic sealing, fork rights with creator obligations, and a concrete Charter-warrant protocol for emergency override---and show how they constrain replay tooling and provenance payload formats.
+We propose runtime-level requirements---revocable consent, capability-scoped observers, cryptographic sealing, fork rights with creator obligations, and a concrete Charter-warrant protocol for emergency override---and show how they constrain replay tooling and provenance governance interfaces.
 \end{abstract}
 
 \clearpage
@@ -180,6 +180,13 @@ Paper~IV defines observers and a geometry over observer spaces~\cite{ross_paper_
 Paper~V introduces a dynamical selection account over admissible worldlines and observer-induced
 probability structure~\cite{ross_paper_v}.
 Here we only use the minimal pieces of that machinery required to state ethical constraints.
+
+\paragraph{Reading guide.}
+This document has two linked planes.
+Sections~1--9 carry the governance argument and normative posture.
+Annexes~A--G carry enforceable requirements, conformance rows, and evidence/test artefacts.
+Readers evaluating policy argument can prioritise the body and use annexes as normative support;
+readers implementing controls can start from Annex~B/Annex~D and use the body as rationale.
 
 
 \section{Scope and Explicit Non-Scope}
@@ -358,7 +365,7 @@ In such hybrid systems:
   \item the boundary between ``human memory'' and
     ``computational provenance'' becomes blurred.
 \end{itemize}
-\noindent\textbf{This is not science fiction.}
+\noindent\textbf{This is an early capability trend, not a claim that complete thought replay already exists today.}
 Concrete examples already exist across the stack: invasive implant programmes such as Neuralink's N1
 implant trials,\footnote{\url{https://neuralink.com/updates/}} endovascular approaches such as
 Synchron's Stentrode that have been publicly demonstrated integrating with mainstream consumer
@@ -447,10 +454,28 @@ Without this chain, classification becomes an unreviewable convenience switch.
 \label{sec:classifier-logic}
 The mode boundary above is normative; runtime enforcement requires deterministic decision logic that
 returns both a mode and a reason code for every classification event.
+The Boolean trigger logic below is a conservative constitutional floor, not a claim that production
+classifiers should be simplistic.
+Implementations MAY use richer models, but MUST preserve the same fail-closed monotonicity:
+any uncertainty or incompleteness must not reduce protection.
 
 \begin{verbatim}
-function classify_mode(indicators, evidence_state):
-    flags = normalise_indicator_set(indicators)
+function derive_evidence_state(evidence_record):
+    required_fields = [
+        "indicator_window_start",
+        "indicator_window_end",
+        "source_attestations",
+        "policy_hash"
+    ]
+    if any_missing_or_invalid(required_fields, evidence_record):
+        return "INCOMPLETE"
+    return "COMPLETE"
+\end{verbatim}
+
+\begin{verbatim}
+function classify_mode(indicators_window, evidence_record):
+    flags = normalise_indicator_window(indicators_window)
+    evidence_state = derive_evidence_state(evidence_record)
 
     if evidence_state == "INCOMPLETE":
         emit_governance_event("CLASSIFIER_INCOMPLETE")
@@ -468,8 +493,8 @@ function classify_mode(indicators, evidence_state):
 \end{verbatim}
 
 \begin{verbatim}
-function classify_and_record(request_context, indicators, evidence_state):
-    mode, reason = classify_mode(indicators, evidence_state)
+function classify_and_record(request_context, indicators_window, evidence_record):
+    mode, reason = classify_mode(indicators_window, evidence_record)
     emit_signed_classification_record(
         request_context_digest = hash(request_context),
         mode = mode,
@@ -480,9 +505,11 @@ function classify_and_record(request_context, indicators, evidence_state):
 
 Operational consequences:
 \begin{itemize}[leftmargin=*]
-  \item Classification input fields MUST be explicit and versioned; hidden heuristics are out of scope.
+  \item Classification input fields and evidence fields MUST be explicit, versioned, and deterministically evaluated.
+  \item Indicator evaluation MUST cover a declared temporal window; single-tick snapshots are insufficient for mind-mode governance.
   \item Classifier uncertainty or incomplete evidence MUST NOT silently downgrade to system-mode; it MUST default to mind-mode and emit a governance event.
   \item Every classification and reclassification MUST emit a signed decision artefact with policy-hash linkage.
+  \item Manual override of computed evidence completeness MUST be prohibited; any forced override MUST route through dispute controls.
   \item Replay authorisation gates consume classifier output as a first-class control input, not as informal guidance.
 \end{itemize}
 
@@ -552,6 +579,12 @@ an agent's request.
 In adversarial settings (\cref{sec:adversarial}), this right is not a
 luxury; it is the line between ``audit'' and ``abuse''.
 
+\paragraph{Revocation semantics.}
+Revocation handling must also be operationally explicit.
+For non-warranted replay, revocation MUST trigger immediate halt and capability withdrawal.
+If a valid Charter warrant is active, revocation MUST trigger immediate dispute intake and independent review; revocation does not silently erase an active lawful mandate, but it does force contestability and bound revalidation.
+Already exposed provenance cannot be made unobserved; the runtime MUST record exposure scope, seal further interior inspection by default, and require renewed authority for any subsequent access.
+
 \paragraph{Selective provenance via opaque boundaries.}
 Theorem~\ref{thm:holography} shows that, in principle, boundary data
 $(S_0,P)$ is information-complete with respect to the interior
@@ -597,8 +630,8 @@ revealing cognitive contents:
   \item bounded resource usage (time, memory, fork budget);
   \item satisfaction of formally specified invariants over the worldline.
 \end{itemize}
-This is not a free lunch---some safety properties will resist clean formalisation---but it
-demonstrates that ``verification'' and ``introspection'' are not synonymous.
+This is not a free lunch---some safety properties will resist clean formalisation---and ZK proofs are not suitable for claims about interior intent, moral quality of reasoning, or subjective experience itself.
+The point is narrower but useful: it demonstrates that ``verification'' and ``introspection'' are not synonymous.
 
 \paragraph{When safety demands deeper access.}
 Some cases will pressure toward \textbf{FULL} provenance: catastrophic incidents,
@@ -819,6 +852,9 @@ Section~\ref{sec:wormholes} shows that, given a boundary $(S_0,P)$, we
 can fork at any tick index $k$, replace the suffix of $P$ by an
 alternative sequence of microsteps, and obtain a new worldline $P'$;
 both $(S_0,P)$ and $(S_0,P')$ reconstruct to valid derivation volumes.
+Operationally, a fork is a shared-prefix worldline operation: the child worldline inherits
+the deterministic prefix up to tick $k$ and diverges only in a new suffix under a declared
+rule-pack/scheduler context, with an explicit fork-point record in provenance.
 
 Under the Charter's principles of self-determination, existential
 integrity, and temporal freedom~\cite{ross_open_charter_0_8_1}, forks instantiated from
@@ -880,6 +916,7 @@ The right at stake is not ``permission to kill forks'' but the subject's right t
 
 \paragraph{Safety-critical exploratory forks.}
 Many ``what should we do?'' questions can and should be explored in system-mode simulation.
+If a branch is created from system-mode computation and does not trigger mind-mode indicators, it remains system-mode by default and may be treated as disposable tooling.
 If exploration genuinely requires mind-mode forks (because the relevant cognition is itself mind-like), then fork creation inherits \emph{creator duties} rather than test-environment privileges:
 every exploratory fork must begin with an explicit purpose declaration, a compute/time budget, and the same replay/opacity protections as the originator.
 Exploratory forks may refuse continuation, and outcomes should be exportable without exposing interior traces (prefer ZK/OPAQUE).
@@ -1027,6 +1064,14 @@ Architecturally, this means:
     (\cref{sec:collective}).
 \end{itemize}
 
+\paragraph{Near-term operational implications.}
+Even before broad mind-mode deployment, this posture changes present-day engineering defaults:
+\begin{itemize}[leftmargin=*]
+  \item internal reasoning traces should be treated as sensitive artefacts rather than routine telemetry;
+  \item introspective logging should default to minimum-necessary capture rather than capture-by-default;
+  \item replay and trace-inspection tooling should use capability-scoped access and contestable audit paths.
+\end{itemize}
+
 \paragraph{Open problems.}
 Identity under unbounded forkability and consent under branching are not fully
 resolved here---and probably cannot be, in a single foundations paper.
@@ -1046,14 +1091,13 @@ We define two adoption tiers so that governance deployment can be staged without
 \textbf{Full} extends Baseline with stronger controls for contested mandates, degraded substrates, and continuous assurance.
 
 \paragraph{Baseline profile.}
-Minimum controls include governed replay authority, role-bound authorisation checks, bounded override, tamper-evident logging,
-dispute intake, and release-level test evidence
-(REQ-THS-001, REQ-AUT-001..003, REQ-OVR-001..003, REQ-LOG-001..002, REQ-DSP-001, REQ-CNF-001, REQ-TST-001).
+Baseline highlights include governed replay authority, role-bound authorisation checks, bounded override, tamper-evident logging, dispute intake, and release-level test evidence.
+The normative Baseline requirement set is the Annex~D table.
 
 \paragraph{Full profile.}
 Full conformance adds contested-mandate handling, degraded-mode disclosure controls, stronger integrity verification,
-and periodic assurance requirements
-(REQ-RAC-003, REQ-AUT-004, REQ-OVR-004, REQ-LOG-003, REQ-CNF-002).
+and periodic assurance requirements.
+The normative Full requirement set is the Annex~D table (including selected RC2 Full-profile extension rows).
 
 Implementations claiming either profile MUST publish a completed conformance declaration using the
 template in Annex~D (\cref{ann:conformance-declaration-template}), with artefact links that permit
@@ -1292,7 +1336,7 @@ reference harness framing (\textbf{P2-07}),
 and anti-pattern/red-team controls (\textbf{P2-08}).
 
 \paragraph{Execution order and dependency logic.}
-The first pass follows the sequence in \texttt{RC2-TASKS.md}:
+The first pass follows this dependency-ordered sequence:
 anti-pattern controls first (to define abuse pressure),
 then observer and impact classification primitives,
 then transparency and sovereignty bounds,
@@ -1379,6 +1423,15 @@ provenance sovereignty & data ownership; privacy preference; data custody right 
 
 \section{Annex B: Requirement Clauses (REQ-*)}
 \label{ann:req}
+
+\textbf{REQ prefix legend.}
+\texttt{THS}=thesis/mode boundary, \texttt{RAC}=role and anti-capture,
+\texttt{AUT}=authorisation, \texttt{OVR}=override,
+\texttt{LOG}=logging, \texttt{DSP}=dispute,
+\texttt{CNF}=conformance, \texttt{EVD}=evidence, \texttt{TST}=test,
+\texttt{OBS}=observer class, \texttt{RIL}=replay impact label,
+\texttt{SOV}=sovereignty budget, \texttt{WTD}=warrant transparency digest,
+\texttt{FRK}=fork governance, \texttt{DSL}=policy formalisation.
 
 \subsection*{REQ-THS-001}
 \textbf{Clause:} Systems MUST treat replay of mind-like worldlines as a governed action requiring explicit authority. \\
@@ -1961,6 +2014,12 @@ failure_mode,baseline,full,review_cadence
   "review_cadence": "Per override case"
 }
 \end{verbatim}
+
+\textbf{Reference generation path.}
+The canonical index artefacts in \texttt{paper/requirements-index.csv} and
+\texttt{paper/requirements-index.json} are generated from Annex~B and Annex~D
+using \texttt{paper/scripts/generate\_requirements\_index.py}.
+The JSON envelope includes \texttt{source\_sha256} for source-linkage integrity.
 
 \textbf{Index integrity requirements.}
 \begin{itemize}[leftmargin=*]
