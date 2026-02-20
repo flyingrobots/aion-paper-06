@@ -4,7 +4,7 @@
   "paper_date": "February 2026",
   "source": "paper/main.tex Annex B, Annex D",
   "schema_version": "1.1",
-  "source_sha256": "8848e5312cc6bd59671cebd0af4128c63e4e74f539ddc0348f6bb76e2bdf8dd2",
+  "source_sha256": "b034ab87fba3548ec5e321132e79604bb7cc7533bd150c56fd878644787e339c",
   "requirements": [
     {
       "id": "REQ-THS-001",
@@ -548,7 +548,7 @@
         "Operator",
         "Auditor"
       ],
-      "control": "RC2 abuse-path vector suite",
+      "control": "Abuse-path vector suite",
       "evidence_artefact": "Vector execution report with fail-closed evidence receipts",
       "failure_mode": "Abuse pathways untested in conformance claims",
       "profiles": {

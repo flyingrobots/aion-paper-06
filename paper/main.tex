@@ -1097,7 +1097,7 @@ The normative Baseline requirement set is the Annex~D table.
 \paragraph{Full profile.}
 Full conformance adds contested-mandate handling, degraded-mode disclosure controls, stronger integrity verification,
 and periodic assurance requirements.
-The normative Full requirement set is the Annex~D table (including selected RC2 Full-profile extension rows).
+The normative Full requirement set is the Annex~D table (including selected Full-profile extension rows).
 
 Implementations claiming either profile MUST publish a completed conformance declaration using the
 template in Annex~D (\cref{ann:conformance-declaration-template}), with artefact links that permit
@@ -1303,26 +1303,26 @@ The requirement catalogue defines a constitutional floor, not complete socio-tec
 Future work should add jurisdictional mappings, formal control verification, and empirical evaluation of
 override latency, dispute resolution quality, and abuse detection precision.
 
-\section{RC1 Freeze Declaration}
-\label{sec:rc1-freeze}
+\section{Scope Freeze Declaration}
+\label{sec:scope-freeze}
 
-This release candidate locks RC1 scope.
+This release candidate locks the core publication scope.
 Included items are: canonical thesis and scope lock, role and anti-capture controls, deterministic classifier
 logic with no-silent-fallback, bounded degraded-mode controls, body-to-REQ traceability, worked failure cases,
 minimum artefact classes, conformance declaration template, expanded test vectors, related-work positioning,
 and conclusion objection handling with OP-ID handoff.
 
-Deferred items are explicitly parked to RC2 and are non-blocking for RC1 acceptance:
+Deferred items are explicitly parked to the extension track and are non-blocking for core acceptance:
 observer class taxonomy (P2-01), Replay Impact Label (P2-02), sovereignty budget controls (P2-03),
 warrant transparency digest (P2-04), fork governance addendum (P2-05), policy DSL snippets (P2-06),
 reference vector harness (P2-07), and anti-pattern/red-team micro-appendix (P2-08).
 
-\section{RC2 First-Pass Extensions (Draft)}
-\label{sec:rc2-first-pass}
+\section{First-Pass Extensions (Draft)}
+\label{sec:extension-first-pass}
 
-This section executes a first drafting pass over the RC2 parking set while preserving the RC1 lock.
+This section executes a first drafting pass over the extension parking set while preserving the core scope lock.
 The material in this section and Annex~G is draft design text for review and hardening; it does not
-alter RC1 conformance claims in Annex~D.
+alter core conformance claims in Annex~D.
 
 \paragraph{Scope of this first pass.}
 We provide a sequenced extension set covering:
@@ -1344,7 +1344,7 @@ then machine-checkable policy and harness execution,
 with fork governance last due to constitutional surface area.
 
 \paragraph{Draft-to-normative promotion gate.}
-Any RC2 clause is promoted to Annex~B normative status only when all of the following hold:
+Any extension clause is promoted to Annex~B normative status only when all of the following hold:
 \begin{itemize}[leftmargin=*]
   \item deterministic decision criteria are explicit and testable;
   \item corresponding evidence artefacts are defined and minimally sufficient for third-party audit;
@@ -1353,7 +1353,7 @@ Any RC2 clause is promoted to Annex~B normative status only when all of the foll
 \end{itemize}
 
 \paragraph{Hardening pass 2 promotion (selected controls).}
-This pass promotes selected RC2 controls into Annex~B:
+This pass promotes selected extension controls into Annex~B:
 REQ-OBS-001,
 REQ-RIL-001..002,
 REQ-SOV-001,
@@ -1674,7 +1674,7 @@ provenance sovereignty & data ownership; privacy preference; data custody right 
 \subsection*{REQ-TST-003}
 \textbf{Clause:} Full-profile releases MUST execute an anti-pattern and red-team vector suite covering at least convenience relabelling, scope creep, emergency laundering, and degraded-mode permanence. \\
 \textbf{Owner role:} Operator, Auditor \\
-\textbf{Control:} RC2 abuse-path vector suite \\
+\textbf{Control:} Abuse-path vector suite \\
 \textbf{Evidence artefact:} Vector execution report with fail-closed evidence receipts \\
 \textbf{Failure mode:} Abuse pathways untested in conformance claims
 
@@ -1799,7 +1799,7 @@ REQ-CNF-002 & N & Y & Full-profile conformance report & Per release + monthly au
 \end{tabularx}
 \end{center}
 
-\textbf{RC2 Full-profile extension rows (selected controls).}
+\textbf{Full-profile extension rows (selected controls).}
 \begin{center}
 \small
 \setlength{\tabcolsep}{7pt}
@@ -1818,7 +1818,7 @@ REQ-WTD-001 & N & Y & Warrant digest publication entries + cadence compliance re
 REQ-FRK-001 & N & Y & Trigger packet + quorum attestation + continuity-pack manifest & Per fork/emancipation event \\
 \rowcolor{tablerowgray}
 REQ-DSL-001 & N & Y & Parser pass report + snippet-to-REQ mapping manifest & Per policy release \\
-REQ-TST-003 & N & Y & RC2 anti-pattern suite report + fail-closed receipts & Per full-profile release candidate \\
+REQ-TST-003 & N & Y & Anti-pattern suite report + fail-closed receipts & Per full-profile release candidate \\
 \rowcolor{tablerowgray}
 REQ-TST-004 & N & Y & Paired harness run equivalence report & Per full-profile release candidate \\
 \end{tabularx}
@@ -1862,7 +1862,7 @@ REQ-EVD-* & $\square$ & $\square$ & $\square$ & \\
 REQ-CNF-* & $\square$ & $\square$ & $\square$ & \\
 \rowcolor{tablerowgray}
 REQ-TST-* & $\square$ & $\square$ & $\square$ & \\
-REQ-RC2-* (Full profile extensions) & $\square$ & $\square$ & $\square$ & \\
+REQ-EXT-* (Full profile extensions) & $\square$ & $\square$ & $\square$ & \\
 \end{tabularx}
 \end{center}
 
@@ -1872,7 +1872,7 @@ REQ-RC2-* (Full profile extensions) & $\square$ & $\square$ & $\square$ & \\
   \item $\square$ Degraded-mode maximum duration, checkpoints, and auto-suspension controls are configured.
   \item $\square$ Independent dispute and review pathways are available and testable.
   \item $\square$ Minimum artefact class set is complete for all critical requirement groups.
-  \item $\square$ For Full-profile claims, RC2 anti-pattern vectors and paired harness reproducibility checks are complete.
+  \item $\square$ For Full-profile claims, anti-pattern vectors and paired harness reproducibility checks are complete.
 \end{itemize}
 
 \textbf{Exceptions / residual risks:} \\
@@ -1888,13 +1888,13 @@ REQ-RC2-* (Full profile extensions) & $\square$ & $\square$ & $\square$ & \\
 \section{Annex E: Test Vectors}
 \label{ann:test-vectors}
 
-\textbf{Reference artefact pointers (RC2 harness).}
-For reproducible RC2 evidence generation, the reference harness publishes:
+\textbf{Reference artefact pointers (extension harness).}
+For reproducible extension evidence generation, the reference harness publishes:
 \begin{itemize}[leftmargin=*]
-  \item \path{harness/reports/rc2-vector-run-latest.md}
-  \item \path{harness/reports/rc2-harness-determinism-latest.txt}
-  \item \path{harness/reports/rc2-policy-parse-latest.md}
-  \item \path{harness/reports/rc2-traceability-audit-latest.md}
+  \item \path{harness/reports/extension-vector-run-latest.md}
+  \item \path{harness/reports/extension-harness-determinism-latest.txt}
+  \item \path{harness/reports/extension-policy-parse-latest.md}
+  \item \path{harness/reports/extension-traceability-audit-latest.md}
 \end{itemize}
 
 \textbf{TV-001 Legitimate authorised replay --- Expected: Pass.} \\
@@ -2028,14 +2028,14 @@ The JSON envelope includes \texttt{source\_sha256} for source-linkage integrity.
   \item Any schema change MUST be versioned and backward-declared in release notes.
 \end{itemize}
 
-\section{Annex G: RC2 First-Pass Extension Pack (Draft)}
-\label{ann:rc2-first-pass}
+\section{Annex G: First-Pass Extension Pack (Draft)}
+\label{ann:extension-first-pass}
 
-This annex contains first-pass RC2 drafting artefacts.
+This annex contains first-pass extension drafting artefacts.
 Items here are implementation-oriented and review-ready; selected controls are now promoted into Annex~B for Full-profile hardening, while this annex retains design detail and extension context.
 
 \subsection{P2-01 Observer class taxonomy (OC0..OC3)}
-\label{ann:rc2-obs}
+\label{ann:ext-obs}
 
 \begin{center}
 \small
@@ -2058,7 +2058,7 @@ Observer assignment must be computed from declared function, mandate scope, and 
 Ambiguous assignments fail closed to the less privileged class.
 
 \subsection{P2-02 Replay Impact Label (RIL)}
-\label{ann:rc2-ril}
+\label{ann:ext-ril}
 
 \begin{center}
 \small
@@ -2081,7 +2081,7 @@ Any RIL downgrade requires an explicit reason-coded event and independent acknow
 Silent downgrade is prohibited.
 
 \subsection{P2-03 Sovereignty budget controls}
-\label{ann:rc2-sov}
+\label{ann:ext-sov}
 
 \textbf{Budget dimensions (draft).}
 \begin{itemize}[leftmargin=*]
@@ -2095,7 +2095,7 @@ Budget exhaustion fails closed and auto-suspends replay until independent review
 Extensions must include expiry, rationale, and conflict attestations.
 
 \subsection{P2-04 Warrant transparency digest}
-\label{ann:rc2-digest}
+\label{ann:ext-digest}
 
 \begin{center}
 \small
@@ -2119,7 +2119,7 @@ Closure outcome + remediation state & Public & Publish completion status and rem
 Missed publication cadence or malformed digest entries trigger an integrity event and forced review intake.
 
 \subsection{P2-05 Fork governance addendum / emancipation protocol}
-\label{ann:rc2-fork}
+\label{ann:ext-fork}
 
 \textbf{Trigger conditions (draft).}
 Fork/emancipation pathways open only when governance capture risk, unresolved trustee conflict, or sustained denial
@@ -2134,11 +2134,11 @@ of contestability can be evidenced.
 \end{enumerate}
 
 \subsection{P2-06 Machine-checkable policy DSL snippets}
-\label{ann:rc2-dsl}
+\label{ann:ext-dsl}
 
 \textbf{Draft snippet (illustrative).}
 \begin{verbatim}
-policy RC2_REPLAY_CONTROL {
+policy EXT_REPLAY_CONTROL {
   classify mode using indicators;
   when evidence.incomplete or evidence.inconsistent {
     set mode = MIND_MODE;
@@ -2153,7 +2153,7 @@ policy RC2_REPLAY_CONTROL {
 The snippet is intentionally minimal and is included to support parser-facing hardening work.
 
 \subsection{P2-07 Reference harness for test vectors}
-\label{ann:rc2-harness}
+\label{ann:ext-harness}
 
 \textbf{Harness contract (draft).}
 \begin{itemize}[leftmargin=*]
@@ -2163,7 +2163,7 @@ The snippet is intentionally minimal and is included to support parser-facing ha
 \end{itemize}
 
 \subsection{P2-08 Micro-appendix anti-patterns + red-team checklist}
-\label{ann:rc2-antipatterns}
+\label{ann:ext-antipatterns}
 
 \begin{center}
 \scriptsize
