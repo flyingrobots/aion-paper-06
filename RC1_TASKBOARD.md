@@ -1,7 +1,7 @@
 # RC1 Taskboard — Paper VI
 
 _Date created: 12 February 2026_  
-_Last updated: 13 February 2026_
+_Last updated: 20 February 2026_
 
 Status values: `TODO` | `IN_PROGRESS` | `BLOCKED` | `DONE`
 
@@ -15,9 +15,9 @@ Status values: `TODO` | `IN_PROGRESS` | `BLOCKED` | `DONE`
 
 ## Current Status Snapshot
 
-- **Active sprint day:** Day 7 (QA + RC1 freeze)
+- **Active sprint day:** Closed (RC1 complete)
 - **In progress:** None
-- **Next up:** RC1 complete
+- **Next up:** RC2 planning only (RC1 frozen)
 - **Blockers:** None logged
 - **RC1 confidence (today):** Locked (all RC1 tasks complete)
 

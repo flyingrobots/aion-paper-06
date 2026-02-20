@@ -1057,17 +1057,32 @@ governance policy constrains runtime gates, and runtime gates emit evidence requ
 
 \begin{figure}[htbp]
 \centering
-\begin{tikzpicture}[font=\footnotesize, node distance=7mm]
-  \node[draw, rounded corners, fill=tablerowgray, text width=0.88\textwidth, align=left, inner sep=6pt] (gov)
-  {\textbf{Governance plane} (policy intent): REQ catalogue, role and recusal constraints, consent/warrant rules, conformance profile declarations.};
-  \node[draw, rounded corners, fill=white, text width=0.88\textwidth, align=left, inner sep=6pt, below=of gov] (run)
-  {\textbf{Runtime enforcement plane} (execution gates): mode classifier, replay authorisation gate, override timer/checkpoint controller, suspension trigger, dispute intake routing.};
-  \node[draw, rounded corners, fill=tablerowgray, text width=0.88\textwidth, align=left, inner sep=6pt, below=of run] (evd)
-  {\textbf{Evidence and assurance plane} (audit outputs): signed decisions, warrants, digest-chain entries, case packets, closure bundles, release test reports.};
-  \draw[-{Latex[length=2.2mm,width=1.4mm]}, thick] (gov.south) -- (run.north);
-  \draw[-{Latex[length=2.2mm,width=1.4mm]}, thick] (run.south) -- (evd.north);
-  \draw[-{Latex[length=2.2mm,width=1.4mm]}, thick, bend left=12] (evd.east) to node[right, xshift=2mm] {audit feedback} (gov.east);
+\begin{tikzpicture}[
+  font=\footnotesize,
+  >=Latex,
+  node distance=6mm,
+  plane/.style={draw, rounded corners, inner sep=5pt, align=left, text width=0.27\linewidth, minimum height=24mm}
+]
+  \node[plane, fill=tablerowgray] (gov)
+  {\textbf{Governance plane}\\
+   REQ catalogue and profile rules;\\
+   role boundaries and recusal policy;\\
+   consent and warrant constraints.};
+  \node[plane, fill=white, right=of gov] (run)
+  {\textbf{Runtime plane}\\
+   mode classification and replay gating;\\
+   override timers/checkpoints;\\
+   suspension and dispute routing.};
+  \node[plane, fill=tablerowgray, right=of run] (evd)
+  {\textbf{Evidence plane}\\
+   signed decisions and warrants;\\
+   digest-chain logs and case packets;\\
+   closure bundles and test reports.};
+  \draw[->, thick] (gov.east) -- node[above, font=\scriptsize] {policy constraints} (run.west);
+  \draw[->, thick] (run.east) -- node[above, font=\scriptsize] {artefact emission} (evd.west);
 \end{tikzpicture}
+\par\vspace{0.35em}
+{\scriptsize Feedback loop: periodic assurance outcomes update governance policy and conformance declarations.}
 \caption{Control-plane architecture linking governance intent, runtime enforcement, and auditable evidence.}
 \label{fig:control-plane-architecture}
 \end{figure}

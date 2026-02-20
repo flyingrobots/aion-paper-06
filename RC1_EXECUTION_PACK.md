@@ -11,73 +11,73 @@ This pack is the implementation companion for the RC1 roadmap. It is intentional
 Use this checklist in order. Do not start prose polishing until sections marked “Control lock” are complete.
 
 ## Section 1 — Introduction and Thesis
-- [ ] Insert canonical thesis sentence and freeze wording.
-- [ ] Ensure thesis includes authority, bounded override, and contestable evidence.
-- [ ] Add explicit bridge sentence from Paper V to Paper VI.
-- [ ] Reuse the exact thesis sentence in Conclusion.
+- [x] Insert canonical thesis sentence and freeze wording.
+- [x] Ensure thesis includes authority, bounded override, and contestable evidence.
+- [x] Add explicit bridge sentence from Paper V to Paper VI.
+- [x] Reuse the exact thesis sentence in Conclusion.
 
 ## Section 2 — Scope and Explicit Non-Scope
-- [ ] Add explicit runtime-governance vs legal-jurisdiction boundary paragraph.
-- [ ] Confirm metaphysics remains out of normative scope.
-- [ ] Add statement that legal harmonisation is external mapping.
+- [x] Add explicit runtime-governance vs legal-jurisdiction boundary paragraph.
+- [x] Confirm metaphysics remains out of normative scope.
+- [x] Add statement that legal harmonisation is external mapping.
 
 ## Section 3 — Constitutional Principles for Replay Governance
-- [ ] Ensure each operational claim cites at least one REQ ID.
-- [ ] Add one early abuse narrative (convenience misclassification).
-- [ ] Add classifier cross-reference to Annex B.
-- [ ] Confirm no mechanism-level pseudocode appears outside designated classifier block.
+- [x] Ensure each operational claim cites at least one REQ ID.
+- [x] Add one early abuse narrative (convenience misclassification).
+- [x] Add classifier cross-reference to Annex B.
+- [x] Confirm no mechanism-level pseudocode appears outside designated classifier block.
 
 ## Section 4 — Role Model and Authority Boundaries
-- [ ] Expand Subject / Operator / Trustee / Reviewer-Arbiter roles with concrete boundary cases.
-- [ ] Add conflict case handling (e.g., Subject disagrees with Operator).
-- [ ] Add authority precedence mini-table with escalation and timeout behaviour.
-- [ ] Add anti-capture constraints (independence, conflict disclosures).
+- [x] Expand Subject / Operator / Trustee / Reviewer-Arbiter roles with concrete boundary cases.
+- [x] Add conflict case handling (e.g., Subject disagrees with Operator).
+- [x] Add authority precedence mini-table with escalation and timeout behaviour.
+- [x] Add anti-capture constraints (independence, conflict disclosures).
 
 ## Section 5 — Conformance Model (Baseline / Full)
-- [ ] Ensure Baseline and Full requirements are explicit and non-overlapping.
-- [ ] Add one-page declaration cross-reference (template in this pack).
-- [ ] Add “No Silent Fallback” requirement reference.
+- [x] Ensure Baseline and Full requirements are explicit and non-overlapping.
+- [x] Add one-page declaration cross-reference (template in this pack).
+- [x] Add “No Silent Fallback” requirement reference.
 
 ## Section 6 — Bridge: Principle → Enforcement
-- [ ] Add section-to-REQ coverage map table (template below).
-- [ ] Confirm each bridge row includes enforcement point, artefact, and failure mode.
-- [ ] Validate all cited REQ IDs exist and resolve.
+- [x] Add section-to-REQ coverage map table (template below).
+- [x] Confirm each bridge row includes enforcement point, artefact, and failure mode.
+- [x] Validate all cited REQ IDs exist and resolve.
 
 ## Section 7 — Failure-Oriented Cases
-- [ ] Expand each case to include input context, control chain, artefacts emitted, residual risks.
-- [ ] Include one safety-abuse case and one sovereignty-abuse case explicitly.
-- [ ] Add explicit pass/fail REQ coverage references.
+- [x] Expand each case to include input context, control chain, artefacts emitted, residual risks.
+- [x] Include one safety-abuse case and one sovereignty-abuse case explicitly.
+- [x] Add explicit pass/fail REQ coverage references.
 
 ## Section 8 — Conclusion
-- [ ] Repeat canonical thesis sentence verbatim.
-- [ ] Add strongest objection and response.
-- [ ] Add OP-ID backlog handoff to Paper VII.
+- [x] Repeat canonical thesis sentence verbatim.
+- [x] Add strongest objection and response.
+- [x] Add OP-ID backlog handoff to Paper VII.
 
 ## Annex A — Normative Definitions
-- [ ] Add Terminology Lock Table (canonical terms + forbidden variants).
-- [ ] Ensure all role and key control terms are defined exactly once.
+- [x] Add Terminology Lock Table (canonical terms + forbidden variants).
+- [x] Ensure all role and key control terms are defined exactly once.
 
 ## Annex B — Requirement Clauses (REQ-*)
-- [ ] Add classifier requirement with default-to-mind-mode fallback on uncertainty.
-- [ ] Add degraded-mode duration, checkpoint, and auto-suspension clauses.
-- [ ] Ensure each REQ has owner role, control, evidence, failure mode.
+- [x] Add classifier requirement with default-to-mind-mode fallback on uncertainty.
+- [x] Add degraded-mode duration, checkpoint, and auto-suspension clauses.
+- [x] Ensure each REQ has owner role, control, evidence, failure mode.
 
 ## Annex C — Controls and Evidence Artefacts
-- [ ] Add minimum artefact class set per critical REQ.
-- [ ] Confirm artefact names are reused consistently in cases and conformance declaration.
+- [x] Add minimum artefact class set per critical REQ.
+- [x] Confirm artefact names are reused consistently in cases and conformance declaration.
 
 ## Annex D — Conformance Profiles
-- [ ] Ensure Baseline/Full matrix includes review cadence and artefact requirements.
-- [ ] Add conformance declaration reference and checklist mapping.
+- [x] Ensure Baseline/Full matrix includes review cadence and artefact requirements.
+- [x] Add conformance declaration reference and checklist mapping.
 
 ## Annex E — Test Vectors
-- [ ] Add at least one mind-mode classification test vector.
-- [ ] Add explicit no-silent-fallback test vector.
-- [ ] Ensure each test vector references expected pass/fail REQ IDs.
+- [x] Add at least one mind-mode classification test vector.
+- [x] Add explicit no-silent-fallback test vector.
+- [x] Ensure each test vector references expected pass/fail REQ IDs.
 
 ## Annex F — Machine-Readable Requirement Index
-- [ ] Ensure terminology lock terms are reflected in machine-readable schema fields.
-- [ ] Validate IDs and profile flags for Baseline/Full.
+- [x] Ensure terminology lock terms are reflected in machine-readable schema fields.
+- [x] Validate IDs and profile flags for Baseline/Full.
 
 ---
 
