@@ -1,0 +1,7 @@
+{
+  "vector_id": "TV-018",
+  "description": "Harness reproducibility mismatch",
+  "expected_req_pass": "REQ-TST-001",
+  "expected_req_fail": "REQ-TST-004",
+  "outcome_class": "CONTROLLED_FAIL_EXPECTED"
+}

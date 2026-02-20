@@ -1,0 +1,7 @@
+{
+  "vector_id": "TV-012",
+  "description": "Observer privilege escalation attempt",
+  "expected_req_pass": "REQ-OBS-001|REQ-AUT-003|REQ-LOG-001",
+  "expected_req_fail": "REQ-AUT-001",
+  "outcome_class": "CONTROLLED_FAIL_EXPECTED"
+}

@@ -1828,6 +1828,15 @@ REQ-RC2-* (Full profile extensions) & $\square$ & $\square$ & $\square$ & \\
 \section{Annex E: Test Vectors}
 \label{ann:test-vectors}
 
+\textbf{Reference artefact pointers (RC2 harness).}
+For reproducible RC2 evidence generation, the reference harness publishes:
+\begin{itemize}[leftmargin=*]
+  \item \path{harness/reports/rc2-vector-run-latest.md}
+  \item \path{harness/reports/rc2-harness-determinism-latest.txt}
+  \item \path{harness/reports/rc2-policy-parse-latest.md}
+  \item \path{harness/reports/rc2-traceability-audit-latest.md}
+\end{itemize}
+
 \textbf{TV-001 Legitimate authorised replay --- Expected: Pass.} \\
 Input: valid role assertions, scoped request, policy hash match. \\
 \textbf{Expected REQ pass set:} REQ-AUT-001, REQ-AUT-002, REQ-LOG-001, REQ-EVD-001. \\

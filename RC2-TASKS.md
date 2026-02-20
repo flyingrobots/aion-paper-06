@@ -3,7 +3,7 @@
 _Date created: 20 February 2026_  
 _Source baseline: RC2 parking list in `RC1_TASKBOARD.md`_
 
-Status marker: `- [ ]` = not started, `- [x]` = first-pass drafted (pending hardening + lock)
+Status marker: `- [ ]` = not started, `- [x]` = hardening complete and execution-locked
 
 ## Sequenced Checklist
 
@@ -27,6 +27,14 @@ Status marker: `- [ ]` = not started, `- [x]` = first-pass drafted (pending hard
 - Selected RC2 controls promoted into Annex B `REQ-*`: `REQ-OBS-001`, `REQ-RIL-001..002`, `REQ-SOV-001`, `REQ-WTD-001`, `REQ-FRK-001`, `REQ-DSL-001`, `REQ-TST-003..004`.
 - Full-profile RC2 conformance rows added in Annex D for the promoted controls.
 - RC2 verification vectors added in Annex E: `TV-012` to `TV-019`.
+
+## Executable Evidence Pointers
+
+- Harness matrix report: `harness/reports/rc2-vector-run-latest.md`
+- Harness determinism proof: `harness/reports/rc2-harness-determinism-latest.txt`
+- Policy DSL parser report: `harness/reports/rc2-policy-parse-latest.md`
+- RC2 traceability/orphan audit: `harness/reports/rc2-traceability-audit-latest.md`
+- Per-vector artefacts: `harness/reports/artifacts/TV-012.json` .. `harness/reports/artifacts/TV-019.json`
 
 ## Sequence Rationale
 
@@ -168,8 +176,8 @@ Status marker: `- [ ]` = not started, `- [x]` = first-pass drafted (pending hard
 
 ## Exit Criteria for RC2 Draft Complete
 
-- [ ] All eight `P2-*` tasks marked done.
-- [ ] Each new operational claim maps to at least one `REQ-*` clause.
-- [ ] No orphan `REQ-*` entries introduced.
-- [ ] Worked examples include artefact paths for independent verification.
-- [ ] Paper builds cleanly with no unresolved structural references.
+- [x] All eight `P2-*` tasks marked done.
+- [x] Each new operational claim maps to at least one `REQ-*` clause.
+- [x] No orphan `REQ-*` entries introduced.
+- [x] Worked examples include artefact paths for independent verification.
+- [x] Paper builds cleanly with no unresolved structural references.
