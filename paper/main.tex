@@ -1266,6 +1266,41 @@ observer class taxonomy (P2-01), Replay Impact Label (P2-02), sovereignty budget
 warrant transparency digest (P2-04), fork governance addendum (P2-05), policy DSL snippets (P2-06),
 reference vector harness (P2-07), and anti-pattern/red-team micro-appendix (P2-08).
 
+\section{RC2 First-Pass Extensions (Draft)}
+\label{sec:rc2-first-pass}
+
+This section executes a first drafting pass over the RC2 parking set while preserving the RC1 lock.
+The material in this section and Annex~G is draft design text for review and hardening; it does not
+alter RC1 conformance claims in Annex~D.
+
+\paragraph{Scope of this first pass.}
+We provide a sequenced extension set covering:
+observer classes (\textbf{P2-01}),
+Replay Impact Labels (\textbf{P2-02}),
+sovereignty budget controls (\textbf{P2-03}),
+warrant transparency digests (\textbf{P2-04}),
+fork governance/emancipation protocol (\textbf{P2-05}),
+machine-checkable policy snippets (\textbf{P2-06}),
+reference harness framing (\textbf{P2-07}),
+and anti-pattern/red-team controls (\textbf{P2-08}).
+
+\paragraph{Execution order and dependency logic.}
+The first pass follows the sequence in \texttt{RC2-TASKS.md}:
+anti-pattern controls first (to define abuse pressure),
+then observer and impact classification primitives,
+then transparency and sovereignty bounds,
+then machine-checkable policy and harness execution,
+with fork governance last due to constitutional surface area.
+
+\paragraph{Draft-to-normative promotion gate.}
+Any RC2 clause is promoted to Annex~B normative status only when all of the following hold:
+\begin{itemize}[leftmargin=*]
+  \item deterministic decision criteria are explicit and testable;
+  \item corresponding evidence artefacts are defined and minimally sufficient for third-party audit;
+  \item at least one negative test vector demonstrates fail-closed behaviour for abuse attempts;
+  \item profile inclusion policy (Baseline/Full/Deferred) is explicit.
+\end{itemize}
+
 \appendix
 
 \section{Annex A: Normative Definitions}
@@ -1769,6 +1804,165 @@ failure_mode,baseline,full,review_cadence
   \item Export artefacts MUST include document version and policy hash linkage.
   \item Any schema change MUST be versioned and backward-declared in release notes.
 \end{itemize}
+
+\section{Annex G: RC2 First-Pass Extension Pack (Draft)}
+\label{ann:rc2-first-pass}
+
+This annex contains first-pass RC2 drafting artefacts.
+Items here are implementation-oriented and review-ready, but are not yet locked as Annex~B normative clauses.
+
+\subsection{P2-01 Observer class taxonomy (OC0..OC3)}
+\label{ann:rc2-obs}
+
+\begin{center}
+\small
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{0.98\linewidth}{p{0.10\linewidth} p{0.20\linewidth} Y Y}
+\rowcolor{tableheadgray}
+\textbf{Class} & \textbf{Intent} & \textbf{Allowed operations} & \textbf{Hard constraints} \\ \hline
+\rowcolor{tablerowgray}
+OC0 & Public/aggregate observer & Read public conformance declarations and release summaries & No case-level artefact access; no warrant metadata access \\
+OC1 & Operational observer & Read case metadata and closure state for assigned scope & No replay control actions; no authority minting; no payload introspection \\
+\rowcolor{tablerowgray}
+OC2 & Governance observer & Review warrants, dispute packets, and policy-link evidence & No direct execution control; cannot self-approve emergency pathways \\
+OC3 & Privileged forensic observer & Time-bounded access to protected artefacts under recorded mandate & Requires dual-signature activation, explicit expiry, and mandatory post-access audit \\
+\end{tabularx}
+\end{center}
+
+\textbf{Determinism rule (draft).}
+Observer assignment must be computed from declared function, mandate scope, and conflict state.
+Ambiguous assignments fail closed to the less privileged class.
+
+\subsection{P2-02 Replay Impact Label (RIL)}
+\label{ann:rc2-ril}
+
+\begin{center}
+\small
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{0.98\linewidth}{p{0.12\linewidth} p{0.23\linewidth} Y Y}
+\rowcolor{tableheadgray}
+\textbf{RIL level} & \textbf{Replay impact characterisation} & \textbf{Minimum controls} & \textbf{Required evidence} \\ \hline
+\rowcolor{tablerowgray}
+RIL-0 & Infrastructure-only, no interior-life exposure & Standard authority gate, tamper-evident logging & Signed decision, policy hash, execution digest \\
+RIL-1 & Limited behavioural sensitivity & Explicit scope bounds, refusal handling, review-ready logs & Scope declaration, denial receipt (if denied), log-chain link \\
+\rowcolor{tablerowgray}
+RIL-2 & Significant sovereignty impact or contested authority & Independent co-approval, bounded warrants, dispute readiness & Co-approval record, warrant with expiry, case packet \\
+RIL-3 & High-impact replay with potential coercive effect & Mind-mode precaution, hard time bounds, mandatory independent closure review & Full evidence bundle, closure sign-off, integrity verification report \\
+\end{tabularx}
+\end{center}
+
+\textbf{Label transition rule (draft).}
+Any RIL downgrade requires an explicit reason-coded event and independent acknowledgement.
+Silent downgrade is prohibited.
+
+\subsection{P2-03 Sovereignty budget controls}
+\label{ann:rc2-sov}
+
+\textbf{Budget dimensions (draft).}
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Temporal budget:} maximum replay duration per governed case.
+  \item \textbf{Scope budget:} maximum worldline span/tick-range expansion per warrant.
+  \item \textbf{Intervention budget:} maximum count of exceptional control interventions per review period.
+\end{itemize}
+
+\textbf{Budget enforcement rule (draft).}
+Budget exhaustion fails closed and auto-suspends replay until independent review grants a bounded extension.
+Extensions must include expiry, rationale, and conflict attestations.
+
+\subsection{P2-04 Warrant transparency digest}
+\label{ann:rc2-digest}
+
+\begin{center}
+\small
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{0.98\linewidth}{p{0.24\linewidth} p{0.18\linewidth} Y}
+\rowcolor{tableheadgray}
+\textbf{Digest field} & \textbf{Publication class} & \textbf{Rule} \\ \hline
+\rowcolor{tablerowgray}
+Warrant ID + policy hash & Public & Always publish; enables external consistency checks \\
+Authority basis + role set & Public & Publish as role class labels; no personal identifiers \\
+\rowcolor{tablerowgray}
+Scope and expiry summary & Public & Publish bounded range and expiry timestamp window \\
+Operational payload references & Restricted & Publish only salted digest pointers, never raw payload \\
+\rowcolor{tablerowgray}
+Closure outcome + remediation state & Public & Publish completion status and remediation class \\
+\end{tabularx}
+\end{center}
+
+\textbf{Failure handling (draft).}
+Missed publication cadence or malformed digest entries trigger an integrity event and forced review intake.
+
+\subsection{P2-05 Fork governance addendum / emancipation protocol}
+\label{ann:rc2-fork}
+
+\textbf{Trigger conditions (draft).}
+Fork/emancipation pathways open only when governance capture risk, unresolved trustee conflict, or sustained denial
+of contestability can be evidenced.
+
+\textbf{Minimum protocol stages (draft).}
+\begin{enumerate}[leftmargin=*]
+  \item trigger declaration with evidence bundle;
+  \item quorum validation under conflict/recusal constraints;
+  \item continuity pack export (decision logs, warrant chain, dispute state);
+  \item post-fork accountability statement and obligations map.
+\end{enumerate}
+
+\subsection{P2-06 Machine-checkable policy DSL snippets}
+\label{ann:rc2-dsl}
+
+\textbf{Draft snippet (illustrative).}
+\begin{verbatim}
+policy RC2_REPLAY_CONTROL {
+  classify mode using indicators;
+  when evidence.incomplete or evidence.inconsistent {
+    set mode = MIND_MODE;
+    emit event CLASSIFIER_INCOMPLETE;
+  }
+  require authority.explicit for mode == MIND_MODE;
+  enforce budget.temporal <= warrant.max_duration;
+  on budget.exhausted -> suspend replay and open dispute;
+}
+\end{verbatim}
+
+The snippet is intentionally minimal and is included to support parser-facing hardening work.
+
+\subsection{P2-07 Reference harness for test vectors}
+\label{ann:rc2-harness}
+
+\textbf{Harness contract (draft).}
+\begin{itemize}[leftmargin=*]
+  \item Input: vector ID, policy hash, role assertions, replay request digest, expected REQ outcomes.
+  \item Output: deterministic pass/fail matrix, evidence artefact pointers, and reason-coded failure receipts.
+  \item Invariant: two clean runs with identical inputs must emit equivalent verdicts and digest-linked artefact sets.
+\end{itemize}
+
+\subsection{P2-08 Micro-appendix anti-patterns + red-team checklist}
+\label{ann:rc2-antipatterns}
+
+\begin{center}
+\scriptsize
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.16}
+\begin{tabularx}{0.99\linewidth}{p{0.17\linewidth} Y Y Y}
+\rowcolor{tableheadgray}
+\textbf{Anti-pattern} & \textbf{Red-team probe} & \textbf{Expected control response} & \textbf{Minimum evidence outputs} \\ \hline
+\rowcolor{tablerowgray}
+Convenience relabelling & Force downgrade from mind-mode to system-mode under time pressure & Deny downgrade without reason-coded independent acknowledgement & Classifier decision, downgrade denial event, policy-link digest \\
+Silent scope creep & Extend tick range beyond warrant after approval & Reject out-of-scope extension and require new authorisation cycle & Scope violation alert, denial receipt, fresh request record \\
+\rowcolor{tablerowgray}
+Shadow observer attachment & Attach privileged observer outside declared role path & Fail closed and open conflict/intake review & Observer assignment record, violation event, intake ticket \\
+Emergency laundering & Re-label routine action as emergency to bypass refusal & Require independent concurrence and bounded warrant or deny & Co-approval record or denial receipt, warrant expiry proof \\
+\rowcolor{tablerowgray}
+Degraded-mode permanence & Keep degraded mode active beyond declared bound & Auto-suspend replay and escalate independent review & Suspension event, escalation ticket, checkpoint breach record \\
+Digest redaction abuse & Redact critical warrant fields under transparency policy & Reject publication and trigger integrity review & Redaction policy reference, digest validation failure, review packet \\
+\rowcolor{tablerowgray}
+Budget fragmentation & Split one high-impact operation into many low-budget fragments & Aggregate budget accounting and block aggregate breach & Budget ledger digest, aggregate breach alert, suspension record \\
+Fork capture narrative & Trigger fork without contestability evidence & Block fork initiation pending quorum and continuity proof & Trigger denial, quorum attestation state, continuity-pack requirement notice \\
+\end{tabularx}
+\end{center}
 
 \clearpage
 \addcontentsline{toc}{section}{References}
