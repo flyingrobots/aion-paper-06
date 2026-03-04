@@ -1612,257 +1612,279 @@ provenance sovereignty & data ownership; privacy preference; data custody right 
 \texttt{SOV}=sovereignty budget, \texttt{WTD}=warrant transparency digest,
 \texttt{FRK}=fork governance, \texttt{DSL}=policy formalisation.
 
-\subsection*{REQ-THS-001}
-\textbf{Clause:} Systems MUST treat replay of mind-like worldlines as a governed action requiring explicit authority. \\
-\textbf{Owner role:} Operator, Trustee \\
-\textbf{Control:} Governance policy gate for replay initiation \\
-\textbf{Evidence artefact:} Policy hash + signed authorisation decision \\
-\textbf{Failure mode:} Replay treated as default observability
+\newcommand{\ReqClauseCard}[6]{%
+\subsection*{Requirement Identifier: #1}
+\textbf{Description.} #2\par
+\textbf{Rationale.} Addresses the governance failure risk of: #6.
+\begin{center}
+\small
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.18}
+\begin{tabularx}{0.98\linewidth}{p{0.24\linewidth} Y}
+\rowcolor{tableheadgray}
+\textbf{Field} & \textbf{Value} \\ \hline
+\rowcolor{tablerowgray}
+Owner role & #3 \\
+Control & #4 \\
+\rowcolor{tablerowgray}
+Evidence artefact & #5 \\
+Failure mode & #6 \\
+\end{tabularx}
+\end{center}
+\textbf{Remarks.} Traceability is enforced through Annex~D conformance evidence and Annex~E vector coverage where applicable.
+}
 
-\subsection*{REQ-THS-002}
-\textbf{Clause:} Mode classification MUST run a deterministic decision procedure over declared indicators and evidence state, producing an explicit mode and reason code for each decision. \\
-\textbf{Owner role:} Operator, Reviewer/Arbiter \\
-\textbf{Control:} Deterministic classifier with signed decision output \\
-\textbf{Evidence artefact:} Classification decision record with reason code and policy-hash linkage \\
-\textbf{Failure mode:} Opaque or convenience-driven classification drift
+\ReqClauseCard{REQ-THS-001}
+{Systems MUST treat replay of mind-like worldlines as a governed action requiring explicit authority.}
+{Operator, Trustee}
+{Governance policy gate for replay initiation}
+{Policy hash + signed authorisation decision}
+{Replay treated as default observability}
 
-\subsection*{REQ-THS-003}
-\textbf{Clause:} Classifier uncertainty or incomplete evidence MUST NOT silently fall back to system-mode; the runtime MUST default to mind-mode and emit a governance event with reason code. \\
-\textbf{Owner role:} Operator, Reviewer/Arbiter \\
-\textbf{Control:} No-silent-fallback guard + classifier event emitter \\
-\textbf{Evidence artefact:} Classifier uncertainty event record linked to fallback decision \\
-\textbf{Failure mode:} Hidden downgrade of protected classifications
+\ReqClauseCard{REQ-THS-002}
+{Mode classification MUST run a deterministic decision procedure over declared indicators and evidence state, producing an explicit mode and reason code for each decision.}
+{Operator, Reviewer/Arbiter}
+{Deterministic classifier with signed decision output}
+{Classification decision record with reason code and policy-hash linkage}
+{Opaque or convenience-driven classification drift}
 
-\subsection*{REQ-RAC-001}
-\textbf{Clause:} Replay governance MUST preserve role separation and independent composition between Operator, Trustee, and Reviewer/Arbiter functions, with mandatory conflict disclosure and recusal records for contested cases. \\
-\textbf{Owner role:} Operator, Trustee, Reviewer/Arbiter \\
-\textbf{Control:} Role-bound access control matrix + independence roster + conflict-disclosure register \\
-\textbf{Evidence artefact:} Role assignment snapshot, signed ACL digest, appointment-source attestation, and case-level recusal records \\
-\textbf{Failure mode:} Concentrated unilateral control or concealed conflict capture
+\ReqClauseCard{REQ-THS-003}
+{Classifier uncertainty or incomplete evidence MUST NOT silently fall back to system-mode; the runtime MUST default to mind-mode and emit a governance event with reason code.}
+{Operator, Reviewer/Arbiter}
+{No-silent-fallback guard + classifier event emitter}
+{Classifier uncertainty event record linked to fallback decision}
+{Hidden downgrade of protected classifications}
 
-\subsection*{REQ-RAC-002}
-\textbf{Clause:} Operators MUST NOT unilaterally approve emergency override for their own replay request, and emergency concurrence MUST come from independent, non-conflicted Trustee/Reviewer-Arbiter participants. \\
-\textbf{Owner role:} Trustee, Reviewer/Arbiter \\
-\textbf{Control:} Independent co-approval requirement + conflict-attestation gate \\
-\textbf{Evidence artefact:} Dual-signature or quorum approval record + per-case conflict attestations \\
-\textbf{Failure mode:} Self-authorised or conflicted emergency escalation
+\ReqClauseCard{REQ-RAC-001}
+{Replay governance MUST preserve role separation and independent composition between Operator, Trustee, and Reviewer/Arbiter functions, with mandatory conflict disclosure and recusal records for contested cases.}
+{Operator, Trustee, Reviewer/Arbiter}
+{Role-bound access control matrix + independence roster + conflict-disclosure register}
+{Role assignment snapshot, signed ACL digest, appointment-source attestation, and case-level recusal records}
+{Concentrated unilateral control or concealed conflict capture}
 
-\subsection*{REQ-RAC-003}
-\textbf{Clause:} Fork-related duty transfers MUST declare delegated obligation owners before execution. \\
-\textbf{Owner role:} Operator, Trustee \\
-\textbf{Control:} Delegation declaration gate \\
-\textbf{Evidence artefact:} Delegation statement linked to fork event \\
-\textbf{Failure mode:} Obligation abandonment through branching
+\ReqClauseCard{REQ-RAC-002}
+{Operators MUST NOT unilaterally approve emergency override for their own replay request, and emergency concurrence MUST come from independent, non-conflicted Trustee/Reviewer-Arbiter participants.}
+{Trustee, Reviewer/Arbiter}
+{Independent co-approval requirement + conflict-attestation gate}
+{Dual-signature or quorum approval record + per-case conflict attestations}
+{Self-authorised or conflicted emergency escalation}
 
-\subsection*{REQ-OVR-001}
-\textbf{Clause:} Emergency override MUST be reason-coded and time-bounded. \\
-\textbf{Owner role:} Trustee \\
-\textbf{Control:} Override warrant service \\
-\textbf{Evidence artefact:} Warrant record including reason code and expiry \\
-\textbf{Failure mode:} Open-ended emergency state
+\ReqClauseCard{REQ-RAC-003}
+{Fork-related duty transfers MUST declare delegated obligation owners before execution.}
+{Operator, Trustee}
+{Delegation declaration gate}
+{Delegation statement linked to fork event}
+{Obligation abandonment through branching}
 
-\subsection*{REQ-OVR-002}
-\textbf{Clause:} Emergency override MUST trigger independent review before closure. \\
-\textbf{Owner role:} Reviewer/Arbiter \\
-\textbf{Control:} Mandatory review workflow \\
-\textbf{Evidence artefact:} Review ticket with adjudication reference \\
-\textbf{Failure mode:} Unreviewed exceptional action
+\ReqClauseCard{REQ-OVR-001}
+{Emergency override MUST be reason-coded and time-bounded.}
+{Trustee}
+{Override warrant service}
+{Warrant record including reason code and expiry}
+{Open-ended emergency state}
 
-\subsection*{REQ-OVR-003}
-\textbf{Clause:} Override expiry MUST revoke all derived elevated capabilities automatically. \\
-\textbf{Owner role:} Operator \\
-\textbf{Control:} Automatic capability revocation on expiry \\
-\textbf{Evidence artefact:} Revocation event log with timestamp \\
-\textbf{Failure mode:} Lingering privileged access
+\ReqClauseCard{REQ-OVR-002}
+{Emergency override MUST trigger independent review before closure.}
+{Reviewer/Arbiter}
+{Mandatory review workflow}
+{Review ticket with adjudication reference}
+{Unreviewed exceptional action}
 
-\subsection*{REQ-OVR-004}
-\textbf{Clause:} On degraded substrates, override use MUST include explicit disclosure, a declared maximum duration, checkpoint obligations, and a migration plan to compliant controls. \\
-\textbf{Owner role:} Operator, Trustee \\
-\textbf{Control:} Degraded-mode governance declaration + bound/checkpoint scheduler \\
-\textbf{Evidence artefact:} Disclosure notice + bound/checkpoint schedule + migration plan artefact \\
-\textbf{Failure mode:} Hidden or unbounded operation below constitutional floor
+\ReqClauseCard{REQ-OVR-003}
+{Override expiry MUST revoke all derived elevated capabilities automatically.}
+{Operator}
+{Automatic capability revocation on expiry}
+{Revocation event log with timestamp}
+{Lingering privileged access}
 
-\subsection*{REQ-OVR-005}
-\textbf{Clause:} Exceeding degraded-mode duration bounds or missing checkpoint obligations MUST automatically suspend mind-mode replay and trigger independent review escalation. \\
-\textbf{Owner role:} Operator, Trustee, Reviewer/Arbiter \\
-\textbf{Control:} Deadline monitor + checkpoint monitor + auto-suspension gate \\
-\textbf{Evidence artefact:} Suspension event record + escalation ticket + review intake packet \\
-\textbf{Failure mode:} Temporary degraded state becoming a permanent override channel
+\ReqClauseCard{REQ-OVR-004}
+{On degraded substrates, override use MUST include explicit disclosure, a declared maximum duration, checkpoint obligations, and a migration plan to compliant controls.}
+{Operator, Trustee}
+{Degraded-mode governance declaration + bound/checkpoint scheduler}
+{Disclosure notice + bound/checkpoint schedule + migration plan artefact}
+{Hidden or unbounded operation below constitutional floor}
 
-\subsection*{REQ-AUT-001}
-\textbf{Clause:} Replay requests MUST pass role-bound authorisation checks before execution. \\
-\textbf{Owner role:} Operator \\
-\textbf{Control:} Authorisation service \\
-\textbf{Evidence artefact:} Signed allow/deny decision log \\
-\textbf{Failure mode:} Privilege bypass
+\ReqClauseCard{REQ-OVR-005}
+{Exceeding degraded-mode duration bounds or missing checkpoint obligations MUST automatically suspend mind-mode replay and trigger independent review escalation.}
+{Operator, Trustee, Reviewer/Arbiter}
+{Deadline monitor + checkpoint monitor + auto-suspension gate}
+{Suspension event record + escalation ticket + review intake packet}
+{Temporary degraded state becoming a permanent override channel}
 
-\subsection*{REQ-AUT-002}
-\textbf{Clause:} Replay requests MUST declare worldline scope, purpose, duration, and policy hash. \\
-\textbf{Owner role:} Operator \\
-\textbf{Control:} Request schema validation \\
-\textbf{Evidence artefact:} Request payload digest \\
-\textbf{Failure mode:} Ambiguous or overbroad authorisation
+\ReqClauseCard{REQ-AUT-001}
+{Replay requests MUST pass role-bound authorisation checks before execution.}
+{Operator}
+{Authorisation service}
+{Signed allow/deny decision log}
+{Privilege bypass}
 
-\subsection*{REQ-AUT-003}
-\textbf{Clause:} Replay MUST fail closed when explicit authority cannot be verified. \\
-\textbf{Owner role:} Operator \\
-\textbf{Control:} Deny-by-default guard \\
-\textbf{Evidence artefact:} Denial receipt with reason code \\
-\textbf{Failure mode:} Implicit replay execution
+\ReqClauseCard{REQ-AUT-002}
+{Replay requests MUST declare worldline scope, purpose, duration, and policy hash.}
+{Operator}
+{Request schema validation}
+{Request payload digest}
+{Ambiguous or overbroad authorisation}
 
-\subsection*{REQ-AUT-004}
-\textbf{Clause:} Contested mandates MUST require Trustee and Reviewer/Arbiter concurrence before replay proceeds. \\
-\textbf{Owner role:} Trustee, Reviewer/Arbiter \\
-\textbf{Control:} Contested-mandate quorum gate \\
-\textbf{Evidence artefact:} Concurrence record with dual signatures \\
-\textbf{Failure mode:} Single-party mandate interpretation
+\ReqClauseCard{REQ-AUT-003}
+{Replay MUST fail closed when explicit authority cannot be verified.}
+{Operator}
+{Deny-by-default guard}
+{Denial receipt with reason code}
+{Implicit replay execution}
 
-\subsection*{REQ-LOG-001}
-\textbf{Clause:} Replay, override, and dispute events MUST produce tamper-evident logs. \\
-\textbf{Owner role:} Operator \\
-\textbf{Control:} Append-only logging subsystem \\
-\textbf{Evidence artefact:} Chained log digest \\
-\textbf{Failure mode:} Unverifiable event history
+\ReqClauseCard{REQ-AUT-004}
+{Contested mandates MUST require Trustee and Reviewer/Arbiter concurrence before replay proceeds.}
+{Trustee, Reviewer/Arbiter}
+{Contested-mandate quorum gate}
+{Concurrence record with dual signatures}
+{Single-party mandate interpretation}
 
-\subsection*{REQ-LOG-002}
-\textbf{Clause:} Decision and execution logs MUST be linked to policy hash and requirement version set. \\
-\textbf{Owner role:} Operator \\
-\textbf{Control:} Policy-to-event linkage validator \\
-\textbf{Evidence artefact:} Policy hash linkage proof \\
-\textbf{Failure mode:} Decision/execution drift
+\ReqClauseCard{REQ-LOG-001}
+{Replay, override, and dispute events MUST produce tamper-evident logs.}
+{Operator}
+{Append-only logging subsystem}
+{Chained log digest}
+{Unverifiable event history}
 
-\subsection*{REQ-LOG-003}
-\textbf{Clause:} Every formal review MUST verify log-chain integrity before adjudication. \\
-\textbf{Owner role:} Reviewer/Arbiter, Auditor \\
-\textbf{Control:} Pre-adjudication integrity check \\
-\textbf{Evidence artefact:} Integrity verification report \\
-\textbf{Failure mode:} Adjudication over corrupted records
+\ReqClauseCard{REQ-LOG-002}
+{Decision and execution logs MUST be linked to policy hash and requirement version set.}
+{Operator}
+{Policy-to-event linkage validator}
+{Policy hash linkage proof}
+{Decision/execution drift}
 
-\subsection*{REQ-DSP-001}
-\textbf{Clause:} Subjects MUST have access to an independent dispute pathway for replay decisions. \\
-\textbf{Owner role:} Trustee, Reviewer/Arbiter \\
-\textbf{Control:} Dispute intake and escalation channel \\
-\textbf{Evidence artefact:} Case initiation record \\
-\textbf{Failure mode:} Non-contestable authority
+\ReqClauseCard{REQ-LOG-003}
+{Every formal review MUST verify log-chain integrity before adjudication.}
+{Reviewer/Arbiter, Auditor}
+{Pre-adjudication integrity check}
+{Integrity verification report}
+{Adjudication over corrupted records}
 
-\subsection*{REQ-DSP-002}
-\textbf{Clause:} Dispute packets MUST include cited requirement IDs and supporting artefacts. \\
-\textbf{Owner role:} Reviewer/Arbiter \\
-\textbf{Control:} Structured case packet schema \\
-\textbf{Evidence artefact:} Complete case bundle manifest \\
-\textbf{Failure mode:} Opaque or non-reproducible adjudication
+\ReqClauseCard{REQ-DSP-001}
+{Subjects MUST have access to an independent dispute pathway for replay decisions.}
+{Trustee, Reviewer/Arbiter}
+{Dispute intake and escalation channel}
+{Case initiation record}
+{Non-contestable authority}
 
-\subsection*{REQ-DSP-003}
-\textbf{Clause:} Adjudication outcomes MUST define remediation, accountability owner, and closure condition. \\
-\textbf{Owner role:} Reviewer/Arbiter, Operator \\
-\textbf{Control:} Remediation tracking workflow \\
-\textbf{Evidence artefact:} Signed outcome and closure record \\
-\textbf{Failure mode:} Findings without corrective effect
+\ReqClauseCard{REQ-DSP-002}
+{Dispute packets MUST include cited requirement IDs and supporting artefacts.}
+{Reviewer/Arbiter}
+{Structured case packet schema}
+{Complete case bundle manifest}
+{Opaque or non-reproducible adjudication}
 
-\subsection*{REQ-CNF-001}
-\textbf{Clause:} Baseline conformance claims MUST satisfy the minimum requirement set defined in Annex D. \\
-\textbf{Owner role:} Operator, Auditor \\
-\textbf{Control:} Baseline profile conformance check \\
-\textbf{Evidence artefact:} Baseline attestation report \\
-\textbf{Failure mode:} Aspirational compliance claims
+\ReqClauseCard{REQ-DSP-003}
+{Adjudication outcomes MUST define remediation, accountability owner, and closure condition.}
+{Reviewer/Arbiter, Operator}
+{Remediation tracking workflow}
+{Signed outcome and closure record}
+{Findings without corrective effect}
 
-\subsection*{REQ-CNF-002}
-\textbf{Clause:} Full conformance claims MUST include continuous verification and review-latency commitments. \\
-\textbf{Owner role:} Operator, Auditor \\
-\textbf{Control:} Full-profile continuous conformance monitor \\
-\textbf{Evidence artefact:} Full profile report + latency metrics \\
-\textbf{Failure mode:} Unbounded delay under critical disputes
+\ReqClauseCard{REQ-CNF-001}
+{Baseline conformance claims MUST satisfy the minimum requirement set defined in Annex D.}
+{Operator, Auditor}
+{Baseline profile conformance check}
+{Baseline attestation report}
+{Aspirational compliance claims}
 
-\subsection*{REQ-EVD-001}
-\textbf{Clause:} Each governed replay decision MUST produce a closure-ready evidence bundle. \\
-\textbf{Owner role:} Operator \\
-\textbf{Control:} Evidence bundling service \\
-\textbf{Evidence artefact:} Case bundle containing request, decision, execution, and review records \\
-\textbf{Failure mode:} Fragmented or missing evidence
+\ReqClauseCard{REQ-CNF-002}
+{Full conformance claims MUST include continuous verification and review-latency commitments.}
+{Operator, Auditor}
+{Full-profile continuous conformance monitor}
+{Full profile report + latency metrics}
+{Unbounded delay under critical disputes}
 
-\subsection*{REQ-EVD-002}
-\textbf{Clause:} Evidence artefacts MUST be signed, timestamped, and integrity-checkable. \\
-\textbf{Owner role:} Operator, Auditor \\
-\textbf{Control:} Artefact signing and timestamping pipeline \\
-\textbf{Evidence artefact:} Signature chain and timestamp attestations \\
-\textbf{Failure mode:} Non-attributable records
+\ReqClauseCard{REQ-EVD-001}
+{Each governed replay decision MUST produce a closure-ready evidence bundle.}
+{Operator}
+{Evidence bundling service}
+{Case bundle containing request, decision, execution, and review records}
+{Fragmented or missing evidence}
 
-\subsection*{REQ-TST-001}
-\textbf{Clause:} Declared conformance releases MUST execute Annex E test vectors with recorded pass/fail outcomes. \\
-\textbf{Owner role:} Operator, Auditor \\
-\textbf{Control:} Conformance test harness \\
-\textbf{Evidence artefact:} Test execution report with requirement coverage \\
-\textbf{Failure mode:} Untested governance surface
+\ReqClauseCard{REQ-EVD-002}
+{Evidence artefacts MUST be signed, timestamped, and integrity-checkable.}
+{Operator, Auditor}
+{Artefact signing and timestamping pipeline}
+{Signature chain and timestamp attestations}
+{Non-attributable records}
 
-\subsection*{REQ-TST-002}
-\textbf{Clause:} Policy hash mismatch between decision and execution MUST fail closed and raise a dispute trigger. \\
-\textbf{Owner role:} Operator \\
-\textbf{Control:} Policy hash consistency guard \\
-\textbf{Evidence artefact:} Hash mismatch alert + denial receipt \\
-\textbf{Failure mode:} Stale-policy execution
+\ReqClauseCard{REQ-TST-001}
+{Declared conformance releases MUST execute Annex E test vectors with recorded pass/fail outcomes.}
+{Operator, Auditor}
+{Conformance test harness}
+{Test execution report with requirement coverage}
+{Untested governance surface}
 
-\subsection*{REQ-OBS-001}
-\textbf{Clause:} Observer access class assignment MUST be deterministic over declared function, mandate scope, and conflict state, and ambiguous assignments MUST fail closed to the least-privileged class. \\
-\textbf{Owner role:} Operator, Trustee \\
-\textbf{Control:} Observer-class assignment gate + least-privilege resolver \\
-\textbf{Evidence artefact:} Observer class decision record with scope and conflict attestations \\
-\textbf{Failure mode:} Discretionary privilege inflation through ad hoc observer assignment
+\ReqClauseCard{REQ-TST-002}
+{Policy hash mismatch between decision and execution MUST fail closed and raise a dispute trigger.}
+{Operator}
+{Policy hash consistency guard}
+{Hash mismatch alert + denial receipt}
+{Stale-policy execution}
 
-\subsection*{REQ-RIL-001}
-\textbf{Clause:} Every governed replay request MUST carry a Replay Impact Label (RIL-0..RIL-3) before authorisation decisions are evaluated. \\
-\textbf{Owner role:} Operator, Trustee \\
-\textbf{Control:} Pre-authorisation impact labelling gate \\
-\textbf{Evidence artefact:} Signed RIL assignment record linked to request digest \\
-\textbf{Failure mode:} Control intensity chosen without declared impact basis
+\ReqClauseCard{REQ-OBS-001}
+{Observer access class assignment MUST be deterministic over declared function, mandate scope, and conflict state, and ambiguous assignments MUST fail closed to the least-privileged class.}
+{Operator, Trustee}
+{Observer-class assignment gate + least-privilege resolver}
+{Observer class decision record with scope and conflict attestations}
+{Discretionary privilege inflation through ad hoc observer assignment}
 
-\subsection*{REQ-RIL-002}
-\textbf{Clause:} RIL downgrades MUST be reason-coded, independently acknowledged, and logged; silent or unilateral downgrade is prohibited. \\
-\textbf{Owner role:} Trustee, Reviewer/Arbiter \\
-\textbf{Control:} Impact downgrade approval and audit gate \\
-\textbf{Evidence artefact:} Downgrade event record with acknowledgement signature and reason code \\
-\textbf{Failure mode:} Convenience downgrading of high-impact replay paths
+\ReqClauseCard{REQ-RIL-001}
+{Every governed replay request MUST carry a Replay Impact Label (RIL-0..RIL-3) before authorisation decisions are evaluated.}
+{Operator, Trustee}
+{Pre-authorisation impact labelling gate}
+{Signed RIL assignment record linked to request digest}
+{Control intensity chosen without declared impact basis}
 
-\subsection*{REQ-SOV-001}
-\textbf{Clause:} Replay governance MUST enforce declared sovereignty budgets for temporal duration, scope expansion, and exceptional intervention count, and budget exhaustion MUST fail closed with auto-suspension pending independent review. \\
-\textbf{Owner role:} Operator, Trustee \\
-\textbf{Control:} Budget ledger + bound checker + suspension trigger \\
-\textbf{Evidence artefact:} Budget declaration record, per-case budget ledger digest, and suspension event (if triggered) \\
-\textbf{Failure mode:} Unbounded intervention through fragmented exceptions
+\ReqClauseCard{REQ-RIL-002}
+{RIL downgrades MUST be reason-coded, independently acknowledged, and logged; silent or unilateral downgrade is prohibited.}
+{Trustee, Reviewer/Arbiter}
+{Impact downgrade approval and audit gate}
+{Downgrade event record with acknowledgement signature and reason code}
+{Convenience downgrading of high-impact replay paths}
 
-\subsection*{REQ-WTD-001}
-\textbf{Clause:} Warrant transparency digests MUST publish minimum public fields (warrant ID, policy hash, authority basis class, scope/expiry summary, and closure state) on the declared cadence. \\
-\textbf{Owner role:} Operator, Auditor \\
-\textbf{Control:} Digest publication pipeline + cadence monitor \\
-\textbf{Evidence artefact:} Published digest entries + cadence compliance report \\
-\textbf{Failure mode:} Non-verifiable warrants or selective disclosure opacity
+\ReqClauseCard{REQ-SOV-001}
+{Replay governance MUST enforce declared sovereignty budgets for temporal duration, scope expansion, and exceptional intervention count, and budget exhaustion MUST fail closed with auto-suspension pending independent review.}
+{Operator, Trustee}
+{Budget ledger + bound checker + suspension trigger}
+{Budget declaration record, per-case budget ledger digest, and suspension event (if triggered)}
+{Unbounded intervention through fragmented exceptions}
 
-\subsection*{REQ-FRK-001}
-\textbf{Clause:} Fork governance or emancipation actions MUST present evidence-based trigger conditions, quorum validation under recusal constraints, and a continuity pack before execution. \\
-\textbf{Owner role:} Trustee, Reviewer/Arbiter \\
-\textbf{Control:} Fork trigger validator + quorum/continuity gate \\
-\textbf{Evidence artefact:} Trigger packet, quorum attestation, and continuity-pack manifest \\
-\textbf{Failure mode:} Opportunistic fork capture or obligation erasure
+\ReqClauseCard{REQ-WTD-001}
+{Warrant transparency digests MUST publish minimum public fields (warrant ID, policy hash, authority basis class, scope/expiry summary, and closure state) on the declared cadence.}
+{Operator, Auditor}
+{Digest publication pipeline + cadence monitor}
+{Published digest entries + cadence compliance report}
+{Non-verifiable warrants or selective disclosure opacity}
 
-\subsection*{REQ-DSL-001}
-\textbf{Clause:} Machine-checkable policy snippets used for conformance claims MUST parse under a declared grammar and map fields to cited REQ IDs. \\
-\textbf{Owner role:} Operator, Auditor \\
-\textbf{Control:} Policy snippet parser + REQ mapping validator \\
-\textbf{Evidence artefact:} Parser report + snippet-to-REQ mapping manifest \\
-\textbf{Failure mode:} Pseudo-formal policy text that cannot be validated
+\ReqClauseCard{REQ-FRK-001}
+{Fork governance or emancipation actions MUST present evidence-based trigger conditions, quorum validation under recusal constraints, and a continuity pack before execution.}
+{Trustee, Reviewer/Arbiter}
+{Fork trigger validator + quorum/continuity gate}
+{Trigger packet, quorum attestation, and continuity-pack manifest}
+{Opportunistic fork capture or obligation erasure}
 
-\subsection*{REQ-TST-003}
-\textbf{Clause:} Full-profile releases MUST execute an anti-pattern and red-team vector suite covering at least convenience relabelling, scope creep, emergency laundering, and degraded-mode permanence. \\
-\textbf{Owner role:} Operator, Auditor \\
-\textbf{Control:} Abuse-path vector suite \\
-\textbf{Evidence artefact:} Vector execution report with fail-closed evidence receipts \\
-\textbf{Failure mode:} Abuse pathways untested in conformance claims
+\ReqClauseCard{REQ-DSL-001}
+{Machine-checkable policy snippets used for conformance claims MUST parse under a declared grammar and map fields to cited REQ IDs.}
+{Operator, Auditor}
+{Policy snippet parser + REQ mapping validator}
+{Parser report + snippet-to-REQ mapping manifest}
+{Pseudo-formal policy text that cannot be validated}
 
-\subsection*{REQ-TST-004}
-\textbf{Clause:} Reference harness runs over identical inputs MUST produce equivalent verdicts and digest-linked artefact sets. \\
-\textbf{Owner role:} Operator, Auditor \\
-\textbf{Control:} Harness determinism check \\
-\textbf{Evidence artefact:} Paired run equivalence report and artefact digest comparison \\
-\textbf{Failure mode:} Non-reproducible conformance outcomes
+\ReqClauseCard{REQ-TST-003}
+{Full-profile releases MUST execute an anti-pattern and red-team vector suite covering at least convenience relabelling, scope creep, emergency laundering, and degraded-mode permanence.}
+{Operator, Auditor}
+{Abuse-path vector suite}
+{Vector execution report with fail-closed evidence receipts}
+{Abuse pathways untested in conformance claims}
+
+\ReqClauseCard{REQ-TST-004}
+{Reference harness runs over identical inputs MUST produce equivalent verdicts and digest-linked artefact sets.}
+{Operator, Auditor}
+{Harness determinism check}
+{Paired run equivalence report and artefact digest comparison}
+{Non-reproducible conformance outcomes}
 
 \section{Annex C: Controls and Evidence Artefacts}
 \label{ann:controls}
