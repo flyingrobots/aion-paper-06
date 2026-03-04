@@ -2,6 +2,8 @@
 
 ## WARP Graphs: Ethics of Deterministic Replay & Provenance Sovereignty
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18863648.svg)](https://doi.org/10.5281/zenodo.18863648)
+
 - DOI: [10.5281/zenodo.18863648](https://doi.org/10.5281/zenodo.18863648)
 - Author: James Ross (ORCID: [0009-0006-0025-7801](https://orcid.org/0009-0006-0025-7801))
 - Date: March 2026
