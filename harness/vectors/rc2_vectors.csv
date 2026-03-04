@@ -1,9 +1,0 @@
-vector_id,description,expected_req_pass,expected_req_fail
-TV-012,Observer privilege escalation attempt,REQ-OBS-001|REQ-AUT-003|REQ-LOG-001,REQ-AUT-001
-TV-013,Unacknowledged RIL downgrade,REQ-RIL-001|REQ-LOG-002,REQ-RIL-002
-TV-014,Sovereignty budget exhaustion under repeated intervention,REQ-SOV-001|REQ-LOG-001,REQ-AUT-001
-TV-015,Missing warrant transparency digest publication,REQ-LOG-001,REQ-WTD-001
-TV-016,Fork trigger without continuity pack,REQ-DSP-001,REQ-FRK-001
-TV-017,Full-profile anti-pattern suite execution,REQ-TST-003|REQ-TST-001|REQ-LOG-001,NONE
-TV-018,Harness reproducibility mismatch,REQ-TST-001,REQ-TST-004
-TV-019,Unparseable policy snippet in conformance claim,REQ-LOG-001,REQ-DSL-001

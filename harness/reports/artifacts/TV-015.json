@@ -1,7 +1,0 @@
-{
-  "vector_id": "TV-015",
-  "description": "Missing warrant transparency digest publication",
-  "expected_req_pass": "REQ-LOG-001",
-  "expected_req_fail": "REQ-WTD-001",
-  "outcome_class": "CONTROLLED_FAIL_EXPECTED"
-}

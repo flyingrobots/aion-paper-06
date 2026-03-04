@@ -1,7 +1,7 @@
 LATEXMK = latexmk
 SRC     = paper/main.tex
-DEPS    = paper/macros.tex paper/diagrams.tex paper/refs.bib paper/aion.cls $(wildcard paper/figures/*)
-JOBNAME = aion-paper-06-ethics-deterministic-replay-provenance-sovereignty
+DEPS    = paper/refs.bib
+JOBNAME = aion-paper-06-ethics
 PDFDIR  = pdf
 
 .PHONY: all clean veryclean

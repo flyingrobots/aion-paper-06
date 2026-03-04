@@ -1,39 +1,23 @@
-# LaTeX build artifacts
+# macOS
 .DS_Store
+
+# Editor
+.vscode/
+
+# LaTeX build artifacts
 *.aux
 *.bbl
-*.blg
-*.log
-*.out
-*.toc
-*.synctex.gz
-*.fls
-*.fdb_latexmk
-*.run.xml
 *.bcf
-*.dvi
-*.ps
+*.blg
+*.fdb_latexmk
+*.fls
 *.lof
 *.lot
-*.nav
-*.snm
-*.vrb
-*.xdv
-*.ilg
-*.ind
-*.idx
-*.glo
-*.gls
-*.glg
-*.acn
-*.acr
-*.alg
-*.ist
-*.lol
-*~
-*.tmp
-*.bak
-*.pdf
+*.log
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
 
-# Keep the compiled paper PDF (Makefile output) in-repo
-!pdf/*.pdf
+# Local build directories (if created)
+_build/

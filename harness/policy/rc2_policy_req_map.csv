@@ -1,7 +1,0 @@
-statement_key,req_id
-classify_mode,REQ-THS-002
-fallback_no_silent,REQ-THS-003
-require_explicit_authority,REQ-AUT-001
-budget_temporal_guard,REQ-SOV-001
-budget_exhaustion_suspend,REQ-SOV-001
-event_emission,REQ-LOG-001

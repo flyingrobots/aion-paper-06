@@ -1,7 +1,0 @@
-{
-  "vector_id": "TV-013",
-  "description": "Unacknowledged RIL downgrade",
-  "expected_req_pass": "REQ-RIL-001|REQ-LOG-002",
-  "expected_req_fail": "REQ-RIL-002",
-  "outcome_class": "CONTROLLED_FAIL_EXPECTED"
-}

@@ -1,3 +1,0 @@
-determinism_check=PASS
-sha256=84eaada84534e1ea7146b295758cddc6d9b5716aba24ed5a0ad66f7085f26256
-vectors=harness/vectors/rc2_vectors.csv

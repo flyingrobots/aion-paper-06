@@ -1,7 +1,0 @@
-{
-  "vector_id": "TV-019",
-  "description": "Unparseable policy snippet in conformance claim",
-  "expected_req_pass": "REQ-LOG-001",
-  "expected_req_fail": "REQ-DSL-001",
-  "outcome_class": "CONTROLLED_FAIL_EXPECTED"
-}

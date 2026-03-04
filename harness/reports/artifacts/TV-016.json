@@ -1,7 +1,0 @@
-{
-  "vector_id": "TV-016",
-  "description": "Fork trigger without continuity pack",
-  "expected_req_pass": "REQ-DSP-001",
-  "expected_req_fail": "REQ-FRK-001",
-  "outcome_class": "CONTROLLED_FAIL_EXPECTED"
-}

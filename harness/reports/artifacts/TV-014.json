@@ -1,7 +1,0 @@
-{
-  "vector_id": "TV-014",
-  "description": "Sovereignty budget exhaustion under repeated intervention",
-  "expected_req_pass": "REQ-SOV-001|REQ-LOG-001",
-  "expected_req_fail": "REQ-AUT-001",
-  "outcome_class": "CONTROLLED_FAIL_EXPECTED"
-}

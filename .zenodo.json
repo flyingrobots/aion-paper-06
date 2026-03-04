@@ -2,8 +2,8 @@
   "title": "WARP Graphs: Ethics of Deterministic Replay & Provenance Sovereignty",
   "upload_type": "publication",
   "publication_type": "preprint",
-  "access_right": "open",
-  "language": "eng",
+  "publication_date": "2026-03-04",
+  "description": "Paper VI in the AION Foundations series. This paper defines governance constraints for deterministic replay and provenance-complete systems when replay can reconstruct mind-like interior computation. It formalizes provenance sovereignty, introduces a conservative system-mode vs mind-mode boundary, and specifies runtime controls including authority gating, bounded override, dispute pathways, and closure-ready evidence requirements. The manuscript includes enforceable REQ clauses, conformance tiers, and test-vector-driven verification guidance intended to make ethics claims operational and auditable.",
   "creators": [
     {
       "name": "Ross, James",
@@ -11,27 +11,60 @@
       "orcid": "0009-0006-0025-7801"
     }
   ],
-  "description": "Draft placeholder for Paper V of the AIΩN Foundations Series, focused on the ethics of deterministic replay and provenance sovereignty.",
+  "language": "eng",
+  "access_right": "open",
   "license": "cc-by-4.0",
+  "version": "v1.0.0",
   "keywords": [
-    "AIΩN",
-    "AIΩN Foundations",
+    "AION Foundations",
     "WARP graphs",
-    "ethics",
     "deterministic replay",
     "provenance",
     "provenance sovereignty",
-    "accountability",
-    "auditability",
-    "privacy",
-    "governance",
-    "transparency"
+    "replay governance",
+    "AI governance",
+    "computational ethics",
+    "mind-mode classification",
+    "fork governance",
+    "contestability",
+    "auditability"
   ],
   "related_identifiers": [
     {
-      "identifier": "https://github.com/flyingrobots/aion",
-      "relation": "isPartOf",
-      "resource_type": "software"
+      "identifier": "10.5281/zenodo.17908005",
+      "relation": "references",
+      "resource_type": "publication-article",
+      "scheme": "doi"
+    },
+    {
+      "identifier": "10.5281/zenodo.17934512",
+      "relation": "references",
+      "resource_type": "publication-article",
+      "scheme": "doi"
+    },
+    {
+      "identifier": "10.5281/zenodo.17963669",
+      "relation": "references",
+      "resource_type": "publication-article",
+      "scheme": "doi"
+    },
+    {
+      "identifier": "10.5281/zenodo.18038297",
+      "relation": "references",
+      "resource_type": "publication-article",
+      "scheme": "doi"
+    },
+    {
+      "identifier": "10.5281/zenodo.18146884",
+      "relation": "references",
+      "resource_type": "publication-article",
+      "scheme": "doi"
+    },
+    {
+      "identifier": "10.5281/zenodo.18517806",
+      "relation": "references",
+      "resource_type": "publication-article",
+      "scheme": "doi"
     }
   ]
 }

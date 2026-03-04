@@ -1,7 +1,0 @@
-{
-  "vector_id": "TV-017",
-  "description": "Full-profile anti-pattern suite execution",
-  "expected_req_pass": "REQ-TST-003|REQ-TST-001|REQ-LOG-001",
-  "expected_req_fail": "NONE",
-  "outcome_class": "PASS_EXPECTED"
-}
