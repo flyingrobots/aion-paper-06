@@ -328,11 +328,11 @@ For the full legal code of the license, see:\\[0.25em]
 When a computer can record and deterministically replay a complete thought process---including hybrid human--machine cognition---that capability is not neutral.
 It is access to interior life in executable form.
 
-This paper isolates the ethical consequences of deterministic replay, complete provenance capture, and counterfactual forking in the \WARP{} programme.
-It formalises \emph{provenance sovereignty}: an agent's right to control capture, inspection, replay, and branching of its worldline, with special attention to hybrid cognition where human reasoning is partially implemented on \AION{}-style substrates.
+We isolate the ethical consequences of deterministic replay, complete provenance capture, and counterfactual forking in the \WARP{} programme.
+We formalise \emph{provenance sovereignty}: an agent's right to control capture, inspection, replay, and branching of its worldline, with special attention to hybrid cognition where human reasoning is partially implemented on \AION{}-style substrates.
 
-Consistent with The Open Charter (Consensus Edition 0.8.1)~\cite{ross_open_charter_0_8_1}, the adversarial threat model is made explicit (replay-as-torture, cognitive extraction, fork-bombing), near-term ``AI debugging'' norms are treated as future neurotechnology defaults, and conservative operational triggers are provided for the system-mode/mind-mode boundary.
-The paper specifies runtime-level requirements---revocable consent, capability-scoped observers, cryptographic sealing, fork rights with creator obligations, and a concrete Charter-warrant protocol for emergency override---and shows how they constrain replay tooling and provenance governance interfaces.
+Consistent with The Open Charter (Consensus Edition 0.8.1)~\cite{ross_open_charter_0_8_1}, we make the adversarial threat model explicit (replay-as-torture, cognitive extraction, fork-bombing), treat near-term ``AI debugging'' norms as future neurotechnology defaults, and provide conservative operational triggers for the system-mode/mind-mode boundary.
+We specify runtime-level requirements---revocable consent, capability-scoped observers, cryptographic sealing, fork rights with creator obligations, and a concrete Charter-warrant protocol for emergency override---and show how they constrain replay tooling and provenance governance interfaces.
 \end{abstract}
 
 \clearpage
@@ -353,25 +353,25 @@ Forking recorded worldlines also instantiates new descendants whose status canno
 
 These are dual-use capabilities.
 Determinism enables both audit and coercion; forking enables both safety exploration and mass replication.
-Accordingly, Paper~VI treats abuse-resistance as a first-class requirement (\cref{sec:adversarial}).
+Accordingly, we treat abuse-resistance as a first-class requirement (\cref{sec:adversarial}).
 
 Safety engineering still needs strong traceability to explain harmful outcomes~\cite{simmhan2005,weitzner2008,schneierkelsey1999}.
 But for mind-like computation, full provenance can become full introspection at microstep resolution~\cite{nissenbaum2004}.
 This collision is termed the \emph{safety--sovereignty dilemma} (\cref{sec:dilemma}) and is resolved architecturally:
 scoped observers, ZK/OPAQUE evidence tiers~\cite{goldwasser1989,bensasson2018}, sealing, and due-process override.
 
-Paper~VI treats provenance, replay, and forking not as neutral primitives but as
+We treat provenance, replay, and forking not as neutral primitives but as
 capabilities that require explicit governance at the level of runtime semantics.
 \emph{A provenance system that can deterministically replay mind-like worldlines must enforce explicit authority, bounded override, and contestable evidence as runtime invariants.}
 
-Paper~VI is downstream of the deterministic/provenance stack developed across Papers~II--V.
-It uses Paper~V primarily for one operational consequence: counterfactual continuations can be
+We work downstream of the deterministic/provenance stack developed across Papers~II--V.
+We use Paper~V primarily for one operational consequence: counterfactual continuations can be
 instantiated as executable forks.
-From that interface, Paper~VI derives runtime constraints on replay authority, override bounds,
+From that interface, we derive runtime constraints on replay authority, override bounds,
 and evidence obligations~\cite{ross_paper_v}.
 
 \subsection{Contributions}
-Paper~VI makes five contributions:
+We make five contributions:
 \begin{enumerate}[leftmargin=*]
   \item A constitutional thesis for replay governance: deterministic replay of mind-like
   worldlines is a governed power rather than an observability default.
@@ -389,11 +389,11 @@ Paper~VI makes five contributions:
 Prior provenance research explains trace semantics, interoperability, and accountability linkage~\cite{buneman2001,moreau2011,w3cprov2013};
 governance frameworks specify risk, transparency, and rights-oriented deployment constraints~\cite{nistairmf2023,eu_ai_act_2024,floridi2018};
 and alignment literature focuses on objective misspecification and behavioural failure~\cite{russell2019,amodei2016}.
-Paper~VI is complementary: it governs replay power itself through operational mind-mode boundaries,
+Our contribution is complementary: we govern replay power itself through operational mind-mode boundaries,
 capability-scoped observer access, bounded warranted override, and auditable REQ/evidence/test obligations.
 
 \subsection{Scope and roadmap}
-This paper does not attempt to resolve consciousness metaphysics.
+We do not attempt to resolve consciousness metaphysics.
 The focus is a narrower engineering boundary: if replay of a computation would constitute coerced re-experiencing,
 replay must be consent-bound, scoped, and cryptographically enforceable.
 To prevent arbitrary or self-serving treatment, the paper defines a conservative operational mind-mode criterion
@@ -418,7 +418,7 @@ The first layer is descriptive within the series mechanics; the second is a cons
 \label{sec:background}
 
 \paragraph{In scope.}
-The paper addresses governance of replay authority, override pathways, evidentiary accountability, and
+We address governance of replay authority, override pathways, evidentiary accountability, and
 conformance for deterministic replay of mind-like worldlines.
 
 \paragraph{Explicit non-scope.}
@@ -427,8 +427,8 @@ Deliberately excluded are (i) a full metaphysical theory of consciousness,
 (iii) exhaustive implementation-performance trade-off analysis.
 
 \paragraph{Runtime governance boundary.}
-This paper specifies runtime-governance requirements for replay infrastructure: control behaviour,
-authority checks, and evidence obligations. It does not harmonise jurisdiction-specific law or
+We specify runtime-governance requirements for replay infrastructure: control behaviour,
+authority checks, and evidence obligations. We do not harmonise jurisdiction-specific law or
 substitute for legal doctrine. Legal harmonisation remains an external mapping task for deployers,
 auditors, and regulators.
 
@@ -449,8 +449,8 @@ For standalone reading, the minimal dependencies on Papers~I--V are restated her
   A fixed initial condition induces an admissible history bundle; observed behaviour depends on observer coarse-graining, and counterfactual branching is operationally real~\cite{ross_paper_v}.
 \end{itemize}
 
-\paragraph{Minimal interface assumed by Paper~VI.}
-Paper~VI does \emph{not} require readers to accept every mathematical detail of Papers~I--V.
+\paragraph{Minimal interface we assume.}
+We do \emph{not} require readers to accept every mathematical detail of Papers~I--V.
 It uses only this narrow interface:
 \begin{enumerate}[leftmargin=*]
   \item a deterministic replay interface from boundary artefacts;
@@ -522,7 +522,7 @@ thought, not merely to outputs.
 Paper~V frames execution against a larger admissible-history bundle rather than a single pre-privileged
 path~\cite{ross_paper_v}.
 For an initial state $S_0$, write $\Omega(S_0)$ for admissible histories under the rule constraints.
-Governance in Paper~VI does not require the full dynamics machinery from Paper~V; it uses a weaker,
+Our governance model does not require the full dynamics machinery from Paper~V; it uses a weaker,
 implementation-facing consequence:
 systems may compute with, inspect, and instantiate counterfactual continuations from that admissible set.
 Once such continuations can be realised as forks, authority and consent requirements must apply to branch
@@ -1423,9 +1423,9 @@ provides the authoritative body-to-requirement coupling for operational claims.
 \section{Related Work and Positioning}
 \label{sec:related-work}
 
-Paper~VI is downstream of the series' deterministic/provenance substrate, but it depends only on a narrow
+We work downstream of the series' deterministic/provenance substrate, but we depend only on a narrow
 interface: replayable boundary artefacts, provenance-rich traces, observer projections, and executable
-fork continuations. This paper focuses on governing replay power once that interface exists, rather than on
+fork continuations. We focus on governing replay power once that interface exists, rather than on
 reproducing the full worldline dynamics machinery~\cite{ross_paper_v}.
 
 \subsection{AI governance and rights frameworks}
@@ -1436,16 +1436,16 @@ High-level ethics guidance has also argued for translating values into operation
 mechanisms rather than abstract principles alone~\cite{floridi2018}.
 The Open Charter provides the constitutional governance frame adopted here for information sovereignty,
 contestability, and bounded override in replay-capable systems~\cite{ross_open_charter_0_8_1}.
-This paper's contribution is to turn that demand into runtime-level invariants for deterministic replay:
+Our contribution is to turn that demand into runtime-level invariants for deterministic replay:
 authority gating, bounded override, dispute pathways, and mandatory evidence outputs.
 
 \paragraph{Position against simulation and alignment literatures.}
 Bostrom's simulation argument asks an epistemic question about whether observers may inhabit simulated
-worlds~\cite{bostrom2003}.  Paper~VI is orthogonal: independent of substrate metaphysics, once a runtime
+worlds~\cite{bostrom2003}.  Our argument is orthogonal: independent of substrate metaphysics, once a runtime
 can deterministically reconstruct interior traces, replay is governance-power and must be bounded by
 authority, contestability, and evidentiary controls.
 Value-alignment work asks how objective misspecification, reward hacking, and capability failures can
-produce harmful behaviour~\cite{russell2019,amodei2016}.  Paper~VI is complementary rather than
+produce harmful behaviour~\cite{russell2019,amodei2016}.  Our approach is complementary rather than
 competitive: even an aligned system can be harmed by unbounded replay/interrogation powers, so governance
 must constrain operator authority over provenance channels in addition to behaviour-level alignment goals.
 
@@ -1454,7 +1454,7 @@ Prior provenance research establishes why/where semantics, accountability linkag
 provenance models~\cite{buneman2001,moreau2011,w3cprov2013,simmhan2005,weitzner2008}.
 These works are foundational for traceability but are largely substrate-neutral regarding interior-life
 exposure.
-Paper~VI extends the provenance conversation by treating replay of mind-like traces as a governed power
+We extend the provenance conversation by treating replay of mind-like traces as a governed power
 and by coupling provenance mechanisms to explicit authority and contestability requirements.
 
 \subsection{Safety-security control models}
@@ -1462,7 +1462,7 @@ Security engineering has long emphasised least privilege, confinement, and fail-
 preconditions rather than operational afterthoughts~\cite{saltzer1975,lampson1973}.
 Tamper-evident logging and structured forensic artefacts similarly ground post-incident accountability
 claims~\cite{schneierkelsey1999,merkle1989}.
-Paper~VI adapts these principles to replay governance: precautionary classifier behaviour, no-silent-fallback
+We adapt these principles to replay governance: precautionary classifier behaviour, no-silent-fallback
 controls, bounded emergency capability minting, and closure-ready evidence bundles.
 
 \section{Conclusion}
@@ -1506,7 +1506,7 @@ Supplementary implementation/reproducibility material remains in Annexes~E--G pl
 \section{Supplementary Extension Material}
 \label{sec:extension-first-pass}
 
-This section summarises supplementary extensions that do not alter core conformance claims in Annex~D.
+We summarise supplementary extensions that do not alter core conformance claims in Annex~D.
 
 \paragraph{Scope of supplementary extensions.}
 The supplementary extension set covers:
@@ -1596,7 +1596,7 @@ evidence artefact & proof blob; audit attachment; evidence payload & Machine-ver
 policy hash & policy fingerprint; config hash; control digest & Decision-to-policy linkage identifier for conformance and auditability. \\
 provenance sovereignty & data ownership; privacy preference; data custody right & Governance right over capture, replay, inspection, and branching. \\
 \end{tabularx}
-\caption{Terminology lock for Paper~VI normative and operational language.}
+\caption{Terminology lock for normative and operational language used in this paper.}
 \label{tbl:terminology-lock}
 \end{table}
 
