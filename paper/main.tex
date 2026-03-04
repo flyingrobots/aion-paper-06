@@ -106,6 +106,31 @@
 \usepackage{tabularx}
 \usepackage{colortbl}
 \usetikzlibrary{arrows.meta,positioning,decorations.pathreplacing,calc,shapes.geometric,fit}
+\makeatletter
+\renewenvironment{thebibliography}[1]
+     {\section*{\refname}%
+      \@mkboth{\MakeUppercase\refname}{\MakeUppercase\refname}%
+      \small
+      \list{\@biblabel{\@arabic\c@enumiv}}%
+           {\settowidth\labelwidth{\@biblabel{#1}}%
+            \leftmargin\labelwidth
+            \advance\leftmargin\labelsep
+            \@openbib@code
+            \setlength{\itemsep}{0.18em}%
+            \setlength{\parsep}{0pt}%
+            \setlength{\parskip}{0pt}%
+            \usecounter{enumiv}%
+            \let\p@enumiv\@empty
+            \renewcommand\theenumiv{\@arabic\c@enumiv}}%
+      \sloppy
+      \clubpenalty4000
+      \@clubpenalty \clubpenalty
+      \widowpenalty4000%
+      \sfcode`\.\@m}
+     {\def\@noitemerr
+       {\@latex@warning{Empty `thebibliography' environment}}%
+      \endlist}
+\makeatother
 
 % Inlined support macros/diagrams (previously in macros.tex + diagrams.tex)
 \newcommand{\AION}{\textrm{AI}\ensuremath{\Omega}\textrm{N}}
