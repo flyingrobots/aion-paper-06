@@ -12,6 +12,8 @@ This repository is intentionally minimal and contains only the files needed to b
 
 ## Layout
 
+- `LICENSE` — CC BY 4.0 license notice
+- `CITATION.cff` — Citation metadata for GitHub and downstream tools
 - `.zenodo.json` — Zenodo metadata (title, description, creators, keywords, related identifiers)
 - `paper/main.tex` — Canonical manuscript source
 - `paper/refs.bib` — Bibliography database
