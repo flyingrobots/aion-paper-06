@@ -1510,14 +1510,14 @@ This section summarises supplementary extensions that do not alter core conforma
 
 \paragraph{Scope of supplementary extensions.}
 The supplementary extension set covers:
-observer classes (\textbf{P2-01}),
-Replay Impact Labels (\textbf{P2-02}),
-sovereignty budget controls (\textbf{P2-03}),
-warrant transparency digests (\textbf{P2-04}),
-fork governance/emancipation protocol (\textbf{P2-05}),
-machine-checkable policy snippets (\textbf{P2-06}),
-reference harness framing (\textbf{P2-07}),
-and anti-pattern/red-team controls (\textbf{P2-08}).
+observer classes (\textbf{Annex G.1}),
+Replay Impact Labels (\textbf{Annex G.2}),
+sovereignty budget controls (\textbf{Annex G.3}),
+warrant transparency digests (\textbf{Annex G.4}),
+fork governance/emancipation protocol (\textbf{Annex G.5}),
+machine-checkable policy snippets (\textbf{Annex G.6}),
+reference harness framing (\textbf{Annex G.7}),
+and anti-pattern/red-team controls (\textbf{Annex G.8}).
 
 \paragraph{Execution order and dependency logic.}
 Dependency order is: anti-pattern controls, observer/impact primitives, transparency/sovereignty bounds, machine-checkable policy plus harness execution, then fork governance.
@@ -1531,8 +1531,8 @@ Any extension clause is promoted to Annex~B normative status only when all of th
   \item profile inclusion policy (Baseline/Full/Deferred) is explicit.
 \end{itemize}
 
-\paragraph{Hardening pass 2 promotion (selected controls).}
-This pass promotes selected extension controls into Annex~B:
+\paragraph{Supplementary-to-normative promotion (selected controls).}
+This promotion set moves selected extension controls into Annex~B:
 REQ-OBS-001,
 REQ-RIL-001..002,
 REQ-SOV-001,
@@ -2324,7 +2324,7 @@ The JSON envelope includes \texttt{source\_sha256} for source-linkage integrity.
 This annex contains supplementary extension artefacts.
 Items here are implementation-oriented and review-ready; selected controls are now promoted into Annex~B for Full-profile hardening, while this annex retains design detail and extension context.
 
-\subsection{P2-01 Observer class taxonomy (OC0..OC3)}
+\subsection{Annex G.1 Observer class taxonomy (OC0..OC3)}
 \label{ann:ext-obs}
 
 \begin{center}
@@ -2347,7 +2347,7 @@ OC3 & Privileged forensic observer & Time-bounded access to protected artefacts 
 Observer assignment must be computed from declared function, mandate scope, and conflict state.
 Ambiguous assignments fail closed to the less privileged class.
 
-\subsection{P2-02 Replay Impact Label (RIL)}
+\subsection{Annex G.2 Replay Impact Label (RIL)}
 \label{ann:ext-ril}
 
 \begin{center}
@@ -2370,7 +2370,7 @@ RIL-3 & High-impact replay with potential coercive effect & Mind-mode precaution
 Any RIL downgrade requires an explicit reason-coded event and independent acknowledgement.
 Silent downgrade is prohibited.
 
-\subsection{P2-03 Sovereignty budget controls}
+\subsection{Annex G.3 Sovereignty budget controls}
 \label{ann:ext-sov}
 
 \textbf{Budget dimensions.}
@@ -2384,7 +2384,7 @@ Silent downgrade is prohibited.
 Budget exhaustion fails closed and auto-suspends replay until independent review grants a bounded extension.
 Extensions must include expiry, rationale, and conflict attestations.
 
-\subsection{P2-04 Warrant transparency digest}
+\subsection{Annex G.4 Warrant transparency digest}
 \label{ann:ext-digest}
 
 \begin{center}
@@ -2408,7 +2408,7 @@ Closure outcome + remediation state & Public & Publish completion status and rem
 \textbf{Failure handling.}
 Missed publication cadence or malformed digest entries trigger an integrity event and forced review intake.
 
-\subsection{P2-05 Fork governance addendum / emancipation protocol}
+\subsection{Annex G.5 Fork governance addendum / emancipation protocol}
 \label{ann:ext-fork}
 
 \textbf{Trigger conditions.}
@@ -2423,7 +2423,7 @@ of contestability can be evidenced.
   \item post-fork accountability statement and obligations map.
 \end{enumerate}
 
-\subsection{P2-06 Machine-checkable policy DSL snippets}
+\subsection{Annex G.6 Machine-checkable policy DSL snippets}
 \label{ann:ext-dsl}
 
 \textbf{Reference snippet (illustrative).}
@@ -2442,7 +2442,7 @@ policy EXT_REPLAY_CONTROL {
 
 The snippet is intentionally minimal and is included to support parser-facing hardening work.
 
-\subsection{P2-07 Reference harness for test vectors}
+\subsection{Annex G.7 Reference harness for test vectors}
 \label{ann:ext-harness}
 
 \textbf{Harness contract.}
@@ -2452,7 +2452,7 @@ The snippet is intentionally minimal and is included to support parser-facing ha
   \item Invariant: two clean runs with identical inputs must emit equivalent verdicts and digest-linked artefact sets.
 \end{itemize}
 
-\subsection{P2-08 Micro-appendix anti-patterns + red-team checklist}
+\subsection{Annex G.8 Micro-appendix anti-patterns + red-team checklist}
 \label{ann:ext-antipatterns}
 
 \begin{center}
